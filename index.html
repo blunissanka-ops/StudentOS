@@ -1,1471 +1,3296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#6c5ce7">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6c63ff">
+<title>StudentOS — Student Life, Organized</title>
 
-  <title>StudentOS — Your Student Life, Organized</title>
+<style>
+:root{
+    --primary:#6c63ff;
+    --primary-dark:#554de8;
+    --secondary:#8b5cf6;
+    --bg:#f6f7fb;
+    --surface:#ffffff;
+    --surface-2:#f1f2f8;
+    --text:#181827;
+    --muted:#73758a;
+    --border:#e8e8f0;
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+    --shadow:0 12px 35px rgba(30,25,80,.07);
+    --radius:22px;
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+[data-theme="dark"]{
+    --bg:#0f1020;
+    --surface:#181929;
+    --surface-2:#202136;
+    --text:#f6f6ff;
+    --muted:#a2a3b7;
+    --border:#2c2d42;
+    --shadow:0 15px 40px rgba(0,0,0,.25);
+}
 
-  <link rel="stylesheet" href="style.css">
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,input,textarea,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+    border:0;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* ---------- APP ---------- */
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+.sidebar{
+    width:250px;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    padding:24px 16px;
+    position:fixed;
+    inset:0 auto 0 0;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    transition:.3s;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:0 10px 30px;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    color:white;
+    font-weight:900;
+    font-size:20px;
+    background:linear-gradient(135deg,#6c63ff,#9b7cff);
+    box-shadow:0 8px 20px rgba(108,99,255,.28);
+}
+
+.brand strong{
+    font-size:18px;
+}
+
+.brand span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    margin-top:2px;
+}
+
+.nav-title{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.3px;
+    padding:10px 12px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav button{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 13px;
+    border-radius:14px;
+    background:transparent;
+    color:var(--muted);
+    text-align:left;
+    transition:.2s;
+}
+
+.nav button:hover{
+    background:var(--surface-2);
+    color:var(--text);
+}
+
+.nav button.active{
+    background:linear-gradient(90deg,rgba(108,99,255,.13),rgba(139,92,246,.06));
+    color:var(--primary);
+    font-weight:700;
+}
+
+.nav-icon{
+    width:22px;
+    text-align:center;
+    font-size:17px;
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+}
+
+.user-mini{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:13px;
+    border:1px solid var(--border);
+    border-radius:17px;
+    background:var(--surface-2);
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+}
+
+.user-mini div:last-child{
+    overflow:hidden;
+}
+
+.user-mini strong{
+    display:block;
+    font-size:13px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.user-mini span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* ---------- MAIN ---------- */
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    min-width:0;
+}
+
+.topbar{
+    height:76px;
+    background:rgba(246,247,251,.85);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 32px;
+    position:sticky;
+    top:0;
+    z-index:30;
+}
+
+[data-theme="dark"] .topbar{
+    background:rgba(15,16,32,.85);
+}
+
+.search{
+    width:320px;
+    position:relative;
+}
+
+.search input{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--border);
+    padding:11px 15px 11px 40px;
+    border-radius:14px;
+    outline:none;
+    color:var(--text);
+}
+
+.search-icon{
+    position:absolute;
+    left:14px;
+    top:10px;
+    color:var(--muted);
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.icon-btn{
+    width:40px;
+    height:40px;
+    border-radius:13px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+}
+
+.icon-btn:hover{
+    transform:translateY(-2px);
+}
+
+.page{
+    display:none;
+    padding:34px;
+    max-width:1450px;
+    margin:auto;
+    animation:pageIn .35s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* ---------- HERO ---------- */
+
+.hero{
+    background:
+      radial-gradient(circle at 90% 10%,rgba(255,255,255,.18),transparent 28%),
+      linear-gradient(135deg,#6258f5,#8068f5 50%,#9b75ed);
+    color:white;
+    padding:32px;
+    border-radius:28px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 18px 45px rgba(108,99,255,.22);
+}
+
+.hero:after{
+    content:"";
+    width:260px;
+    height:260px;
+    border:50px solid rgba(255,255,255,.07);
+    border-radius:50%;
+    position:absolute;
+    right:-70px;
+    top:-100px;
+}
+
+.eyebrow{
+    text-transform:uppercase;
+    font-size:10px;
+    letter-spacing:1.5px;
+    font-weight:800;
+    opacity:.75;
+    margin-bottom:9px;
+}
+
+.hero h1{
+    font-size:clamp(27px,4vw,40px);
+    margin-bottom:8px;
+}
+
+.hero p{
+    opacity:.83;
+    max-width:620px;
+}
+
+.hero-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    position:relative;
+    z-index:2;
+}
+
+.hero-action{
+    background:white;
+    color:#5c54e8;
+    padding:12px 18px;
+    border-radius:13px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.hero-action:hover{
+    transform:translateY(-2px);
+}
+
+/* ---------- GRIDS ---------- */
+
+.grid{
+    display:grid;
+    gap:18px;
+}
+
+.stats{
+    grid-template-columns:repeat(4,1fr);
+    margin-top:20px;
+}
+
+.card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:21px;
+    box-shadow:var(--shadow);
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 18px 40px rgba(30,25,80,.1);
+}
+
+.stat{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.stat-icon{
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    background:var(--surface-2);
+    font-size:20px;
+}
+
+.stat-value{
+    font-size:26px;
+    font-weight:850;
+    margin-top:10px;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:3px;
+}
+
+.section-grid{
+    grid-template-columns:1.5fr 1fr;
+    margin-top:20px;
+}
+
+.card-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:17px;
+}
+
+.card-head h3{
+    font-size:17px;
+}
+
+.card-head span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.link-btn{
+    background:none;
+    color:var(--primary);
+    font-weight:700;
+    font-size:12px;
+}
+
+/* ---------- TASKS ---------- */
+
+.task{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.task:last-child{
+    border-bottom:0;
+}
+
+.check{
+    width:21px;
+    height:21px;
+    border-radius:7px;
+    border:2px solid #c9cad7;
+    background:transparent;
+    flex:none;
+}
+
+.task.done .check{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+}
+
+.task.done .task-name{
+    text-decoration:line-through;
+    color:var(--muted);
+}
+
+.task-body{
+    flex:1;
+}
+
+.task-name{
+    font-size:14px;
+    font-weight:700;
+}
+
+.task-meta{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.priority{
+    padding:4px 8px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:800;
+}
+
+.priority.high{
+    color:#dc2626;
+    background:#fee2e2;
+}
+
+.priority.medium{
+    color:#b45309;
+    background:#fef3c7;
+}
+
+.priority.low{
+    color:#15803d;
+    background:#dcfce7;
+}
+
+/* ---------- PROGRESS ---------- */
+
+.progress{
+    height:8px;
+    background:var(--surface-2);
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    border-radius:99px;
+    transition:1s;
+}
+
+/* ---------- QUICK ACTIONS ---------- */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.quick{
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    border-radius:16px;
+    padding:16px;
+    text-align:left;
+    color:var(--text);
+    transition:.2s;
+}
+
+.quick:hover{
+    background:rgba(108,99,255,.09);
+    border-color:rgba(108,99,255,.3);
+    transform:translateY(-2px);
+}
+
+.quick b{
+    display:block;
+    margin-top:10px;
+    font-size:12px;
+}
+
+.quick span{
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* ---------- EMPTY ---------- */
+
+.empty{
+    padding:35px 15px;
+    text-align:center;
+    color:var(--muted);
+}
+
+.empty-icon{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+/* ---------- PAGE HEADER ---------- */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    font-size:31px;
+}
+
+.page-header p{
+    color:var(--muted);
+    margin-top:5px;
+}
+
+.primary{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    padding:11px 16px;
+    border-radius:13px;
+    font-weight:800;
+    box-shadow:0 8px 20px rgba(108,99,255,.2);
+}
+
+.primary:hover{
+    transform:translateY(-2px);
+}
+
+.secondary{
+    background:var(--surface);
+    color:var(--text);
+    border:1px solid var(--border);
+    padding:10px 15px;
+    border-radius:12px;
+    font-weight:700;
+}
+
+/* ---------- FOCUS ---------- */
+
+.focus-card{
+    max-width:650px;
+    margin:auto;
+    text-align:center;
+    padding:40px;
+}
+
+.timer{
+    font-size:72px;
+    font-weight:900;
+    letter-spacing:-4px;
+    margin:25px 0;
+}
+
+.mode-tabs{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.mode-tabs button{
+    padding:9px 13px;
+    border-radius:11px;
+    background:var(--surface-2);
+    color:var(--muted);
+}
+
+.mode-tabs button.active{
+    background:rgba(108,99,255,.12);
+    color:var(--primary);
+    font-weight:800;
+}
+
+.focus-controls{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+/* ---------- NOTES ---------- */
+
+.notes-grid{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.note{
+    min-height:170px;
+    cursor:pointer;
+}
+
+.note-tag{
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:8px;
+    background:rgba(108,99,255,.1);
+    color:var(--primary);
+    font-size:10px;
+    font-weight:800;
+}
+
+.note h3{
+    margin:15px 0 8px;
+    font-size:16px;
+}
+
+.note p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+}
+
+/* ---------- FINANCE ---------- */
+
+.money-grid{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.money-value{
+    font-size:25px;
+    font-weight:850;
+    margin-top:8px;
+}
+
+.income{
+    color:var(--success);
+}
+
+.expense{
+    color:var(--danger);
+}
+
+/* ---------- GOALS ---------- */
+
+.goal{
+    margin-bottom:16px;
+}
+
+.goal:last-child{
+    margin-bottom:0;
+}
+
+.goal-top{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+/* ---------- TABLE / ACADEMICS ---------- */
+
+.subject{
+    display:grid;
+    grid-template-columns:1.5fr .5fr .5fr;
+    gap:10px;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.grade{
+    font-weight:900;
+    color:var(--primary);
+    text-align:right;
+}
+
+.gpa-box{
+    text-align:center;
+    padding:28px;
+}
+
+.gpa{
+    font-size:55px;
+    font-weight:900;
+    color:var(--primary);
+}
+
+/* ---------- PROFILE ---------- */
+
+.profile-head{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.profile-avatar{
+    width:78px;
+    height:78px;
+    border-radius:25px;
+    display:grid;
+    place-items:center;
+    color:#fff;
+    font-size:27px;
+    font-weight:900;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+
+.profile-info h2{
+    font-size:23px;
+}
+
+.profile-info p{
+    color:var(--muted);
+    margin-top:4px;
+}
+
+/* ---------- MODAL ---------- */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(8,8,20,.55);
+    backdrop-filter:blur(7px);
+    display:none;
+    place-items:center;
+    padding:20px;
+    z-index:100;
+}
+
+.overlay.open{
+    display:grid;
+}
+
+.modal{
+    width:min(500px,100%);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:25px;
+    box-shadow:0 30px 80px rgba(0,0,0,.25);
+    animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:scale(.96) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-head button{
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    background:var(--surface-2);
+    color:var(--text);
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:11px 12px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    color:var(--text);
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:9px;
+    margin-top:20px;
+}
+
+/* ---------- TOAST ---------- */
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:25px;
+    z-index:200;
+    background:#171827;
+    color:white;
+    padding:13px 17px;
+    border-radius:13px;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    font-size:13px;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* ---------- MOBILE ---------- */
+
+.mobile-nav{
+    display:none;
+}
+
+.mobile-menu{
+    display:none;
+}
+
+@media(max-width:1000px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .section-grid{
+        grid-template-columns:1fr;
+    }
+
+    .notes-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:750px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+        box-shadow:20px 0 60px rgba(0,0,0,.15);
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding-bottom:75px;
+    }
+
+    .topbar{
+        padding:0 16px;
+        height:65px;
+    }
+
+    .search{
+        width:calc(100% - 50px);
+    }
+
+    .top-actions .icon-btn:nth-child(2){
+        display:none;
+    }
+
+    .mobile-menu{
+        display:grid;
+        place-items:center;
+        width:40px;
+        height:40px;
+        border-radius:12px;
+        background:var(--surface);
+        border:1px solid var(--border);
+        color:var(--text);
+    }
+
+    .page{
+        padding:20px 16px;
+    }
+
+    .hero{
+        padding:24px;
+        border-radius:23px;
+    }
+
+    .hero-row{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .hero-action{
+        width:100%;
+        text-align:center;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .card{
+        padding:17px;
+        border-radius:19px;
+    }
+
+    .page-header{
+        align-items:flex-start;
+    }
+
+    .page-header h1{
+        font-size:26px;
+    }
+
+    .notes-grid{
+        grid-template-columns:1fr;
+    }
+
+    .money-grid{
+        grid-template-columns:1fr;
+    }
+
+    .mobile-nav{
+        position:fixed;
+        display:grid;
+        grid-template-columns:repeat(5,1fr);
+        bottom:0;
+        left:0;
+        right:0;
+        height:68px;
+        background:rgba(255,255,255,.94);
+        backdrop-filter:blur(15px);
+        border-top:1px solid var(--border);
+        z-index:80;
+    }
+
+    [data-theme="dark"] .mobile-nav{
+        background:rgba(24,25,41,.94);
+    }
+
+    .mobile-nav button{
+        background:none;
+        color:var(--muted);
+        font-size:10px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:4px;
+    }
+
+    .mobile-nav button.active{
+        color:var(--primary);
+        font-weight:800;
+    }
+
+    .mobile-nav span:first-child{
+        font-size:19px;
+    }
+
+    .timer{
+        font-size:56px;
+    }
+}
+
+@media(max-width:420px){
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .quick-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     APP
-===================================================== -->
-
 <div class="app">
 
-  <!-- SIDEBAR -->
-
-  <aside class="sidebar">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
     <div class="brand">
-      <div class="brand-icon">S</div>
-
-      <div>
-        <div class="brand-name">StudentOS</div>
-        <div class="brand-sub">Student productivity</div>
-      </div>
+        <div class="logo">S</div>
+        <div>
+            <strong>StudentOS</strong>
+            <span>Your life. Organized.</span>
+        </div>
     </div>
 
+    <div class="nav-title">WORKSPACE</div>
 
-    <div class="profile-mini">
+    <nav class="nav">
+        <button class="nav-btn active" data-page="dashboard">
+            <span class="nav-icon">⌂</span> Dashboard
+        </button>
 
-      <div class="avatar" id="sidebarAvatar">U</div>
+        <button class="nav-btn" data-page="academics">
+            <span class="nav-icon">🎓</span> Academics
+        </button>
 
-      <div>
-        <strong id="sidebarName">Student</strong>
-        <span>Undergraduate</span>
-      </div>
+        <button class="nav-btn" data-page="planner">
+            <span class="nav-icon">✓</span> Planner
+        </button>
 
-    </div>
+        <button class="nav-btn" data-page="focus">
+            <span class="nav-icon">⏱</span> Focus
+        </button>
 
+        <button class="nav-btn" data-page="notes">
+            <span class="nav-icon">📝</span> Notes
+        </button>
 
-    <nav class="navigation">
+        <button class="nav-btn" data-page="money">
+            <span class="nav-icon">💳</span> Money
+        </button>
 
-      <div class="nav-label">WORKSPACE</div>
-
-      <button class="nav-item active" data-page="dashboard">
-        <span>⌂</span>
-        <span>Dashboard</span>
-      </button>
-
-      <button class="nav-item" data-page="academics">
-        <span>🎓</span>
-        <span>Academics</span>
-      </button>
-
-      <button class="nav-item" data-page="planner">
-        <span>📅</span>
-        <span>Planner</span>
-      </button>
-
-      <button class="nav-item" data-page="focus">
-        <span>⏱</span>
-        <span>Focus</span>
-      </button>
-
-      <button class="nav-item" data-page="notes">
-        <span>📝</span>
-        <span>Notes</span>
-      </button>
-
-
-      <div class="nav-label">PERSONAL</div>
-
-      <button class="nav-item" data-page="money">
-        <span>💰</span>
-        <span>Money</span>
-      </button>
-
-      <button class="nav-item" data-page="goals">
-        <span>🎯</span>
-        <span>Goals</span>
-      </button>
-
-
-      <div class="nav-label">ACCOUNT</div>
-
-      <button class="nav-item" data-page="profile">
-        <span>👤</span>
-        <span>Profile</span>
-      </button>
-
+        <button class="nav-btn" data-page="goals">
+            <span class="nav-icon">🎯</span> Goals
+        </button>
     </nav>
 
+    <div class="nav-title">ACCOUNT</div>
+
+    <nav class="nav">
+        <button class="nav-btn" data-page="profile">
+            <span class="nav-icon">👤</span> Profile
+        </button>
+    </nav>
 
     <div class="sidebar-bottom">
+        <div class="user-mini">
+            <div class="avatar" id="sideAvatar">S</div>
+            <div>
+                <strong id="sideName">Student</strong>
+                <span>Undergraduate</span>
+            </div>
+        </div>
+    </div>
 
-      <button class="theme-button" id="themeToggle">
-        <span>🌙</span>
-        <span>Dark mode</span>
-      </button>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<header class="topbar">
+
+    <button class="mobile-menu" id="menuBtn">☰</button>
+
+    <div class="search">
+        <span class="search-icon">⌕</span>
+        <input id="globalSearch" placeholder="Search StudentOS...">
+    </div>
+
+    <div class="top-actions">
+        <button class="icon-btn" id="themeBtn">☾</button>
+        <button class="icon-btn" id="notifyBtn">🔔</button>
+    </div>
+
+</header>
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+
+    <div class="hero">
+        <div class="hero-row">
+            <div>
+                <div class="eyebrow">YOUR PERSONAL STUDENT OS</div>
+                <h1 id="greeting">Good morning 👋</h1>
+                <p id="todayText">Let's make today productive without making it overwhelming.</p>
+            </div>
+
+            <button class="hero-action" onclick="openModal('taskModal')">
+                + Add a task
+            </button>
+        </div>
+    </div>
+
+    <div class="grid stats">
+
+        <div class="card stat">
+            <div>
+                <div class="stat-label">ACADEMIC PROGRESS</div>
+                <div class="stat-value" id="dashGPA">—</div>
+                <div class="stat-label">Current GPA</div>
+            </div>
+            <div class="stat-icon">🎓</div>
+        </div>
+
+        <div class="card stat">
+            <div>
+                <div class="stat-label">FOCUS TODAY</div>
+                <div class="stat-value" id="dashFocus">0m</div>
+                <div class="stat-label">Study time</div>
+            </div>
+            <div class="stat-icon">⏱</div>
+        </div>
+
+        <div class="card stat">
+            <div>
+                <div class="stat-label">TASKS</div>
+                <div class="stat-value" id="dashTasks">0/0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-icon">✓</div>
+        </div>
+
+        <div class="card stat">
+            <div>
+                <div class="stat-label">BALANCE</div>
+                <div class="stat-value" id="dashBalance">Rs. 0</div>
+                <div class="stat-label">This month</div>
+            </div>
+            <div class="stat-icon">💰</div>
+        </div>
 
     </div>
 
-  </aside>
+    <div class="grid section-grid">
 
+        <div class="card">
 
-  <!-- MAIN -->
+            <div class="card-head">
+                <div>
+                    <h3>Today's priorities</h3>
+                    <span>Focus on what actually matters.</span>
+                </div>
 
-  <main class="main">
-
-    <!-- TOP BAR -->
-
-    <header class="topbar">
-
-      <div class="mobile-brand">
-        <div class="brand-icon">S</div>
-        <strong>StudentOS</strong>
-      </div>
-
-      <div class="top-search">
-
-        <span>⌕</span>
-
-        <input
-          type="text"
-          id="globalSearch"
-          placeholder="Search StudentOS..."
-          autocomplete="off">
-
-        <kbd>⌘ K</kbd>
-
-      </div>
-
-
-      <div class="top-actions">
-
-        <button class="icon-button" id="notificationButton">
-          🔔
-          <i></i>
-        </button>
-
-        <button class="top-avatar" data-page="profile">
-          U
-        </button>
-
-      </div>
-
-    </header>
-
-
-    <!-- CONTENT -->
-
-    <div class="content">
-
-
-      <!-- ============================================
-           DASHBOARD
-      ============================================= -->
-
-      <section class="page active-page" id="page-dashboard">
-
-        <div class="welcome">
-
-          <div>
-
-            <div class="eyebrow">
-              <span class="status-dot"></span>
-              YOUR PERSONAL STUDENT OS
+                <button class="link-btn" onclick="goTo('planner')">
+                    View planner →
+                </button>
             </div>
 
-            <h1>
-              Good morning,
-              <span id="welcomeName">Student</span> 👋
-            </h1>
-
-            <p>
-              Let's make today productive without making it overwhelming.
-            </p>
-
-          </div>
-
-          <div class="date-card">
-
-            <strong id="currentDay">Monday</strong>
-            <span id="currentDate">October 2026</span>
-
-          </div>
+            <div id="dashboardTasks"></div>
 
         </div>
 
+        <div class="card">
 
-        <!-- NEXT ACTION -->
-
-        <div class="next-action">
-
-          <div class="next-left">
-
-            <div class="next-badge">
-              ✨ NEXT BEST ACTION
+            <div class="card-head">
+                <div>
+                    <h3>Quick actions</h3>
+                    <span>Get things done faster.</span>
+                </div>
             </div>
 
-            <h2 id="nextActionTitle">
-              Start your first study session
-            </h2>
+            <div class="quick-grid">
 
-            <p id="nextActionDescription">
-              Complete one important task before checking everything else.
-            </p>
+                <button class="quick" onclick="openModal('taskModal')">
+                    <span>✓</span>
+                    <b>Add task</b>
+                    <span>Plan your work</span>
+                </button>
 
-            <button class="btn primary" id="nextActionButton">
-              Start Focus Session →
-            </button>
+                <button class="quick" onclick="openModal('noteModal')">
+                    <span>📝</span>
+                    <b>New note</b>
+                    <span>Capture an idea</span>
+                </button>
 
-          </div>
+                <button class="quick" onclick="goTo('focus')">
+                    <span>⏱</span>
+                    <b>Focus mode</b>
+                    <span>Start studying</span>
+                </button>
 
-          <div class="next-visual">
+                <button class="quick" onclick="openModal('moneyModal')">
+                    <span>💳</span>
+                    <b>Add expense</b>
+                    <span>Track money</span>
+                </button>
 
-            <div class="orb orb-one"></div>
-            <div class="orb orb-two"></div>
-
-            <div class="focus-symbol">
-              ⏱
             </div>
-
-          </div>
 
         </div>
 
+    </div>
 
-        <!-- QUICK STATS -->
+    <div class="grid section-grid">
 
-        <div class="stats-grid">
+        <div class="card">
 
-          <div class="stat-card">
-
-            <div class="stat-top">
-              <span>📚</span>
-              <small>This semester</small>
+            <div class="card-head">
+                <div>
+                    <h3>Productivity score</h3>
+                    <span>Based on completed tasks and study time.</span>
+                </div>
+                <strong id="productivityScore">0%</strong>
             </div>
-
-            <strong id="academicProgress">0%</strong>
 
             <div class="progress">
-              <div id="academicBar"></div>
+                <div class="progress-bar" id="productivityBar" style="width:0%"></div>
             </div>
 
-            <p>Academic progress</p>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-top">
-              <span>⏱</span>
-              <small>Today</small>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;color:var(--muted);font-size:11px;">
+                <span>Keep going</span>
+                <span>100%</span>
             </div>
-
-            <strong id="focusHours">0m</strong>
-
-            <p>Focused study time</p>
-
-            <div class="trend positive">
-              ↗ Keep going
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-top">
-              <span>✓</span>
-              <small>Tasks</small>
-            </div>
-
-            <strong id="taskProgress">0/0</strong>
-
-            <p>Tasks completed</p>
-
-            <div class="trend">
-              Today's workload
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-top">
-              <span>💰</span>
-              <small>This month</small>
-            </div>
-
-            <strong id="moneyBalance">Rs. 0</strong>
-
-            <p>Available balance</p>
-
-            <div class="trend">
-              Track your spending
-            </div>
-
-          </div>
 
         </div>
 
+        <div class="card">
 
-        <!-- DASHBOARD GRID -->
-
-        <div class="dashboard-grid">
-
-          <!-- TODAY -->
-
-          <div class="panel large-panel">
-
-            <div class="panel-header">
-
-              <div>
-                <h3>Today's priorities</h3>
-                <p>Focus on what actually matters.</p>
-              </div>
-
-              <button class="text-button" data-page="planner">
-                View planner →
-              </button>
-
-            </div>
-
-            <div id="todayTasks" class="task-list"></div>
-
-          </div>
-
-
-          <!-- QUICK ACTIONS -->
-
-          <div class="panel">
-
-            <div class="panel-header">
-
-              <div>
-                <h3>Quick actions</h3>
-                <p>Get things done faster.</p>
-              </div>
-
-            </div>
-
-            <div class="quick-actions">
-
-              <button data-modal="taskModal">
-                <span>➕</span>
+            <div class="card-head">
                 <div>
-                  <strong>Add task</strong>
-                  <small>Plan your work</small>
+                    <h3>Goals</h3>
+                    <span>Your bigger picture.</span>
                 </div>
-              </button>
 
-              <button data-modal="noteModal">
-                <span>📝</span>
-                <div>
-                  <strong>New note</strong>
-                  <small>Capture an idea</small>
-                </div>
-              </button>
-
-              <button data-page="focus">
-                <span>⏱</span>
-                <div>
-                  <strong>Focus mode</strong>
-                  <small>Start studying</small>
-                </div>
-              </button>
-
-              <button data-modal="expenseModal">
-                <span>💳</span>
-                <div>
-                  <strong>Add expense</strong>
-                  <small>Track money</small>
-                </div>
-              </button>
-
+                <button class="link-btn" onclick="goTo('goals')">
+                    View all →
+                </button>
             </div>
 
-          </div>
+            <div id="dashboardGoals"></div>
 
         </div>
-
-
-        <!-- UPCOMING -->
-
-        <div class="panel">
-
-          <div class="panel-header">
-
-            <div>
-              <h3>Upcoming</h3>
-              <p>Don't let deadlines surprise you.</p>
-            </div>
-
-            <button class="text-button" data-page="planner">
-              See all →
-            </button>
-
-          </div>
-
-          <div id="upcomingList" class="upcoming-list"></div>
-
-        </div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           ACADEMICS
-      ============================================= -->
-
-      <section class="page" id="page-academics">
-
-        <div class="page-heading">
-
-          <div>
-            <div class="eyebrow">ACADEMIC CENTER</div>
-            <h1>Academics</h1>
-            <p>Keep your subjects, grades and academic progress together.</p>
-          </div>
-
-          <button class="btn primary" data-modal="subjectModal">
-            + Add subject
-          </button>
-
-        </div>
-
-
-        <div class="academic-overview">
-
-          <div class="academic-score">
-
-            <span>Current GPA</span>
-
-            <strong id="gpaValue">—</strong>
-
-            <small>Add grades to calculate</small>
-
-          </div>
-
-
-          <div class="academic-progress-box">
-
-            <div class="progress-title">
-
-              <div>
-                <strong>Semester progress</strong>
-                <span id="semesterProgressText">0% completed</span>
-              </div>
-
-              <b id="semesterProgress">0%</b>
-
-            </div>
-
-            <div class="progress big">
-              <div id="semesterProgressBar"></div>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="section-title">
-          <h2>My subjects</h2>
-        </div>
-
-        <div id="subjectsGrid" class="subjects-grid"></div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           PLANNER
-      ============================================= -->
-
-      <section class="page" id="page-planner">
-
-        <div class="page-heading">
-
-          <div>
-            <div class="eyebrow">ORGANIZE</div>
-            <h1>Planner</h1>
-            <p>Turn everything you need to do into a clear plan.</p>
-          </div>
-
-          <button class="btn primary" data-modal="taskModal">
-            + Add task
-          </button>
-
-        </div>
-
-
-        <div class="planner-tabs">
-
-          <button class="active" data-filter="all">All</button>
-          <button data-filter="today">Today</button>
-          <button data-filter="upcoming">Upcoming</button>
-          <button data-filter="completed">Completed</button>
-
-        </div>
-
-
-        <div id="plannerTasks" class="planner-tasks"></div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           FOCUS
-      ============================================= -->
-
-      <section class="page" id="page-focus">
-
-        <div class="page-heading center">
-
-          <div>
-            <div class="eyebrow">DEEP WORK</div>
-            <h1>Focus</h1>
-            <p>One session. One task. No distractions.</p>
-          </div>
-
-        </div>
-
-
-        <div class="focus-container">
-
-          <div class="focus-card">
-
-            <div class="focus-mode">
-              <button class="active" data-minutes="25">Focus</button>
-              <button data-minutes="5">Short break</button>
-              <button data-minutes="15">Long break</button>
-            </div>
-
-
-            <div class="timer-ring" id="timerRing">
-
-              <div>
-
-                <span id="timerMinutes">25</span>
-                <small>:</small>
-                <span id="timerSeconds">00</span>
-
-              </div>
-
-            </div>
-
-
-            <div class="focus-label" id="focusLabel">
-              Ready to focus?
-            </div>
-
-
-            <button class="timer-button" id="timerButton">
-              ▶ Start
-            </button>
-
-
-            <button class="reset-button" id="resetTimer">
-              Reset timer
-            </button>
-
-          </div>
-
-
-          <div class="focus-side">
-
-            <div class="panel">
-
-              <div class="panel-header">
-                <div>
-                  <h3>Today's focus</h3>
-                  <p>Your productive time.</p>
-                </div>
-              </div>
-
-              <div class="focus-stat">
-                <strong id="focusTodayLarge">0m</strong>
-                <span>focused today</span>
-              </div>
-
-              <div class="mini-progress">
-                <div id="focusProgressBar"></div>
-              </div>
-
-              <small>Goal: 2 hours</small>
-
-            </div>
-
-
-            <div class="quote-card">
-
-              <span>“</span>
-
-              <p id="dailyQuote">
-                You don't need to be perfect. You just need to start.
-              </p>
-
-              <small>StudentOS</small>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           NOTES
-      ============================================= -->
-
-      <section class="page" id="page-notes">
-
-        <div class="page-heading">
-
-          <div>
-            <div class="eyebrow">KNOWLEDGE</div>
-            <h1>My Notes</h1>
-            <p>Your personal knowledge library.</p>
-          </div>
-
-          <button class="btn primary" data-modal="noteModal">
-            + New note
-          </button>
-
-        </div>
-
-
-        <div class="notes-toolbar">
-
-          <div class="search-box">
-
-            🔎
-
-            <input
-              id="noteSearch"
-              placeholder="Search notes...">
-
-          </div>
-
-          <select id="noteFilter">
-
-            <option value="all">All subjects</option>
-            <option value="HRM">HRM</option>
-            <option value="CA">CA</option>
-            <option value="Finance">Finance</option>
-
-          </select>
-
-        </div>
-
-
-        <div id="notesGrid" class="notes-grid"></div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           MONEY
-      ============================================= -->
-
-      <section class="page" id="page-money">
-
-        <div class="page-heading">
-
-          <div>
-            <div class="eyebrow">PERSONAL FINANCE</div>
-            <h1>Money</h1>
-            <p>Understand where your money goes.</p>
-          </div>
-
-          <button class="btn primary" data-modal="expenseModal">
-            + Add expense
-          </button>
-
-        </div>
-
-
-        <div class="money-cards">
-
-          <div class="money-card balance">
-
-            <span>Available balance</span>
-
-            <strong id="balanceLarge">
-              Rs. 0
-            </strong>
-
-            <small>Income minus expenses</small>
-
-          </div>
-
-
-          <div class="money-card">
-
-            <span>Total income</span>
-
-            <strong id="incomeLarge">
-              Rs. 0
-            </strong>
-
-            <small>This month</small>
-
-          </div>
-
-
-          <div class="money-card">
-
-            <span>Total expenses</span>
-
-            <strong id="expensesLarge">
-              Rs. 0
-            </strong>
-
-            <small>This month</small>
-
-          </div>
-
-        </div>
-
-
-        <div class="money-grid">
-
-          <div class="panel">
-
-            <div class="panel-header">
-
-              <div>
-                <h3>Spending</h3>
-                <p>Your expense breakdown.</p>
-              </div>
-
-            </div>
-
-            <div id="expenseCategories"></div>
-
-          </div>
-
-
-          <div class="panel">
-
-            <div class="panel-header">
-
-              <div>
-                <h3>Recent transactions</h3>
-                <p>Your latest money activity.</p>
-              </div>
-
-            </div>
-
-            <div id="transactions"></div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           GOALS
-      ============================================= -->
-
-      <section class="page" id="page-goals">
-
-        <div class="page-heading">
-
-          <div>
-            <div class="eyebrow">YOUR FUTURE</div>
-            <h1>Goals</h1>
-            <p>Small progress every day creates big results.</p>
-          </div>
-
-          <button class="btn primary" data-modal="goalModal">
-            + New goal
-          </button>
-
-        </div>
-
-
-        <div class="goal-banner">
-
-          <div>
-
-            <span>YOUR 2026</span>
-
-            <h2>
-              Build the future
-              you're working for.
-            </h2>
-
-            <p>
-              Track your biggest academic, career and personal goals.
-            </p>
-
-          </div>
-
-          <div class="goal-decoration">
-            🎯
-          </div>
-
-        </div>
-
-
-        <div id="goalsGrid" class="goals-grid"></div>
-
-      </section>
-
-
-
-      <!-- ============================================
-           PROFILE
-      ============================================= -->
-
-      <section class="page" id="page-profile">
-
-        <div class="page-heading">
-
-          <div>
-            <div class="eyebrow">ACCOUNT</div>
-            <h1>Profile</h1>
-            <p>Customize your StudentOS experience.</p>
-          </div>
-
-          <button class="btn primary" data-modal="profileModal">
-            Edit profile
-          </button>
-
-        </div>
-
-
-        <div class="profile-card">
-
-          <div class="profile-avatar" id="profileAvatar">
-            U
-          </div>
-
-          <div class="profile-info">
-
-            <h2 id="profileName">
-              Student
-            </h2>
-
-            <p id="profileUniversity">
-              University student
-            </p>
-
-            <p id="profileDegree">
-              Undergraduate
-            </p>
-
-            <div class="profile-tags">
-
-              <span>🎓 Student</span>
-              <span>📚 Learner</span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="profile-stats">
-
-          <div>
-            <strong id="profileTasks">0</strong>
-            <span>Tasks completed</span>
-          </div>
-
-          <div>
-            <strong id="profileNotes">0</strong>
-            <span>Notes created</span>
-          </div>
-
-          <div>
-            <strong id="profileGoals">0</strong>
-            <span>Goals</span>
-          </div>
-
-          <div>
-            <strong id="profileFocus">0m</strong>
-            <span>Focus time</span>
-          </div>
-
-        </div>
-
-      </section>
-
 
     </div>
 
-  </main>
+</section>
 
+<!-- ACADEMICS -->
+<section class="page" id="academics">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">ACADEMIC CENTER</div>
+            <h1>Academics</h1>
+            <p>Track subjects, grades and your academic progress.</p>
+        </div>
+
+        <button class="primary" onclick="openModal('subjectModal')">
+            + Add subject
+        </button>
+    </div>
+
+    <div class="grid section-grid">
+
+        <div class="card gpa-box">
+            <div class="stat-label">CURRENT GPA</div>
+            <div class="gpa" id="gpaValue">—</div>
+            <div style="color:var(--muted);font-size:12px">
+                Based on your entered subjects
+            </div>
+        </div>
+
+        <div class="card">
+
+            <div class="card-head">
+                <h3>Semester progress</h3>
+                <span id="semesterProgressText">0%</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="semesterBar" style="width:0%"></div>
+            </div>
+
+            <p style="color:var(--muted);font-size:12px;margin-top:12px">
+                Add subjects and grades to build your academic profile.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px">
+
+        <div class="card-head">
+            <div>
+                <h3>My subjects</h3>
+                <span>Your current academic workload.</span>
+            </div>
+        </div>
+
+        <div id="subjects"></div>
+
+    </div>
+
+</section>
+
+<!-- PLANNER -->
+<section class="page" id="planner">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">ORGANIZE</div>
+            <h1>Planner</h1>
+            <p>Turn everything you need to do into a clear plan.</p>
+        </div>
+
+        <button class="primary" onclick="openModal('taskModal')">
+            + Add task
+        </button>
+    </div>
+
+    <div class="card">
+
+        <div class="card-head">
+
+            <div>
+                <h3>Your tasks</h3>
+                <span id="taskSummary">0 tasks</span>
+            </div>
+
+            <select id="taskFilter" style="padding:9px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text)">
+                <option value="all">All</option>
+                <option value="today">Today</option>
+                <option value="upcoming">Upcoming</option>
+                <option value="completed">Completed</option>
+            </select>
+
+        </div>
+
+        <div id="allTasks"></div>
+
+    </div>
+
+</section>
+
+<!-- FOCUS -->
+<section class="page" id="focus">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">DEEP WORK</div>
+            <h1>Focus</h1>
+            <p>One session. One task. No distractions.</p>
+        </div>
+    </div>
+
+    <div class="card focus-card">
+
+        <div class="mode-tabs">
+            <button class="active" data-min="25">Focus</button>
+            <button data-min="5">Short break</button>
+            <button data-min="15">Long break</button>
+        </div>
+
+        <div class="timer" id="timer">25:00</div>
+
+        <p style="color:var(--muted);margin-bottom:22px" id="timerStatus">
+            Ready to focus?
+        </p>
+
+        <div class="focus-controls">
+            <button class="primary" id="timerStart">▶ Start</button>
+            <button class="secondary" id="timerReset">Reset</button>
+        </div>
+
+        <div style="margin-top:35px;border-top:1px solid var(--border);padding-top:25px">
+
+            <div class="card-head">
+                <h3>Today's focus</h3>
+                <span id="focusTodayText">0m focused</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="focusBar" style="width:0%"></div>
+            </div>
+
+            <p style="font-size:11px;color:var(--muted);margin-top:9px">
+                Daily target: 2 hours
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- NOTES -->
+<section class="page" id="notes">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">KNOWLEDGE</div>
+            <h1>My Notes</h1>
+            <p>Your personal knowledge library.</p>
+        </div>
+
+        <button class="primary" onclick="openModal('noteModal')">
+            + New note
+        </button>
+    </div>
+
+    <div class="card">
+
+        <div style="margin-bottom:18px">
+            <input id="noteSearch"
+                   placeholder="🔎 Search notes..."
+                   style="width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);color:var(--text);outline:none">
+        </div>
+
+        <div class="grid notes-grid" id="notesGrid"></div>
+
+    </div>
+
+</section>
+
+<!-- MONEY -->
+<section class="page" id="money">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">PERSONAL FINANCE</div>
+            <h1>Money</h1>
+            <p>Understand where your money goes.</p>
+        </div>
+
+        <button class="primary" onclick="openModal('moneyModal')">
+            + Add transaction
+        </button>
+    </div>
+
+    <div class="grid money-grid">
+
+        <div class="card">
+            <div class="stat-label">AVAILABLE BALANCE</div>
+            <div class="money-value" id="moneyBalance">Rs. 0</div>
+            <div style="color:var(--muted);font-size:11px">Income minus expenses</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-label">TOTAL INCOME</div>
+            <div class="money-value income" id="moneyIncome">Rs. 0</div>
+            <div style="color:var(--muted);font-size:11px">This month</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-label">TOTAL EXPENSES</div>
+            <div class="money-value expense" id="moneyExpense">Rs. 0</div>
+            <div style="color:var(--muted);font-size:11px">This month</div>
+        </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px">
+
+        <div class="card-head">
+            <div>
+                <h3>Recent transactions</h3>
+                <span>Your latest money activity.</span>
+            </div>
+        </div>
+
+        <div id="transactions"></div>
+
+    </div>
+
+</section>
+
+<!-- GOALS -->
+<section class="page" id="goals">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">YOUR FUTURE</div>
+            <h1>Goals</h1>
+            <p>Small progress every day creates big results.</p>
+        </div>
+
+        <button class="primary" onclick="openModal('goalModal')">
+            + New goal
+        </button>
+    </div>
+
+    <div class="grid section-grid">
+
+        <div class="card">
+            <div class="card-head">
+                <div>
+                    <h3>My goals</h3>
+                    <span>Keep your future visible.</span>
+                </div>
+            </div>
+
+            <div id="goalsList"></div>
+        </div>
+
+        <div class="card">
+
+            <div class="card-head">
+                <div>
+                    <h3>Mindset</h3>
+                    <span>Today's reminder.</span>
+                </div>
+            </div>
+
+            <div style="font-size:22px;font-weight:800;line-height:1.4">
+                “You don't need to be perfect.
+                You just need to keep moving.”
+            </div>
+
+            <p style="color:var(--muted);font-size:12px;margin-top:14px">
+                StudentOS
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- PROFILE -->
+<section class="page" id="profile">
+
+    <div class="page-header">
+        <div>
+            <div class="eyebrow" style="color:var(--primary)">ACCOUNT</div>
+            <h1>Profile</h1>
+            <p>Customize your StudentOS experience.</p>
+        </div>
+
+        <button class="primary" onclick="openModal('profileModal')">
+            Edit profile
+        </button>
+    </div>
+
+    <div class="card">
+
+        <div class="profile-head">
+
+            <div class="profile-avatar" id="profileAvatar">S</div>
+
+            <div class="profile-info">
+                <h2 id="profileName">Student</h2>
+                <p id="profileUniversity">University student</p>
+                <p id="profileDegree">Undergraduate</p>
+            </div>
+
+        </div>
+
+        <div class="grid stats" style="margin-top:30px">
+
+            <div class="card">
+                <div class="stat-label">TASKS COMPLETED</div>
+                <div class="stat-value" id="profileTasks">0</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-label">NOTES CREATED</div>
+                <div class="stat-value" id="profileNotes">0</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-label">GOALS</div>
+                <div class="stat-value" id="profileGoals">0</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-label">FOCUS TIME</div>
+                <div class="stat-value" id="profileFocus">0m</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
 </div>
 
-
 <!-- MOBILE NAV -->
-
 <nav class="mobile-nav">
 
-  <button class="active" data-page="dashboard">
-    <span>⌂</span>
-    Home
-  </button>
+    <button class="active" data-page="dashboard">
+        <span>⌂</span>
+        Home
+    </button>
 
-  <button data-page="academics">
-    <span>🎓</span>
-    Study
-  </button>
+    <button data-page="academics">
+        <span>🎓</span>
+        Study
+    </button>
 
-  <button data-page="planner">
-    <span>📅</span>
-    Plan
-  </button>
+    <button data-page="planner">
+        <span>✓</span>
+        Plan
+    </button>
 
-  <button data-page="focus">
-    <span>⏱</span>
-    Focus
-  </button>
+    <button data-page="focus">
+        <span>⏱</span>
+        Focus
+    </button>
 
-  <button data-page="profile">
-    <span>👤</span>
-    Profile
-  </button>
+    <button data-page="profile">
+        <span>👤</span>
+        Profile
+    </button>
 
 </nav>
 
+<!-- MODAL: TASK -->
+<div class="overlay" id="taskModal">
 
+<div class="modal">
 
-<!-- ============================================
-     TASK MODAL
-============================================= -->
-
-<div class="modal-overlay" id="taskModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-        <span class="modal-icon">✓</span>
-        <div>
-          <h2>Add task</h2>
-          <p>What needs to get done?</p>
-        </div>
-      </div>
-
-      <button class="close-modal">×</button>
-
+    <div class="modal-head">
+        <h2>Add task</h2>
+        <button onclick="closeModal('taskModal')">×</button>
     </div>
-
 
     <form id="taskForm">
 
-      <label>
-        Task name
-        <input id="taskName" required placeholder="e.g. Complete HRM report">
-      </label>
+        <div class="form-group">
+            <label>Task name</label>
+            <input id="taskName" required placeholder="e.g. Complete HRM report">
+        </div>
 
+        <div class="form-row">
 
-      <div class="form-row">
+            <div class="form-group">
+                <label>Date</label>
+                <input id="taskDate" type="date">
+            </div>
 
-        <label>
-          Date
-          <input id="taskDate" type="date" required>
-        </label>
+            <div class="form-group">
+                <label>Priority</label>
+                <select id="taskPriority">
+                    <option>High</option>
+                    <option selected>Medium</option>
+                    <option>Low</option>
+                </select>
+            </div>
 
-        <label>
-          Priority
+        </div>
 
-          <select id="taskPriority">
+        <div class="form-group">
+            <label>Category</label>
+            <select id="taskCategory">
+                <option>University</option>
+                <option>CA</option>
+                <option>Personal</option>
+                <option>Work</option>
+            </select>
+        </div>
 
-            <option value="high">High</option>
-            <option value="medium" selected>Medium</option>
-            <option value="low">Low</option>
-
-          </select>
-
-        </label>
-
-      </div>
-
-
-      <label>
-        Category
-
-        <select id="taskCategory">
-
-          <option>University</option>
-          <option>CA</option>
-          <option>Work</option>
-          <option>Personal</option>
-
-        </select>
-
-      </label>
-
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn ghost close-modal">
-          Cancel
-        </button>
-
-        <button class="btn primary">
-          Add task
-        </button>
-
-      </div>
+        <div class="modal-actions">
+            <button type="button" class="secondary" onclick="closeModal('taskModal')">Cancel</button>
+            <button class="primary">Add task</button>
+        </div>
 
     </form>
 
-  </div>
-
+</div>
 </div>
 
+<!-- MODAL NOTE -->
+<div class="overlay" id="noteModal">
 
+<div class="modal">
 
-<!-- NOTE MODAL -->
-
-<div class="modal-overlay" id="noteModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-        <span class="modal-icon">📝</span>
-        <div>
-          <h2>New note</h2>
-          <p>Capture something worth remembering.</p>
-        </div>
-      </div>
-
-      <button class="close-modal">×</button>
-
+    <div class="modal-head">
+        <h2>New note</h2>
+        <button onclick="closeModal('noteModal')">×</button>
     </div>
-
 
     <form id="noteForm">
 
-      <label>
-        Note title
-        <input id="noteTitle" required placeholder="e.g. Green HRM summary">
-      </label>
+        <div class="form-group">
+            <label>Note title</label>
+            <input id="noteTitle" required placeholder="e.g. Green HRM summary">
+        </div>
 
+        <div class="form-group">
+            <label>Subject</label>
+            <input id="noteSubject" placeholder="e.g. HRM">
+        </div>
 
-      <label>
-        Subject
+        <div class="form-group">
+            <label>Content</label>
+            <textarea id="noteContent" required placeholder="Write your note..."></textarea>
+        </div>
 
-        <select id="noteSubject">
-
-          <option>HRM</option>
-          <option>CA</option>
-          <option>Finance</option>
-          <option>General</option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-        Content
-
-        <textarea
-          id="noteContent"
-          required
-          placeholder="Write your note here..."></textarea>
-
-      </label>
-
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn ghost close-modal">
-          Cancel
-        </button>
-
-        <button class="btn primary">
-          Save note
-        </button>
-
-      </div>
+        <div class="modal-actions">
+            <button type="button" class="secondary" onclick="closeModal('noteModal')">Cancel</button>
+            <button class="primary">Save note</button>
+        </div>
 
     </form>
 
-  </div>
-
+</div>
 </div>
 
+<!-- MODAL MONEY -->
+<div class="overlay" id="moneyModal">
 
+<div class="modal">
 
-<!-- EXPENSE MODAL -->
-
-<div class="modal-overlay" id="expenseModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-        <span class="modal-icon">💰</span>
-
-        <div>
-          <h2>Add transaction</h2>
-          <p>Keep your money under control.</p>
-        </div>
-
-      </div>
-
-      <button class="close-modal">×</button>
-
+    <div class="modal-head">
+        <h2>Add transaction</h2>
+        <button onclick="closeModal('moneyModal')">×</button>
     </div>
 
+    <form id="moneyForm">
 
-    <form id="expenseForm">
+        <div class="form-group">
+            <label>Description</label>
+            <input id="moneyDescription" required placeholder="e.g. Lunch">
+        </div>
 
-      <label>
-        Description
+        <div class="form-row">
 
-        <input
-          id="expenseName"
-          required
-          placeholder="e.g. Lunch">
+            <div class="form-group">
+                <label>Amount (Rs.)</label>
+                <input id="moneyAmount" type="number" min="0" required placeholder="500">
+            </div>
 
-      </label>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="moneyType">
+                    <option value="expense">Expense</option>
+                    <option value="income">Income</option>
+                </select>
+            </div>
 
+        </div>
 
-      <label>
-        Amount (Rs.)
+        <div class="form-group">
+            <label>Category</label>
+            <select id="moneyCategory">
+                <option>Food</option>
+                <option>Transport</option>
+                <option>Education</option>
+                <option>Entertainment</option>
+                <option>Salary</option>
+                <option>Other</option>
+            </select>
+        </div>
 
-        <input
-          id="expenseAmount"
-          type="number"
-          min="1"
-          required
-          placeholder="500">
-
-      </label>
-
-
-      <div class="form-row">
-
-        <label>
-
-          Type
-
-          <select id="expenseType">
-
-            <option value="expense">
-              Expense
-            </option>
-
-            <option value="income">
-              Income
-            </option>
-
-          </select>
-
-        </label>
-
-
-        <label>
-
-          Category
-
-          <select id="expenseCategory">
-
-            <option>Food</option>
-            <option>Transport</option>
-            <option>Education</option>
-            <option>Entertainment</option>
-            <option>Other</option>
-
-          </select>
-
-        </label>
-
-      </div>
-
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn ghost close-modal">
-          Cancel
-        </button>
-
-        <button class="btn primary">
-          Save transaction
-        </button>
-
-      </div>
+        <div class="modal-actions">
+            <button type="button" class="secondary" onclick="closeModal('moneyModal')">Cancel</button>
+            <button class="primary">Save transaction</button>
+        </div>
 
     </form>
 
-  </div>
-
+</div>
 </div>
 
+<!-- MODAL GOAL -->
+<div class="overlay" id="goalModal">
 
+<div class="modal">
 
-<!-- GOAL MODAL -->
-
-<div class="modal-overlay" id="goalModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-
-        <span class="modal-icon">🎯</span>
-
-        <div>
-          <h2>New goal</h2>
-          <p>What are you working towards?</p>
-        </div>
-
-      </div>
-
-      <button class="close-modal">×</button>
-
+    <div class="modal-head">
+        <h2>New goal</h2>
+        <button onclick="closeModal('goalModal')">×</button>
     </div>
-
 
     <form id="goalForm">
 
-      <label>
-        Goal
+        <div class="form-group">
+            <label>Goal</label>
+            <input id="goalName" required placeholder="e.g. Pass CA Audit">
+        </div>
 
-        <input
-          id="goalName"
-          required
-          placeholder="e.g. Pass CA Audit">
+        <div class="form-row">
 
-      </label>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="goalCategory">
+                    <option>Academic</option>
+                    <option>Career</option>
+                    <option>Finance</option>
+                    <option>Personal</option>
+                </select>
+            </div>
 
+            <div class="form-group">
+                <label>Target date</label>
+                <input id="goalDate" type="date">
+            </div>
 
-      <label>
+        </div>
 
-        Category
-
-        <select id="goalCategory">
-
-          <option>Academic</option>
-          <option>Career</option>
-          <option>Financial</option>
-          <option>Personal</option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        Target date
-
-        <input
-          id="goalDate"
-          type="date">
-
-      </label>
-
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn ghost close-modal">
-          Cancel
-        </button>
-
-        <button class="btn primary">
-          Create goal
-        </button>
-
-      </div>
+        <div class="modal-actions">
+            <button type="button" class="secondary" onclick="closeModal('goalModal')">Cancel</button>
+            <button class="primary">Create goal</button>
+        </div>
 
     </form>
 
-  </div>
-
+</div>
 </div>
 
+<!-- MODAL SUBJECT -->
+<div class="overlay" id="subjectModal">
 
+<div class="modal">
 
-<!-- SUBJECT MODAL -->
-
-<div class="modal-overlay" id="subjectModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-
-        <span class="modal-icon">🎓</span>
-
-        <div>
-          <h2>Add subject</h2>
-          <p>Add a subject to your semester.</p>
-        </div>
-
-      </div>
-
-      <button class="close-modal">×</button>
-
+    <div class="modal-head">
+        <h2>Add subject</h2>
+        <button onclick="closeModal('subjectModal')">×</button>
     </div>
-
 
     <form id="subjectForm">
 
-      <label>
-        Subject name
-        <input id="subjectName" required placeholder="e.g. HR Analytics">
-      </label>
+        <div class="form-group">
+            <label>Subject name</label>
+            <input id="subjectName" required placeholder="e.g. HR Analytics">
+        </div>
 
+        <div class="form-row">
 
-      <div class="form-row">
+            <div class="form-group">
+                <label>Credits</label>
+                <input id="subjectCredits" type="number" min="1" value="3">
+            </div>
 
-        <label>
-          Credits
-          <input id="subjectCredits" type="number" min="1" max="10" value="3">
-        </label>
+            <div class="form-group">
+                <label>Grade</label>
+                <select id="subjectGrade">
+                    <option value="">Not graded</option>
+                    <option value="4">A / A+</option>
+                    <option value="3">B</option>
+                    <option value="2">C</option>
+                    <option value="1">D</option>
+                    <option value="0">F</option>
+                </select>
+            </div>
 
-        <label>
-          Grade
-          <select id="subjectGrade">
+        </div>
 
-            <option value="">Not graded</option>
-            <option value="A+">A+</option>
-            <option value="A">A</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B">B</option>
-            <option value="B-">B-</option>
-            <option value="C+">C+</option>
-            <option value="C">C</option>
-            <option value="C-">C-</option>
-            <option value="D">D</option>
-
-          </select>
-        </label>
-
-      </div>
-
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn ghost close-modal">
-          Cancel
-        </button>
-
-        <button class="btn primary">
-          Add subject
-        </button>
-
-      </div>
+        <div class="modal-actions">
+            <button type="button" class="secondary" onclick="closeModal('subjectModal')">Cancel</button>
+            <button class="primary">Add subject</button>
+        </div>
 
     </form>
 
-  </div>
-
+</div>
 </div>
 
-
-
 <!-- PROFILE MODAL -->
+<div class="overlay" id="profileModal">
 
-<div class="modal-overlay" id="profileModal">
+<div class="modal">
 
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-
-        <span class="modal-icon">👤</span>
-
-        <div>
-          <h2>Edit profile</h2>
-          <p>Tell StudentOS about yourself.</p>
-        </div>
-
-      </div>
-
-      <button class="close-modal">×</button>
-
+    <div class="modal-head">
+        <h2>Edit profile</h2>
+        <button onclick="closeModal('profileModal')">×</button>
     </div>
-
 
     <form id="profileForm">
 
-      <label>
-        Name
-        <input id="profileNameInput" required>
-      </label>
+        <div class="form-group">
+            <label>Name</label>
+            <input id="profileInputName">
+        </div>
 
-      <label>
-        University
-        <input id="profileUniversityInput">
-      </label>
+        <div class="form-group">
+            <label>University</label>
+            <input id="profileInputUniversity">
+        </div>
 
-      <label>
-        Degree / program
-        <input id="profileDegreeInput">
-      </label>
+        <div class="form-group">
+            <label>Degree / program</label>
+            <input id="profileInputDegree">
+        </div>
 
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn ghost close-modal">
-          Cancel
-        </button>
-
-        <button class="btn primary">
-          Save profile
-        </button>
-
-      </div>
+        <div class="modal-actions">
+            <button type="button" class="secondary" onclick="closeModal('profileModal')">Cancel</button>
+            <button class="primary">Save profile</button>
+        </div>
 
     </form>
 
-  </div>
-
+</div>
 </div>
 
+<div class="toast" id="toast"></div>
 
+<script>
 
-<!-- TOAST -->
+/* =========================================================
+   STUDENTOS
+   Local-first student productivity application
+   ========================================================= */
 
-<div class="toast" id="toast">
+const STORAGE_KEY = "studentOS_v2";
 
-  <span>✓</span>
+const defaultData = {
+    user:{
+        name:"Student",
+        university:"University student",
+        degree:"Undergraduate"
+    },
 
-  <div>
-    <strong id="toastTitle">Done</strong>
-    <small id="toastMessage">Your changes have been saved.</small>
-  </div>
+    tasks:[],
 
-</div>
+    notes:[],
 
+    subjects:[],
 
+    transactions:[],
 
-<script src="app.js"></script>
+    goals:[],
+
+    focusMinutes:0,
+
+    theme:"light"
+};
+
+let data = loadData();
+
+function loadData(){
+
+    try{
+
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if(saved){
+            return {
+                ...defaultData,
+                ...JSON.parse(saved)
+            };
+        }
+
+    }catch(error){
+        console.error(error);
+    }
+
+    return structuredClone(defaultData);
+}
+
+function saveData(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
+
+    renderAll();
+}
+
+/* ---------- HELPERS ---------- */
+
+function $(id){
+    return document.getElementById(id);
+}
+
+function money(value){
+    return "Rs. " + Number(value || 0).toLocaleString("en-LK");
+}
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function today(){
+
+    const d = new Date();
+
+    return d.toISOString().split("T")[0];
+
+}
+
+function formatDate(date){
+
+    if(!date) return "No date";
+
+    const d = new Date(date + "T00:00:00");
+
+    return d.toLocaleDateString("en-LK",{
+        day:"numeric",
+        month:"short",
+        year:"numeric"
+    });
+
+}
+
+function initials(name){
+
+    return (name || "Student")
+        .split(" ")
+        .map(x => x[0])
+        .join("")
+        .slice(0,2)
+        .toUpperCase();
+
+}
+
+function showToast(message){
+
+    const toast = $("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(()=>{
+        toast.classList.remove("show");
+    },2500);
+
+}
+
+/* ---------- NAVIGATION ---------- */
+
+function goTo(page){
+
+    document.querySelectorAll(".page").forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    const target = $(page);
+
+    if(target){
+        target.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-btn,.mobile-nav button").forEach(btn=>{
+        btn.classList.toggle(
+            "active",
+            btn.dataset.page === page
+        );
+    });
+
+    $("sidebar").classList.remove("open");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+document.querySelectorAll(".nav-btn,.mobile-nav button")
+.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+        goTo(button.dataset.page);
+    });
+
+});
+
+/* ---------- MODALS ---------- */
+
+function openModal(id){
+
+    $(id).classList.add("open");
+
+}
+
+function closeModal(id){
+
+    $(id).classList.remove("open");
+
+}
+
+document.querySelectorAll(".overlay")
+.forEach(overlay=>{
+
+    overlay.addEventListener("click",event=>{
+
+        if(event.target === overlay){
+            overlay.classList.remove("open");
+        }
+
+    });
+
+});
+
+/* ---------- PROFILE ---------- */
+
+function renderProfile(){
+
+    const name = data.user.name || "Student";
+
+    $("sideName").textContent = name;
+    $("sideAvatar").textContent = initials(name);
+
+    $("profileName").textContent = name;
+    $("profileUniversity").textContent =
+        data.user.university || "University student";
+
+    $("profileDegree").textContent =
+        data.user.degree || "Undergraduate";
+
+    $("profileAvatar").textContent =
+        initials(name);
+
+    $("profileInputName").value = name;
+
+    $("profileInputUniversity").value =
+        data.user.university || "";
+
+    $("profileInputDegree").value =
+        data.user.degree || "";
+
+    const completed =
+        data.tasks.filter(t=>t.done).length;
+
+    $("profileTasks").textContent = completed;
+    $("profileNotes").textContent = data.notes.length;
+    $("profileGoals").textContent = data.goals.length;
+    $("profileFocus").textContent =
+        data.focusMinutes + "m";
+
+}
+
+/* ---------- TASKS ---------- */
+
+function renderTasks(){
+
+    const filter = $("taskFilter").value;
+
+    let tasks = [...data.tasks];
+
+    if(filter === "today"){
+        tasks = tasks.filter(t=>t.date === today());
+    }
+
+    if(filter === "upcoming"){
+        tasks = tasks.filter(t=>t.date && t.date > today() && !t.done);
+    }
+
+    if(filter === "completed"){
+        tasks = tasks.filter(t=>t.done);
+    }
+
+    $("taskSummary").textContent =
+        `${tasks.length} task${tasks.length === 1 ? "" : "s"}`;
+
+    if(!tasks.length){
+
+        $("allTasks").innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">✓</div>
+                Nothing here yet.
+            </div>
+        `;
+
+    }else{
+
+        $("allTasks").innerHTML =
+            tasks.map(taskHTML).join("");
+
+    }
+
+    const priorityTasks =
+        data.tasks
+        .filter(t=>!t.done)
+        .sort((a,b)=>{
+
+            const order = {
+                High:1,
+                Medium:2,
+                Low:3
+            };
+
+            return order[a.priority] - order[b.priority];
+
+        })
+        .slice(0,4);
+
+    if(!priorityTasks.length){
+
+        $("dashboardTasks").innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">🎉</div>
+                You're all caught up!
+            </div>
+        `;
+
+    }else{
+
+        $("dashboardTasks").innerHTML =
+            priorityTasks.map(taskHTML).join("");
+
+    }
+
+}
+
+function taskHTML(task){
+
+    return `
+        <div class="task ${task.done ? "done" : ""}">
+
+            <button
+                class="check"
+                onclick="toggleTask('${task.id}')">
+                ${task.done ? "✓" : ""}
+            </button>
+
+            <div class="task-body">
+
+                <div class="task-name">
+                    ${escapeHTML(task.name)}
+                </div>
+
+                <div class="task-meta">
+                    ${escapeHTML(task.category)}
+                    ${task.date ? " • " + formatDate(task.date) : ""}
+                </div>
+
+            </div>
+
+            <span class="priority ${task.priority.toLowerCase()}">
+                ${task.priority}
+            </span>
+
+            <button
+                onclick="deleteTask('${task.id}')"
+                style="background:none;color:var(--muted)">
+                ×
+            </button>
+
+        </div>
+    `;
+
+}
+
+function toggleTask(id){
+
+    const task = data.tasks.find(t=>t.id === id);
+
+    if(task){
+
+        task.done = !task.done;
+
+        showToast(
+            task.done
+            ? "Task completed 🎉"
+            : "Task reopened"
+        );
+
+        saveData();
+
+    }
+
+}
+
+function deleteTask(id){
+
+    data.tasks =
+        data.tasks.filter(t=>t.id !== id);
+
+    showToast("Task deleted");
+
+    saveData();
+
+}
+
+$("taskFilter").addEventListener("change",renderTasks);
+
+$("taskForm").addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    data.tasks.push({
+
+        id:crypto.randomUUID(),
+
+        name:$("taskName").value.trim(),
+
+        date:$("taskDate").value || today(),
+
+        priority:$("taskPriority").value,
+
+        category:$("taskCategory").value,
+
+        done:false
+
+    });
+
+    event.target.reset();
+
+    closeModal("taskModal");
+
+    showToast("Task added ✓");
+
+    saveData();
+
+});
+
+/* ---------- NOTES ---------- */
+
+function renderNotes(){
+
+    const query =
+        $("noteSearch").value.toLowerCase();
+
+    const notes =
+        data.notes.filter(note=>
+            `${note.title} ${note.subject} ${note.content}`
+            .toLowerCase()
+            .includes(query)
+        );
+
+    if(!notes.length){
+
+        $("notesGrid").innerHTML = `
+            <div class="empty" style="grid-column:1/-1">
+                <div class="empty-icon">📝</div>
+                No notes found.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    $("notesGrid").innerHTML =
+        notes.map(note=>`
+
+            <div class="card note">
+
+                <span class="note-tag">
+                    ${escapeHTML(note.subject || "General")}
+                </span>
+
+                <h3>${escapeHTML(note.title)}</h3>
+
+                <p>
+                    ${escapeHTML(
+                        note.content.slice(0,130)
+                    )}
+                    ${note.content.length > 130 ? "..." : ""}
+                </p>
+
+                <button
+                    onclick="deleteNote('${note.id}')"
+                    style="margin-top:16px;background:none;color:var(--danger);font-size:11px">
+                    Delete
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+function deleteNote(id){
+
+    data.notes =
+        data.notes.filter(n=>n.id !== id);
+
+    showToast("Note deleted");
+
+    saveData();
+
+}
+
+$("noteSearch").addEventListener(
+    "input",
+    renderNotes
+);
+
+$("noteForm").addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    data.notes.unshift({
+
+        id:crypto.randomUUID(),
+
+        title:$("noteTitle").value.trim(),
+
+        subject:$("noteSubject").value.trim(),
+
+        content:$("noteContent").value.trim(),
+
+        created:new Date().toISOString()
+
+    });
+
+    event.target.reset();
+
+    closeModal("noteModal");
+
+    showToast("Note saved 📝");
+
+    saveData();
+
+});
+
+/* ---------- SUBJECTS / GPA ---------- */
+
+function renderSubjects(){
+
+    if(!data.subjects.length){
+
+        $("subjects").innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">🎓</div>
+                Add your first subject to start tracking GPA.
+            </div>
+        `;
+
+        $("gpaValue").textContent = "—";
+        $("dashGPA").textContent = "—";
+
+        return;
+
+    }
+
+    $("subjects").innerHTML =
+        data.subjects.map((subject,index)=>`
+
+        <div class="subject">
+
+            <div>
+                <strong>
+                    ${escapeHTML(subject.name)}
+                </strong>
+
+                <div style="color:var(--muted);font-size:11px">
+                    ${subject.credits} credits
+                </div>
+            </div>
+
+            <div>
+                ${subject.grade === null
+                    ? "Pending"
+                    : "Graded"}
+            </div>
+
+            <div class="grade">
+                ${
+                    subject.grade === null
+                    ? "—"
+                    : subject.grade
+                }
+
+                <button
+                    onclick="deleteSubject(${index})"
+                    style="background:none;color:var(--danger);font-size:11px;margin-left:7px">
+                    ×
+                </button>
+            </div>
+
+        </div>
+
+        `).join("");
+
+    const graded =
+        data.subjects.filter(s=>s.grade !== null);
+
+    if(graded.length){
+
+        let totalPoints = 0;
+        let totalCredits = 0;
+
+        graded.forEach(s=>{
+
+            totalPoints +=
+                Number(s.grade) * Number(s.credits);
+
+            totalCredits +=
+                Number(s.credits);
+
+        });
+
+        const gpa =
+            totalCredits
+            ? (totalPoints / totalCredits).toFixed(2)
+            : "—";
+
+        $("gpaValue").textContent = gpa;
+        $("dashGPA").textContent = gpa;
+
+    }else{
+
+        $("gpaValue").textContent = "—";
+        $("dashGPA").textContent = "—";
+
+    }
+
+    const progress =
+        data.subjects.length
+        ? Math.round(
+            graded.length /
+            data.subjects.length *
+            100
+        )
+        : 0;
+
+    $("semesterProgressText").textContent =
+        progress + "%";
+
+    $("semesterBar").style.width =
+        progress + "%";
+
+}
+
+function deleteSubject(index){
+
+    data.subjects.splice(index,1);
+
+    showToast("Subject removed");
+
+    saveData();
+
+}
+
+$("subjectForm").addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    const gradeValue =
+        $("subjectGrade").value;
+
+    data.subjects.push({
+
+        name:$("subjectName").value.trim(),
+
+        credits:Number(
+            $("subjectCredits").value
+        ) || 1,
+
+        grade:
+            gradeValue === ""
+            ? null
+            : Number(gradeValue)
+
+    });
+
+    event.target.reset();
+
+    closeModal("subjectModal");
+
+    showToast("Subject added 🎓");
+
+    saveData();
+
+});
+
+/* ---------- MONEY ---------- */
+
+function getMoney(){
+
+    let income = 0;
+    let expense = 0;
+
+    data.transactions.forEach(t=>{
+
+        if(t.type === "income"){
+            income += Number(t.amount);
+        }else{
+            expense += Number(t.amount);
+        }
+
+    });
+
+    return {
+        income,
+        expense,
+        balance:income-expense
+    };
+
+}
+
+function renderMoney(){
+
+    const m = getMoney();
+
+    $("moneyIncome").textContent =
+        money(m.income);
+
+    $("moneyExpense").textContent =
+        money(m.expense);
+
+    $("moneyBalance").textContent =
+        money(m.balance);
+
+    $("dashBalance").textContent =
+        money(m.balance);
+
+    if(!data.transactions.length){
+
+        $("transactions").innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">💳</div>
+                No transactions yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    $("transactions").innerHTML =
+        data.transactions.slice(0,10)
+        .map((t,index)=>`
+
+        <div class="task">
+
+            <div class="stat-icon">
+                ${t.type === "income" ? "↗" : "↘"}
+            </div>
+
+            <div class="task-body">
+
+                <div class="task-name">
+                    ${escapeHTML(t.description)}
+                </div>
+
+                <div class="task-meta">
+                    ${escapeHTML(t.category)}
+                </div>
+
+            </div>
+
+            <strong class="${t.type === "income" ? "income" : "expense"}">
+                ${t.type === "income" ? "+" : "-"}
+                ${money(t.amount)}
+            </strong>
+
+            <button
+                onclick="deleteTransaction(${index})"
+                style="background:none;color:var(--muted)">
+                ×
+            </button>
+
+        </div>
+
+        `).join("");
+
+}
+
+function deleteTransaction(index){
+
+    data.transactions.splice(index,1);
+
+    showToast("Transaction deleted");
+
+    saveData();
+
+}
+
+$("moneyForm").addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    data.transactions.unshift({
+
+        description:$("moneyDescription").value.trim(),
+
+        amount:Number($("moneyAmount").value),
+
+        type:$("moneyType").value,
+
+        category:$("moneyCategory").value,
+
+        date:new Date().toISOString()
+
+    });
+
+    event.target.reset();
+
+    closeModal("moneyModal");
+
+    showToast("Transaction saved 💳");
+
+    saveData();
+
+});
+
+/* ---------- GOALS ---------- */
+
+function renderGoals(){
+
+    if(!data.goals.length){
+
+        $("goalsList").innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">🎯</div>
+                Create your first goal.
+            </div>
+        `;
+
+        $("dashboardGoals").innerHTML = `
+            <div class="empty">
+                No goals yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    $("goalsList").innerHTML =
+        data.goals.map((goal,index)=>{
+
+            const progress =
+                goal.progress || 0;
+
+            return `
+
+            <div class="goal">
+
+                <div class="goal-top">
+
+                    <span>
+                        ${escapeHTML(goal.name)}
+                    </span>
+
+                    <span>
+                        ${progress}%
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${progress}%">
+                    </div>
+
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:7px">
+
+                    <span style="font-size:10px;color:var(--muted)">
+                        ${escapeHTML(goal.category)}
+                    </span>
+
+                    <button
+                        onclick="increaseGoal(${index})"
+                        style="background:none;color:var(--primary);font-size:10px;font-weight:800">
+                        +10%
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+    $("dashboardGoals").innerHTML =
+        data.goals.slice(0,3)
+        .map(goal=>`
+
+        <div class="goal">
+
+            <div class="goal-top">
+                <span>${escapeHTML(goal.name)}</span>
+                <span>${goal.progress || 0}%</span>
+            </div>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    style="width:${goal.progress || 0}%">
+                </div>
+            </div>
+
+        </div>
+
+        `).join("");
+
+}
+
+function increaseGoal(index){
+
+    data.goals[index].progress =
+        Math.min(
+            100,
+            (data.goals[index].progress || 0) + 10
+        );
+
+    showToast("Goal progress updated 🎯");
+
+    saveData();
+
+}
+
+$("goalForm").addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    data.goals.push({
+
+        name:$("goalName").value.trim(),
+
+        category:$("goalCategory").value,
+
+        date:$("goalDate").value,
+
+        progress:0
+
+    });
+
+    event.target.reset();
+
+    closeModal("goalModal");
+
+    showToast("New goal created 🎯");
+
+    saveData();
+
+});
+
+/* ---------- FOCUS TIMER ---------- */
+
+let timerSeconds = 25 * 60;
+let timerInterval = null;
+let timerRunning = false;
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(timerSeconds / 60)
+        .toString()
+        .padStart(2,"0");
+
+    const seconds =
+        (timerSeconds % 60)
+        .toString()
+        .padStart(2,"0");
+
+    $("timer").textContent =
+        `${minutes}:${seconds}`;
+
+}
+
+function setTimer(minutes){
+
+    clearInterval(timerInterval);
+
+    timerRunning = false;
+
+    timerSeconds = minutes * 60;
+
+    $("timerStart").textContent = "▶ Start";
+
+    $("timerStatus").textContent =
+        "Ready to focus?";
+
+    updateTimer();
+
+}
+
+document.querySelectorAll(".mode-tabs button")
+.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        document
+        .querySelectorAll(".mode-tabs button")
+        .forEach(b=>b.classList.remove("active"));
+
+        button.classList.add("active");
+
+        setTimer(
+            Number(button.dataset.min)
+        );
+
+    });
+
+});
+
+$("timerStart").addEventListener("click",()=>{
+
+    if(timerRunning){
+
+        clearInterval(timerInterval);
+
+        timerRunning = false;
+
+        $("timerStart").textContent = "▶ Resume";
+
+        $("timerStatus").textContent =
+            "Paused";
+
+        return;
+
+    }
+
+    timerRunning = true;
+
+    $("timerStart").textContent =
+        "Ⅱ Pause";
+
+    $("timerStatus").textContent =
+        "Focus mode is active.";
+
+    timerInterval =
+        setInterval(()=>{
+
+            if(timerSeconds <= 0){
+
+                clearInterval(timerInterval);
+
+                timerRunning = false;
+
+                data.focusMinutes += 25;
+
+                $("timerStart").textContent =
+                    "▶ Start";
+
+                $("timerStatus").textContent =
+                    "Session complete! 🎉";
+
+                showToast(
+                    "Focus session completed! +25 minutes"
+                );
+
+                saveData();
+
+                setTimer(25);
+
+                return;
+
+            }
+
+            timerSeconds--;
+
+            updateTimer();
+
+        },1000);
+
+});
+
+$("timerReset").addEventListener(
+    "click",
+    ()=>setTimer(25)
+);
+
+/* ---------- DASHBOARD FOCUS ---------- */
+
+function renderFocus(){
+
+    $("dashFocus").textContent =
+        data.focusMinutes + "m";
+
+    $("focusTodayText").textContent =
+        data.focusMinutes + "m focused";
+
+    const percentage =
+        Math.min(
+            100,
+            data.focusMinutes / 120 * 100
+        );
+
+    $("focusBar").style.width =
+        percentage + "%";
+
+}
+
+/* ---------- PRODUCTIVITY ---------- */
+
+function renderProductivity(){
+
+    const total =
+        data.tasks.length;
+
+    const completed =
+        data.tasks.filter(t=>t.done).length;
+
+    const taskScore =
+        total
+        ? completed / total * 70
+        : 0;
+
+    const focusScore =
+        Math.min(
+            30,
+            data.focusMinutes / 120 * 30
+        );
+
+    const score =
+        Math.round(taskScore + focusScore);
+
+    $("productivityScore").textContent =
+        score + "%";
+
+    $("productivityBar").style.width =
+        score + "%";
+
+    $("dashTasks").textContent =
+        `${completed}/${total}`;
+
+}
+
+/* ---------- PROFILE ---------- */
+
+$("profileForm").addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    data.user.name =
+        $("profileInputName").value.trim()
+        || "Student";
+
+    data.user.university =
+        $("profileInputUniversity").value.trim()
+        || "University student";
+
+    data.user.degree =
+        $("profileInputDegree").value.trim()
+        || "Undergraduate";
+
+    closeModal("profileModal");
+
+    showToast("Profile updated ✓");
+
+    saveData();
+
+});
+
+/* ---------- THEME ---------- */
+
+function applyTheme(){
+
+    document.documentElement.dataset.theme =
+        data.theme;
+
+    $("themeBtn").textContent =
+        data.theme === "dark"
+        ? "☀"
+        : "☾";
+
+}
+
+$("themeBtn").addEventListener("click",()=>{
+
+    data.theme =
+        data.theme === "dark"
+        ? "light"
+        : "dark";
+
+    applyTheme();
+
+    saveData();
+
+});
+
+/* ---------- SEARCH ---------- */
+
+$("globalSearch").addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key !== "Enter") return;
+
+        const q =
+            event.target.value
+            .trim()
+            .toLowerCase();
+
+        if(!q) return;
+
+        if(
+            data.tasks.some(t=>
+                t.name.toLowerCase().includes(q)
+            )
+        ){
+
+            goTo("planner");
+
+            $("taskFilter").value =
+                "all";
+
+            showToast("Found in Planner");
+
+            return;
+
+        }
+
+        if(
+            data.notes.some(n=>
+                `${n.title} ${n.content}`
+                .toLowerCase()
+                .includes(q)
+            )
+        ){
+
+            goTo("notes");
+
+            $("noteSearch").value = q;
+
+            renderNotes();
+
+            showToast("Found in Notes");
+
+            return;
+
+        }
+
+        showToast("No results found");
+
+    }
+);
+
+/* ---------- MOBILE MENU ---------- */
+
+$("menuBtn").addEventListener(
+    "click",
+    ()=>{
+        $("sidebar").classList.toggle("open");
+    }
+);
+
+/* ---------- NOTIFICATION ---------- */
+
+$("notifyBtn").addEventListener(
+    "click",
+    ()=>{
+
+        const pending =
+            data.tasks.filter(t=>!t.done).length;
+
+        if(pending){
+
+            showToast(
+                `You have ${pending} unfinished task${pending === 1 ? "" : "s"}`
+            );
+
+        }else{
+
+            showToast(
+                "You're all caught up! 🎉"
+            );
+
+        }
+
+    }
+);
+
+/* ---------- RENDER ALL ---------- */
+
+function renderAll(){
+
+    renderProfile();
+    renderTasks();
+    renderNotes();
+    renderSubjects();
+    renderMoney();
+    renderGoals();
+    renderFocus();
+    renderProductivity();
+
+    applyTheme();
+
+}
+
+/* ---------- DATE / GREETING ---------- */
+
+function renderGreeting(){
+
+    const hour =
+        new Date().getHours();
+
+    let greeting = "Good evening";
+
+    if(hour < 12){
+        greeting = "Good morning";
+    }else if(hour < 18){
+        greeting = "Good afternoon";
+    }
+
+    $("greeting").textContent =
+        `${greeting}, ${data.user.name} 👋`;
+
+    $("todayText").textContent =
+        new Date().toLocaleDateString(
+            "en-LK",
+            {
+                weekday:"long",
+                month:"long",
+                day:"numeric",
+                year:"numeric"
+            }
+        ) +
+        " • Let's make today productive without making it overwhelming.";
+
+}
+
+/* ---------- INIT ---------- */
+
+renderGreeting();
+
+renderAll();
+
+</script>
 
 </body>
 </html>
