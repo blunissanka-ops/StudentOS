@@ -2,1076 +2,683 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#6c63ff">
-<title>StudentOS — Student Life, Organized</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d5dfc">
+<title>StudentOS — Your Student Command Center</title>
 
 <style>
 :root{
-    --primary:#6c63ff;
-    --primary-dark:#554de8;
-    --secondary:#8b5cf6;
-    --bg:#f6f7fb;
-    --surface:#ffffff;
-    --surface-2:#f1f2f8;
-    --text:#181827;
-    --muted:#73758a;
-    --border:#e8e8f0;
-    --success:#16a34a;
-    --warning:#f59e0b;
-    --danger:#ef4444;
-    --shadow:0 12px 35px rgba(30,25,80,.07);
-    --radius:22px;
+  --bg:#f5f7fb;
+  --surface:#ffffff;
+  --surface2:#f8f9fd;
+  --text:#151827;
+  --muted:#73798c;
+  --border:#e7e9f1;
+  --primary:#6d5dfc;
+  --primary2:#8b7cff;
+  --success:#18a875;
+  --warning:#e6a11a;
+  --danger:#e05252;
+  --blue:#4385f5;
+  --shadow:0 12px 35px rgba(27,31,58,.07);
+  --radius:20px;
 }
 
-[data-theme="dark"]{
-    --bg:#0f1020;
-    --surface:#181929;
-    --surface-2:#202136;
-    --text:#f6f6ff;
-    --muted:#a2a3b7;
-    --border:#2c2d42;
-    --shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
 }
-
-button,input,textarea,select{
-    font:inherit;
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:12px;
+  padding:12px 14px;
+  outline:none;
 }
-
-button{
-    cursor:pointer;
-    border:0;
+input:focus,select:focus,textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(109,93,252,.1);
 }
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-/* ---------- APP ---------- */
+textarea{min-height:120px;resize:vertical}
 
 .app{
-    display:flex;
-    min-height:100vh;
+  display:flex;
+  min-height:100vh;
 }
 
-/* ---------- SIDEBAR ---------- */
-
 .sidebar{
-    width:250px;
-    background:var(--surface);
-    border-right:1px solid var(--border);
-    padding:24px 16px;
-    position:fixed;
-    inset:0 auto 0 0;
-    z-index:50;
-    display:flex;
-    flex-direction:column;
-    transition:.3s;
+  width:245px;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:22px 14px;
+  position:fixed;
+  left:0;top:0;bottom:0;
+  z-index:50;
 }
 
 .brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    padding:0 10px 30px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 10px 25px;
 }
-
 .logo{
-    width:42px;
-    height:42px;
-    border-radius:14px;
-    display:grid;
-    place-items:center;
-    color:white;
-    font-weight:900;
-    font-size:20px;
-    background:linear-gradient(135deg,#6c63ff,#9b7cff);
-    box-shadow:0 8px 20px rgba(108,99,255,.28);
+  width:40px;height:40px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--primary),#a796ff);
+  color:white;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(109,93,252,.25);
 }
-
-.brand strong{
-    font-size:18px;
-}
-
-.brand span{
-    display:block;
-    color:var(--muted);
-    font-size:11px;
-    margin-top:2px;
-}
+.brand h1{font-size:20px}
+.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
 
 .nav-title{
-    color:var(--muted);
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:1.3px;
-    padding:10px 12px;
+  font-size:10px;
+  font-weight:800;
+  color:#a0a4b2;
+  letter-spacing:1px;
+  padding:15px 12px 7px;
 }
-
-.nav{
-    display:flex;
-    flex-direction:column;
-    gap:5px;
+.nav-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 12px;
+  background:transparent;
+  color:var(--muted);
+  border-radius:12px;
+  margin:2px 0;
+  text-align:left;
+  transition:.2s;
 }
-
-.nav button{
-    width:100%;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px 13px;
-    border-radius:14px;
-    background:transparent;
-    color:var(--muted);
-    text-align:left;
-    transition:.2s;
+.nav-btn:hover{background:var(--surface2);color:var(--text)}
+.nav-btn.active{
+  background:rgba(109,93,252,.1);
+  color:var(--primary);
+  font-weight:700;
 }
-
-.nav button:hover{
-    background:var(--surface-2);
-    color:var(--text);
-}
-
-.nav button.active{
-    background:linear-gradient(90deg,rgba(108,99,255,.13),rgba(139,92,246,.06));
-    color:var(--primary);
-    font-weight:700;
-}
-
-.nav-icon{
-    width:22px;
-    text-align:center;
-    font-size:17px;
-}
+.nav-icon{width:20px;text-align:center}
 
 .sidebar-bottom{
-    margin-top:auto;
+  position:absolute;
+  left:14px;right:14px;bottom:20px;
 }
-
-.user-mini{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:13px;
-    border:1px solid var(--border);
-    border-radius:17px;
-    background:var(--surface-2);
+.mini-profile{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface2);
+  padding:10px;
+  border-radius:14px;
 }
-
 .avatar{
-    width:36px;
-    height:36px;
-    border-radius:12px;
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
-    color:#fff;
-    display:grid;
-    place-items:center;
-    font-weight:800;
+  width:34px;height:34px;border-radius:11px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#6d5dfc,#9a8cff);
+  color:#fff;font-weight:800;
 }
-
-.user-mini div:last-child{
-    overflow:hidden;
-}
-
-.user-mini strong{
-    display:block;
-    font-size:13px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.user-mini span{
-    color:var(--muted);
-    font-size:11px;
-}
-
-/* ---------- MAIN ---------- */
+.mini-profile small{color:var(--muted)}
 
 .main{
-    margin-left:250px;
-    width:calc(100% - 250px);
-    min-width:0;
+  margin-left:245px;
+  width:calc(100% - 245px);
+  min-width:0;
 }
-
 .topbar{
-    height:76px;
-    background:rgba(246,247,251,.85);
-    backdrop-filter:blur(15px);
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 32px;
-    position:sticky;
-    top:0;
-    z-index:30;
+  height:72px;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 30px;
+  position:sticky;
+  top:0;
+  z-index:30;
 }
-
-[data-theme="dark"] .topbar{
-    background:rgba(15,16,32,.85);
-}
-
-.search{
-    width:320px;
-    position:relative;
-}
-
-.search input{
-    width:100%;
-    background:var(--surface);
-    border:1px solid var(--border);
-    padding:11px 15px 11px 40px;
-    border-radius:14px;
-    outline:none;
-    color:var(--text);
-}
-
-.search-icon{
-    position:absolute;
-    left:14px;
-    top:10px;
-    color:var(--muted);
-}
-
-.top-actions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
+.top-title h2{font-size:19px}
+.top-title p{font-size:12px;color:var(--muted);margin-top:2px}
+.top-actions{display:flex;gap:9px;align-items:center}
 .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:13px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    color:var(--text);
+  width:40px;height:40px;border-radius:12px;
+  background:var(--surface2);color:var(--muted);
+  border:1px solid var(--border);
+}
+.primary-btn{
+  background:var(--primary);
+  color:#fff;
+  padding:11px 16px;
+  border-radius:12px;
+  font-weight:700;
+  box-shadow:0 7px 17px rgba(109,93,252,.2);
+}
+.secondary-btn{
+  background:var(--surface);
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:10px 14px;
+  border-radius:11px;
+  font-weight:600;
+}
+.danger-btn{
+  background:rgba(224,82,82,.1);
+  color:var(--danger);
+  padding:10px 14px;
+  border-radius:11px;
 }
 
-.icon-btn:hover{
-    transform:translateY(-2px);
+.content{
+  max-width:1500px;
+  margin:auto;
+  padding:28px;
 }
 
-.page{
-    display:none;
-    padding:34px;
-    max-width:1450px;
-    margin:auto;
-    animation:pageIn .35s ease;
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:none}
 }
-
-.page.active{
-    display:block;
-}
-
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(8px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* ---------- HERO ---------- */
 
 .hero{
-    background:
-      radial-gradient(circle at 90% 10%,rgba(255,255,255,.18),transparent 28%),
-      linear-gradient(135deg,#6258f5,#8068f5 50%,#9b75ed);
-    color:white;
-    padding:32px;
-    border-radius:28px;
-    position:relative;
-    overflow:hidden;
-    box-shadow:0 18px 45px rgba(108,99,255,.22);
+  background:
+    radial-gradient(circle at 90% 20%,rgba(255,255,255,.25),transparent 30%),
+    linear-gradient(135deg,#6657f5,#8d7eff);
+  color:white;
+  border-radius:26px;
+  padding:28px;
+  min-height:180px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 18px 40px rgba(109,93,252,.18);
 }
-
 .hero:after{
-    content:"";
-    width:260px;
-    height:260px;
-    border:50px solid rgba(255,255,255,.07);
-    border-radius:50%;
-    position:absolute;
-    right:-70px;
-    top:-100px;
+  content:"";
+  position:absolute;
+  width:250px;height:250px;
+  right:-80px;bottom:-120px;
+  border:35px solid rgba(255,255,255,.08);
+  border-radius:50%;
+}
+.hero h1{font-size:30px;margin-bottom:8px}
+.hero p{opacity:.86;max-width:620px;line-height:1.6}
+.hero-actions{margin-top:22px;display:flex;gap:9px;flex-wrap:wrap}
+.hero .secondary-btn{
+  background:rgba(255,255,255,.14);
+  color:white;
+  border-color:rgba(255,255,255,.2);
 }
 
-.eyebrow{
-    text-transform:uppercase;
-    font-size:10px;
-    letter-spacing:1.5px;
-    font-weight:800;
-    opacity:.75;
-    margin-bottom:9px;
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin:28px 0 14px;
 }
-
-.hero h1{
-    font-size:clamp(27px,4vw,40px);
-    margin-bottom:8px;
-}
-
-.hero p{
-    opacity:.83;
-    max-width:620px;
-}
-
-.hero-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    gap:20px;
-    position:relative;
-    z-index:2;
-}
-
-.hero-action{
-    background:white;
-    color:#5c54e8;
-    padding:12px 18px;
-    border-radius:13px;
-    font-weight:800;
-    white-space:nowrap;
-}
-
-.hero-action:hover{
-    transform:translateY(-2px);
-}
-
-/* ---------- GRIDS ---------- */
+.section-head h3{font-size:17px}
+.section-head p{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
 
 .grid{
-    display:grid;
-    gap:18px;
+  display:grid;
+  gap:15px;
 }
-
-.stats{
-    grid-template-columns:repeat(4,1fr);
-    margin-top:20px;
-}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
 
 .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:21px;
-    box-shadow:var(--shadow);
-    transition:.25s;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:19px;
+  box-shadow:var(--shadow);
 }
-
-.card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 18px 40px rgba(30,25,80,.1);
+.metric{
+  position:relative;
+  overflow:hidden;
 }
-
-.stat{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
+.metric .metric-icon{
+  width:38px;height:38px;border-radius:12px;
+  display:grid;place-items:center;
+  background:rgba(109,93,252,.1);
+  color:var(--primary);
+  margin-bottom:14px;
 }
+.metric h4{font-size:27px}
+.metric p{font-size:12px;color:var(--muted);margin-top:4px}
+.trend{font-size:11px;margin-top:12px;font-weight:700}
+.trend.good{color:var(--success)}
+.trend.warn{color:var(--warning)}
+.trend.bad{color:var(--danger)}
 
-.stat-icon{
-    width:44px;
-    height:44px;
-    display:grid;
-    place-items:center;
-    border-radius:14px;
-    background:var(--surface-2);
-    font-size:20px;
+.health-card{
+  display:flex;
+  align-items:center;
+  gap:25px;
+  min-height:210px;
 }
-
-.stat-value{
-    font-size:26px;
-    font-weight:850;
-    margin-top:10px;
+.score-ring{
+  width:145px;height:145px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  position:relative;
+  flex-shrink:0;
 }
-
-.stat-label{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:3px;
+.score-ring:before{
+  content:"";
+  position:absolute;
+  width:113px;height:113px;
+  background:var(--surface);
+  border-radius:50%;
 }
+.score-value{position:relative;text-align:center}
+.score-value strong{display:block;font-size:34px}
+.score-value span{font-size:10px;color:var(--muted)}
+.health-info h3{font-size:20px}
+.health-info>p{color:var(--muted);line-height:1.6;margin-top:7px;font-size:13px}
 
-.section-grid{
-    grid-template-columns:1.5fr 1fr;
-    margin-top:20px;
+.insight{
+  background:linear-gradient(135deg,rgba(109,93,252,.09),rgba(139,124,255,.03));
+  border-color:rgba(109,93,252,.15);
 }
-
-.card-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:17px;
+.insight-title{display:flex;gap:10px;align-items:center}
+.insight-badge{
+  width:35px;height:35px;border-radius:11px;
+  background:var(--primary);color:#fff;
+  display:grid;place-items:center;
 }
+.insight p{line-height:1.7;color:var(--muted);font-size:13px;margin-top:12px}
 
-.card-head h3{
-    font-size:17px;
+.action-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  background:var(--surface2);
+  border-radius:14px;
+  margin-top:9px;
 }
-
-.card-head span{
-    color:var(--muted);
-    font-size:12px;
+.action-num{
+  width:29px;height:29px;border-radius:9px;
+  background:rgba(109,93,252,.12);
+  color:var(--primary);
+  display:grid;place-items:center;
+  font-size:12px;font-weight:800;
 }
-
-.link-btn{
-    background:none;
-    color:var(--primary);
-    font-weight:700;
-    font-size:12px;
-}
-
-/* ---------- TASKS ---------- */
-
-.task{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.task:last-child{
-    border-bottom:0;
-}
-
-.check{
-    width:21px;
-    height:21px;
-    border-radius:7px;
-    border:2px solid #c9cad7;
-    background:transparent;
-    flex:none;
-}
-
-.task.done .check{
-    background:var(--primary);
-    border-color:var(--primary);
-    color:#fff;
-}
-
-.task.done .task-name{
-    text-decoration:line-through;
-    color:var(--muted);
-}
-
-.task-body{
-    flex:1;
-}
-
-.task-name{
-    font-size:14px;
-    font-weight:700;
-}
-
-.task-meta{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:3px;
-}
-
-.priority{
-    padding:4px 8px;
-    border-radius:20px;
-    font-size:10px;
-    font-weight:800;
-}
-
-.priority.high{
-    color:#dc2626;
-    background:#fee2e2;
-}
-
-.priority.medium{
-    color:#b45309;
-    background:#fef3c7;
-}
-
-.priority.low{
-    color:#15803d;
-    background:#dcfce7;
-}
-
-/* ---------- PROGRESS ---------- */
+.action-item>div:nth-child(2){flex:1}
+.action-item strong{font-size:13px}
+.action-item small{display:block;color:var(--muted);margin-top:3px;font-size:11px}
 
 .progress{
-    height:8px;
-    background:var(--surface-2);
-    border-radius:99px;
-    overflow:hidden;
+  height:8px;background:var(--border);
+  border-radius:99px;overflow:hidden;
 }
-
-.progress-bar{
-    height:100%;
-    background:linear-gradient(90deg,var(--primary),var(--secondary));
-    border-radius:99px;
-    transition:1s;
+.progress>span{
+  display:block;height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--primary),var(--primary2));
 }
+.progress.success>span{background:var(--success)}
+.progress.warning>span{background:var(--warning)}
+.progress.danger>span{background:var(--danger)}
 
-/* ---------- QUICK ACTIONS ---------- */
-
-.quick-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
+.subject-row{
+  display:grid;
+  grid-template-columns:1.4fr .7fr .7fr 1fr;
+  gap:15px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
 }
-
-.quick{
-    border:1px solid var(--border);
-    background:var(--surface-2);
-    border-radius:16px;
-    padding:16px;
-    text-align:left;
-    color:var(--text);
-    transition:.2s;
+.subject-row:last-child{border-bottom:0}
+.subject-name strong{display:block;font-size:13px}
+.subject-name small{color:var(--muted);font-size:11px}
+.grade-pill{
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:8px;
+  background:rgba(24,168,117,.1);
+  color:var(--success);
+  font-size:11px;
+  font-weight:800;
 }
+.grade-pill.warn{background:rgba(230,161,26,.1);color:var(--warning)}
+.grade-pill.danger{background:rgba(224,82,82,.1);color:var(--danger)}
 
-.quick:hover{
-    background:rgba(108,99,255,.09);
-    border-color:rgba(108,99,255,.3);
-    transform:translateY(-2px);
+.deadline{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
 }
-
-.quick b{
-    display:block;
-    margin-top:10px;
-    font-size:12px;
+.deadline:last-child{border:0}
+.date-box{
+  width:45px;height:48px;
+  background:rgba(109,93,252,.08);
+  border-radius:11px;
+  display:grid;place-items:center;
+  text-align:center;
 }
-
-.quick span{
-    color:var(--muted);
-    font-size:10px;
+.date-box strong{font-size:15px}
+.date-box small{font-size:8px;color:var(--primary);font-weight:800}
+.deadline-main{flex:1}
+.deadline-main strong{font-size:13px}
+.deadline-main small{display:block;color:var(--muted);margin-top:3px}
+.priority{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--success);
 }
+.priority.high{background:var(--danger)}
+.priority.medium{background:var(--warning)}
 
-/* ---------- EMPTY ---------- */
+.bar-chart{
+  display:flex;
+  height:170px;
+  gap:12px;
+  align-items:end;
+  padding-top:15px;
+}
+.bar-day{
+  flex:1;height:100%;
+  display:flex;flex-direction:column;
+  justify-content:end;align-items:center;
+  gap:7px;
+}
+.bar{
+  width:100%;max-width:30px;
+  background:linear-gradient(to top,var(--primary),var(--primary2));
+  border-radius:8px 8px 3px 3px;
+  min-height:3px;
+}
+.bar-day span{font-size:10px;color:var(--muted)}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.task{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:15px;
+}
+.check{
+  width:23px;height:23px;
+  border-radius:8px;
+  border:2px solid #d7d9e3;
+  background:transparent;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  color:#fff;
+}
+.check.done{
+  background:var(--success);
+  border-color:var(--success);
+}
+.task-main{flex:1;min-width:0}
+.task-main strong{
+  display:block;font-size:13px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.task-main small{color:var(--muted);font-size:11px}
+.task-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tag{
+  padding:4px 8px;
+  background:var(--surface2);
+  border-radius:7px;
+  color:var(--muted);
+  font-size:10px;
+}
+.task.overdue{border-color:rgba(224,82,82,.25)}
+
+.table-card{overflow:hidden}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th,.data-table td{
+  padding:13px 8px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  font-size:12px;
+}
+.data-table th{color:var(--muted);font-size:10px;text-transform:uppercase}
 
 .empty{
-    padding:35px 15px;
-    text-align:center;
-    color:var(--muted);
+  text-align:center;
+  padding:38px 15px;
+  color:var(--muted);
 }
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty h4{color:var(--text);margin-bottom:5px}
 
-.empty-icon{
-    font-size:34px;
-    margin-bottom:8px;
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:13px;
 }
-
-/* ---------- PAGE HEADER ---------- */
-
-.page-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    gap:20px;
-    margin-bottom:25px;
+.form-group label{
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:6px;
+  color:var(--muted);
 }
+.form-group.full{grid-column:1/-1}
 
-.page-header h1{
-    font-size:31px;
+.modal{
+  position:fixed;inset:0;
+  background:rgba(12,15,28,.5);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:100;
+  padding:15px;
 }
-
-.page-header p{
-    color:var(--muted);
-    margin-top:5px;
+.modal.open{display:flex}
+.modal-box{
+  width:min(600px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:var(--surface);
+  border-radius:22px;
+  box-shadow:0 25px 70px rgba(0,0,0,.2);
+  padding:22px;
 }
-
-.primary{
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
-    color:white;
-    padding:11px 16px;
-    border-radius:13px;
-    font-weight:800;
-    box-shadow:0 8px 20px rgba(108,99,255,.2);
+.modal-head{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:20px;
 }
-
-.primary:hover{
-    transform:translateY(-2px);
+.modal-head h3{font-size:18px}
+.close{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--surface2);color:var(--muted);
 }
-
-.secondary{
-    background:var(--surface);
-    color:var(--text);
-    border:1px solid var(--border);
-    padding:10px 15px;
-    border-radius:12px;
-    font-weight:700;
-}
-
-/* ---------- FOCUS ---------- */
-
-.focus-card{
-    max-width:650px;
-    margin:auto;
-    text-align:center;
-    padding:40px;
+.modal-actions{
+  display:flex;justify-content:flex-end;gap:8px;
+  margin-top:18px;
 }
 
 .timer{
-    font-size:72px;
-    font-weight:900;
-    letter-spacing:-4px;
-    margin:25px 0;
+  text-align:center;
+  padding:25px 10px;
+}
+.timer-mode{
+  display:flex;justify-content:center;gap:7px;
+  margin-bottom:22px;
+}
+.timer-mode button{
+  padding:8px 13px;border-radius:9px;
+  background:var(--surface2);color:var(--muted);
+}
+.timer-mode button.active{
+  background:rgba(109,93,252,.12);
+  color:var(--primary);font-weight:700;
+}
+.timer-display{
+  font-size:76px;
+  font-weight:800;
+  letter-spacing:-3px;
+  margin:10px 0 22px;
+}
+.timer-controls{display:flex;justify-content:center;gap:8px}
+
+.money-number{font-size:29px;font-weight:800}
+.expense-bar{margin-top:13px}
+.expense-label{
+  display:flex;justify-content:space-between;
+  font-size:11px;margin-bottom:5px;
+}
+.expense-label span:last-child{color:var(--muted)}
+
+.goal-card h4{font-size:14px}
+.goal-meta{
+  display:flex;justify-content:space-between;
+  margin:12px 0 7px;font-size:11px;color:var(--muted)
+}
+.goal-progress{font-size:13px;font-weight:800}
+
+.habit-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  margin-top:15px;
+}
+.habit-day{
+  aspect-ratio:1;
+  border-radius:8px;
+  background:var(--surface2);
+  display:grid;place-items:center;
+  font-size:10px;color:var(--muted);
+}
+.habit-day.done{background:var(--success);color:#fff}
+
+.risk{
+  display:flex;gap:11px;
+  padding:12px;
+  border-radius:13px;
+  background:rgba(224,82,82,.06);
+  border:1px solid rgba(224,82,82,.12);
+  margin-top:9px;
+}
+.risk-icon{color:var(--danger)}
+.risk strong{font-size:12px}
+.risk small{display:block;color:var(--muted);margin-top:3px;line-height:1.5}
+
+.profile-card{
+  display:grid;
+  grid-template-columns:100px 1fr;
+  gap:25px;
+  align-items:center;
+}
+.big-avatar{
+  width:90px;height:90px;border-radius:25px;
+  background:linear-gradient(135deg,var(--primary),#a08fff);
+  color:#fff;display:grid;place-items:center;
+  font-size:30px;font-weight:800;
 }
 
-.mode-tabs{
-    display:flex;
-    justify-content:center;
-    gap:8px;
+.search-wrap{position:relative;flex:1;max-width:400px}
+.search-wrap input{padding-left:38px}
+.search-icon{
+  position:absolute;left:13px;top:50%;
+  transform:translateY(-50%);color:var(--muted)
 }
-
-.mode-tabs button{
-    padding:9px 13px;
-    border-radius:11px;
-    background:var(--surface-2);
-    color:var(--muted);
-}
-
-.mode-tabs button.active{
-    background:rgba(108,99,255,.12);
-    color:var(--primary);
-    font-weight:800;
-}
-
-.focus-controls{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-}
-
-/* ---------- NOTES ---------- */
-
-.notes-grid{
-    grid-template-columns:repeat(3,1fr);
-}
-
-.note{
-    min-height:170px;
-    cursor:pointer;
-}
-
-.note-tag{
-    display:inline-block;
-    padding:5px 8px;
-    border-radius:8px;
-    background:rgba(108,99,255,.1);
-    color:var(--primary);
-    font-size:10px;
-    font-weight:800;
-}
-
-.note h3{
-    margin:15px 0 8px;
-    font-size:16px;
-}
-
-.note p{
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.6;
-}
-
-/* ---------- FINANCE ---------- */
-
-.money-grid{
-    grid-template-columns:repeat(3,1fr);
-}
-
-.money-value{
-    font-size:25px;
-    font-weight:850;
-    margin-top:8px;
-}
-
-.income{
-    color:var(--success);
-}
-
-.expense{
-    color:var(--danger);
-}
-
-/* ---------- GOALS ---------- */
-
-.goal{
-    margin-bottom:16px;
-}
-
-.goal:last-child{
-    margin-bottom:0;
-}
-
-.goal-top{
-    display:flex;
-    justify-content:space-between;
-    font-size:13px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-/* ---------- TABLE / ACADEMICS ---------- */
-
-.subject{
-    display:grid;
-    grid-template-columns:1.5fr .5fr .5fr;
-    gap:10px;
-    align-items:center;
-    padding:14px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.grade{
-    font-weight:900;
-    color:var(--primary);
-    text-align:right;
-}
-
-.gpa-box{
-    text-align:center;
-    padding:28px;
-}
-
-.gpa{
-    font-size:55px;
-    font-weight:900;
-    color:var(--primary);
-}
-
-/* ---------- PROFILE ---------- */
-
-.profile-head{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.profile-avatar{
-    width:78px;
-    height:78px;
-    border-radius:25px;
-    display:grid;
-    place-items:center;
-    color:#fff;
-    font-size:27px;
-    font-weight:900;
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
-}
-
-.profile-info h2{
-    font-size:23px;
-}
-
-.profile-info p{
-    color:var(--muted);
-    margin-top:4px;
-}
-
-/* ---------- MODAL ---------- */
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(8,8,20,.55);
-    backdrop-filter:blur(7px);
-    display:none;
-    place-items:center;
-    padding:20px;
-    z-index:100;
-}
-
-.overlay.open{
-    display:grid;
-}
-
-.modal{
-    width:min(500px,100%);
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:24px;
-    padding:25px;
-    box-shadow:0 30px 80px rgba(0,0,0,.25);
-    animation:modalIn .25s ease;
-}
-
-@keyframes modalIn{
-    from{
-        opacity:0;
-        transform:scale(.96) translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:scale(1) translateY(0);
-    }
-}
-
-.modal-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-
-.modal-head button{
-    width:35px;
-    height:35px;
-    border-radius:10px;
-    background:var(--surface-2);
-    color:var(--text);
-}
-
-.form-group{
-    margin-bottom:15px;
-}
-
-.form-group label{
-    display:block;
-    font-size:12px;
-    font-weight:700;
-    margin-bottom:7px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select{
-    width:100%;
-    padding:11px 12px;
-    border-radius:12px;
-    border:1px solid var(--border);
-    background:var(--surface-2);
-    color:var(--text);
-    outline:none;
-}
-
-.form-group textarea{
-    min-height:110px;
-    resize:vertical;
-}
-
-.form-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-}
-
-.modal-actions{
-    display:flex;
-    justify-content:flex-end;
-    gap:9px;
-    margin-top:20px;
-}
-
-/* ---------- TOAST ---------- */
-
-.toast{
-    position:fixed;
-    right:20px;
-    bottom:25px;
-    z-index:200;
-    background:#171827;
-    color:white;
-    padding:13px 17px;
-    border-radius:13px;
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-    transform:translateY(100px);
-    opacity:0;
-    transition:.3s;
-    font-size:13px;
-}
-
-.toast.show{
-    transform:translateY(0);
-    opacity:1;
-}
-
-/* ---------- MOBILE ---------- */
 
 .mobile-nav{
-    display:none;
+  display:none;
 }
 
-.mobile-menu{
-    display:none;
+.toast{
+  position:fixed;
+  right:20px;bottom:20px;
+  background:#181b2a;color:#fff;
+  padding:12px 16px;
+  border-radius:12px;
+  box-shadow:0 12px 30px rgba(0,0,0,.2);
+  transform:translateY(80px);
+  opacity:0;
+  transition:.25s;
+  z-index:200;
+  font-size:12px;
+}
+.toast.show{transform:none;opacity:1}
+
+[data-theme="dark"]{
+  --bg:#0d0f18;
+  --surface:#151823;
+  --surface2:#1c1f2b;
+  --text:#f2f3f8;
+  --muted:#9297aa;
+  --border:#292d3b;
+  --shadow:0 12px 35px rgba(0,0,0,.2);
+}
+[data-theme="dark"] .topbar{
+  background:rgba(21,24,35,.85);
+}
+[data-theme="dark"] .score-ring:before{background:var(--surface)}
+
+@media(max-width:1100px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(2,1fr)}
 }
 
-@media(max-width:1000px){
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .section-grid{
-        grid-template-columns:1fr;
-    }
-
-    .notes-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .quick-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:750px){
-
-    .sidebar{
-        transform:translateX(-100%);
-    }
-
-    .sidebar.open{
-        transform:translateX(0);
-        box-shadow:20px 0 60px rgba(0,0,0,.15);
-    }
-
-    .main{
-        margin-left:0;
-        width:100%;
-        padding-bottom:75px;
-    }
-
-    .topbar{
-        padding:0 16px;
-        height:65px;
-    }
-
-    .search{
-        width:calc(100% - 50px);
-    }
-
-    .top-actions .icon-btn:nth-child(2){
-        display:none;
-    }
-
-    .mobile-menu{
-        display:grid;
-        place-items:center;
-        width:40px;
-        height:40px;
-        border-radius:12px;
-        background:var(--surface);
-        border:1px solid var(--border);
-        color:var(--text);
-    }
-
-    .page{
-        padding:20px 16px;
-    }
-
-    .hero{
-        padding:24px;
-        border-radius:23px;
-    }
-
-    .hero-row{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .hero-action{
-        width:100%;
-        text-align:center;
-    }
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-        gap:10px;
-    }
-
-    .card{
-        padding:17px;
-        border-radius:19px;
-    }
-
-    .page-header{
-        align-items:flex-start;
-    }
-
-    .page-header h1{
-        font-size:26px;
-    }
-
-    .notes-grid{
-        grid-template-columns:1fr;
-    }
-
-    .money-grid{
-        grid-template-columns:1fr;
-    }
-
-    .mobile-nav{
-        position:fixed;
-        display:grid;
-        grid-template-columns:repeat(5,1fr);
-        bottom:0;
-        left:0;
-        right:0;
-        height:68px;
-        background:rgba(255,255,255,.94);
-        backdrop-filter:blur(15px);
-        border-top:1px solid var(--border);
-        z-index:80;
-    }
-
-    [data-theme="dark"] .mobile-nav{
-        background:rgba(24,25,41,.94);
-    }
-
-    .mobile-nav button{
-        background:none;
-        color:var(--muted);
-        font-size:10px;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        gap:4px;
-    }
-
-    .mobile-nav button.active{
-        color:var(--primary);
-        font-weight:800;
-    }
-
-    .mobile-nav span:first-child{
-        font-size:19px;
-    }
-
-    .timer{
-        font-size:56px;
-    }
-}
-
-@media(max-width:420px){
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .quick-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .form-row{
-        grid-template-columns:1fr;
-    }
+@media(max-width:800px){
+  .sidebar{display:none}
+  .main{margin-left:0;width:100%;padding-bottom:75px}
+  .topbar{height:65px;padding:0 16px}
+  .top-title h2{font-size:16px}
+  .top-title p{display:none}
+  .top-actions .primary-btn{display:none}
+  .content{padding:17px}
+  .hero{padding:22px;min-height:auto}
+  .hero h1{font-size:25px}
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+  .health-card{align-items:flex-start;flex-direction:column}
+  .score-ring{width:125px;height:125px}
+  .score-ring:before{width:97px;height:97px}
+  .subject-row{grid-template-columns:1fr .7fr}
+  .subject-row>div:nth-child(3),
+  .subject-row>div:nth-child(4){display:none}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full{grid-column:auto}
+  .mobile-nav{
+    position:fixed;display:flex;
+    left:10px;right:10px;bottom:10px;
+    height:62px;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:18px;
+    z-index:80;
+    box-shadow:0 10px 35px rgba(0,0,0,.12);
+    align-items:center;justify-content:space-around;
+  }
+  [data-theme="dark"] .mobile-nav{background:rgba(21,24,35,.94)}
+  .mobile-nav button{
+    background:transparent;color:var(--muted);
+    font-size:10px;display:flex;
+    flex-direction:column;align-items:center;gap:4px;
+  }
+  .mobile-nav button.active{color:var(--primary);font-weight:800}
+  .mobile-nav span:first-child{font-size:18px}
+  .timer-display{font-size:58px}
+  .profile-card{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -1081,2216 +688,2478 @@ a{
 <div class="app">
 
 <!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-
-    <div class="brand">
-        <div class="logo">S</div>
-        <div>
-            <strong>StudentOS</strong>
-            <span>Your life. Organized.</span>
-        </div>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">S</div>
+    <div>
+      <h1>StudentOS</h1>
+      <span>Student command center</span>
     </div>
+  </div>
 
-    <div class="nav-title">WORKSPACE</div>
+  <div class="nav-title">OVERVIEW</div>
+  <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+  <button class="nav-btn" data-page="analytics"><span class="nav-icon">◈</span>Analytics</button>
 
-    <nav class="nav">
-        <button class="nav-btn active" data-page="dashboard">
-            <span class="nav-icon">⌂</span> Dashboard
-        </button>
+  <div class="nav-title">ACADEMIC</div>
+  <button class="nav-btn" data-page="academics"><span class="nav-icon">🎓</span>Academics</button>
+  <button class="nav-btn" data-page="tasks"><span class="nav-icon">✓</span>Tasks</button>
+  <button class="nav-btn" data-page="planner"><span class="nav-icon">▣</span>Planner</button>
+  <button class="nav-btn" data-page="focus"><span class="nav-icon">◷</span>Focus</button>
+  <button class="nav-btn" data-page="notes"><span class="nav-icon">✎</span>Notes</button>
 
-        <button class="nav-btn" data-page="academics">
-            <span class="nav-icon">🎓</span> Academics
-        </button>
+  <div class="nav-title">LIFE</div>
+  <button class="nav-btn" data-page="money"><span class="nav-icon">₨</span>Money</button>
+  <button class="nav-btn" data-page="goals"><span class="nav-icon">◎</span>Goals</button>
+  <button class="nav-btn" data-page="habits"><span class="nav-icon">🔥</span>Habits</button>
+  <button class="nav-btn" data-page="career"><span class="nav-icon">💼</span>Career</button>
 
-        <button class="nav-btn" data-page="planner">
-            <span class="nav-icon">✓</span> Planner
-        </button>
-
-        <button class="nav-btn" data-page="focus">
-            <span class="nav-icon">⏱</span> Focus
-        </button>
-
-        <button class="nav-btn" data-page="notes">
-            <span class="nav-icon">📝</span> Notes
-        </button>
-
-        <button class="nav-btn" data-page="money">
-            <span class="nav-icon">💳</span> Money
-        </button>
-
-        <button class="nav-btn" data-page="goals">
-            <span class="nav-icon">🎯</span> Goals
-        </button>
-    </nav>
-
-    <div class="nav-title">ACCOUNT</div>
-
-    <nav class="nav">
-        <button class="nav-btn" data-page="profile">
-            <span class="nav-icon">👤</span> Profile
-        </button>
-    </nav>
-
-    <div class="sidebar-bottom">
-        <div class="user-mini">
-            <div class="avatar" id="sideAvatar">S</div>
-            <div>
-                <strong id="sideName">Student</strong>
-                <span>Undergraduate</span>
-            </div>
-        </div>
+  <div class="sidebar-bottom">
+    <div class="mini-profile">
+      <div class="avatar" id="sideAvatar">S</div>
+      <div>
+        <strong id="sideName">Student</strong>
+        <small id="sideUniversity">Set up profile</small>
+      </div>
     </div>
-
+  </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
 
 <header class="topbar">
+  <div class="top-title">
+    <h2 id="pageTitle">Dashboard</h2>
+    <p id="todayText"></p>
+  </div>
 
-    <button class="mobile-menu" id="menuBtn">☰</button>
-
-    <div class="search">
-        <span class="search-icon">⌕</span>
-        <input id="globalSearch" placeholder="Search StudentOS...">
+  <div class="top-actions">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input id="globalSearch" placeholder="Search StudentOS...">
     </div>
-
-    <div class="top-actions">
-        <button class="icon-btn" id="themeBtn">☾</button>
-        <button class="icon-btn" id="notifyBtn">🔔</button>
-    </div>
-
+    <button class="icon-btn" id="themeBtn">☾</button>
+    <button class="primary-btn" onclick="openModal('quickModal')">+ Add</button>
+  </div>
 </header>
+
+<div class="content">
 
 <!-- DASHBOARD -->
 <section class="page active" id="dashboard">
 
-    <div class="hero">
-        <div class="hero-row">
-            <div>
-                <div class="eyebrow">YOUR PERSONAL STUDENT OS</div>
-                <h1 id="greeting">Good morning 👋</h1>
-                <p id="todayText">Let's make today productive without making it overwhelming.</p>
-            </div>
+  <div class="hero">
+    <h1 id="greeting">Good morning 👋</h1>
+    <p id="heroText">Your personal command center for academics, productivity, money and goals.</p>
+    <div class="hero-actions">
+      <button class="secondary-btn" onclick="openModal('taskModal')">＋ New Task</button>
+      <button class="secondary-btn" onclick="openModal('focusModal')">◷ Start Focus</button>
+      <button class="secondary-btn" onclick="openModal('transactionModal')">₨ Add Expense</button>
+    </div>
+  </div>
 
-            <button class="hero-action" onclick="openModal('taskModal')">
-                + Add a task
-            </button>
+  <div class="section-head">
+    <div>
+      <h3>Your Student Health</h3>
+      <p>A live score calculated from your current data.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card health-card">
+      <div class="score-ring" id="scoreRing">
+        <div class="score-value">
+          <strong id="overallScore">—</strong>
+          <span>/ 100</span>
         </div>
+      </div>
+      <div class="health-info">
+        <h3 id="healthStatus">Complete your setup</h3>
+        <p id="healthDescription">Add your subjects, tasks and goals to allow StudentOS to understand your current situation.</p>
+      </div>
     </div>
 
-    <div class="grid stats">
-
-        <div class="card stat">
-            <div>
-                <div class="stat-label">ACADEMIC PROGRESS</div>
-                <div class="stat-value" id="dashGPA">—</div>
-                <div class="stat-label">Current GPA</div>
-            </div>
-            <div class="stat-icon">🎓</div>
+    <div class="card insight">
+      <div class="insight-title">
+        <div class="insight-badge">✦</div>
+        <div>
+          <strong>Overall Insight</strong>
+          <p style="margin:0;font-size:10px;color:var(--muted)">StudentOS Intelligence</p>
         </div>
-
-        <div class="card stat">
-            <div>
-                <div class="stat-label">FOCUS TODAY</div>
-                <div class="stat-value" id="dashFocus">0m</div>
-                <div class="stat-label">Study time</div>
-            </div>
-            <div class="stat-icon">⏱</div>
-        </div>
-
-        <div class="card stat">
-            <div>
-                <div class="stat-label">TASKS</div>
-                <div class="stat-value" id="dashTasks">0/0</div>
-                <div class="stat-label">Completed</div>
-            </div>
-            <div class="stat-icon">✓</div>
-        </div>
-
-        <div class="card stat">
-            <div>
-                <div class="stat-label">BALANCE</div>
-                <div class="stat-value" id="dashBalance">Rs. 0</div>
-                <div class="stat-label">This month</div>
-            </div>
-            <div class="stat-icon">💰</div>
-        </div>
-
+      </div>
+      <p id="overallInsight">Add some information to StudentOS and your personalized insight will appear here.</p>
     </div>
+  </div>
 
-    <div class="grid section-grid">
-
-        <div class="card">
-
-            <div class="card-head">
-                <div>
-                    <h3>Today's priorities</h3>
-                    <span>Focus on what actually matters.</span>
-                </div>
-
-                <button class="link-btn" onclick="goTo('planner')">
-                    View planner →
-                </button>
-            </div>
-
-            <div id="dashboardTasks"></div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-head">
-                <div>
-                    <h3>Quick actions</h3>
-                    <span>Get things done faster.</span>
-                </div>
-            </div>
-
-            <div class="quick-grid">
-
-                <button class="quick" onclick="openModal('taskModal')">
-                    <span>✓</span>
-                    <b>Add task</b>
-                    <span>Plan your work</span>
-                </button>
-
-                <button class="quick" onclick="openModal('noteModal')">
-                    <span>📝</span>
-                    <b>New note</b>
-                    <span>Capture an idea</span>
-                </button>
-
-                <button class="quick" onclick="goTo('focus')">
-                    <span>⏱</span>
-                    <b>Focus mode</b>
-                    <span>Start studying</span>
-                </button>
-
-                <button class="quick" onclick="openModal('moneyModal')">
-                    <span>💳</span>
-                    <b>Add expense</b>
-                    <span>Track money</span>
-                </button>
-
-            </div>
-
-        </div>
-
+  <div class="section-head">
+    <div>
+      <h3>At a Glance</h3>
+      <p>This week's performance</p>
     </div>
+  </div>
 
-    <div class="grid section-grid">
-
-        <div class="card">
-
-            <div class="card-head">
-                <div>
-                    <h3>Productivity score</h3>
-                    <span>Based on completed tasks and study time.</span>
-                </div>
-                <strong id="productivityScore">0%</strong>
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="productivityBar" style="width:0%"></div>
-            </div>
-
-            <div style="display:flex;justify-content:space-between;margin-top:10px;color:var(--muted);font-size:11px;">
-                <span>Keep going</span>
-                <span>100%</span>
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-head">
-                <div>
-                    <h3>Goals</h3>
-                    <span>Your bigger picture.</span>
-                </div>
-
-                <button class="link-btn" onclick="goTo('goals')">
-                    View all →
-                </button>
-            </div>
-
-            <div id="dashboardGoals"></div>
-
-        </div>
-
+  <div class="grid grid-4">
+    <div class="card metric">
+      <div class="metric-icon">✓</div>
+      <h4 id="dashTasks">0%</h4>
+      <p>Task completion</p>
+      <div class="trend good" id="taskTrend">No tasks yet</div>
     </div>
+    <div class="card metric">
+      <div class="metric-icon">◷</div>
+      <h4 id="dashFocus">0h</h4>
+      <p>Focus this week</p>
+      <div class="trend" id="focusTrend">Start a session</div>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">🎓</div>
+      <h4 id="dashGPA">—</h4>
+      <p>Current GPA</p>
+      <div class="trend" id="gpaTrend">Add subjects</div>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">₨</div>
+      <h4 id="dashSpend">₨0</h4>
+      <p>Spent this month</p>
+      <div class="trend" id="moneyTrend">No transactions</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div>
+      <h3>Next Best Actions</h3>
+      <p>What StudentOS thinks you should do next.</p>
+    </div>
+  </div>
+
+  <div class="card" id="nextActions"></div>
+
+  <div class="section-head">
+    <div>
+      <h3>Upcoming Deadlines</h3>
+      <p>Don't let important work become urgent.</p>
+    </div>
+    <button class="secondary-btn" onclick="navigate('tasks')">View all</button>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card" id="upcomingList"></div>
+    <div class="card">
+      <div class="section-head" style="margin:0 0 10px">
+        <div>
+          <h3>Focus Trend</h3>
+          <p>Minutes studied per day</p>
+        </div>
+      </div>
+      <div class="bar-chart" id="focusChart"></div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div>
+      <h3>Academic Health</h3>
+      <p>Subject-level readiness</p>
+    </div>
+    <button class="secondary-btn" onclick="navigate('academics')">Manage</button>
+  </div>
+
+  <div class="card" id="academicHealth"></div>
+
+  <div class="section-head">
+    <div>
+      <h3>Weekly Review</h3>
+      <p>Your personal performance summary.</p>
+    </div>
+  </div>
+
+  <div class="card" id="weeklyReview"></div>
 
 </section>
+
+
+<!-- ANALYTICS -->
+<section class="page" id="analytics">
+
+  <div class="section-head">
+    <div>
+      <h3>Student Analytics</h3>
+      <p>Understand how your time, work and decisions are performing.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-4">
+    <div class="card metric">
+      <div class="metric-icon">⚡</div>
+      <h4 id="analyticsProductivity">0</h4>
+      <p>Productivity score</p>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">🎓</div>
+      <h4 id="analyticsAcademic">0</h4>
+      <p>Academic score</p>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">🔥</div>
+      <h4 id="analyticsConsistency">0%</h4>
+      <p>Study consistency</p>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">🎯</div>
+      <h4 id="analyticsGoals">0%</h4>
+      <p>Goal progress</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:15px">
+    <div class="card">
+      <div class="section-head" style="margin:0 0 10px">
+        <div><h3>Focus Activity</h3><p>Last 7 days</p></div>
+      </div>
+      <div class="bar-chart" id="analyticsFocusChart"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head" style="margin:0 0 10px">
+        <div><h3>Detected Risks</h3><p>Areas needing attention</p></div>
+      </div>
+      <div id="risks"></div>
+    </div>
+  </div>
+
+</section>
+
 
 <!-- ACADEMICS -->
 <section class="page" id="academics">
 
-    <div class="page-header">
-        <div>
-            <div class="eyebrow" style="color:var(--primary)">ACADEMIC CENTER</div>
-            <h1>Academics</h1>
-            <p>Track subjects, grades and your academic progress.</p>
-        </div>
-
-        <button class="primary" onclick="openModal('subjectModal')">
-            + Add subject
-        </button>
+  <div class="section-head">
+    <div>
+      <h3>Academic Command Center</h3>
+      <p>Subjects, GPA, exams and academic readiness.</p>
     </div>
+    <button class="primary-btn" onclick="openModal('subjectModal')">+ Add Subject</button>
+  </div>
 
-    <div class="grid section-grid">
-
-        <div class="card gpa-box">
-            <div class="stat-label">CURRENT GPA</div>
-            <div class="gpa" id="gpaValue">—</div>
-            <div style="color:var(--muted);font-size:12px">
-                Based on your entered subjects
-            </div>
-        </div>
-
-        <div class="card">
-
-            <div class="card-head">
-                <h3>Semester progress</h3>
-                <span id="semesterProgressText">0%</span>
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="semesterBar" style="width:0%"></div>
-            </div>
-
-            <p style="color:var(--muted);font-size:12px;margin-top:12px">
-                Add subjects and grades to build your academic profile.
-            </p>
-
-        </div>
-
+  <div class="grid grid-4">
+    <div class="card metric">
+      <div class="metric-icon">🎓</div>
+      <h4 id="academicGPA">—</h4>
+      <p>Current GPA</p>
     </div>
-
-    <div class="card" style="margin-top:20px">
-
-        <div class="card-head">
-            <div>
-                <h3>My subjects</h3>
-                <span>Your current academic workload.</span>
-            </div>
-        </div>
-
-        <div id="subjects"></div>
-
+    <div class="card metric">
+      <div class="metric-icon">📚</div>
+      <h4 id="subjectCount">0</h4>
+      <p>Subjects</p>
     </div>
+    <div class="card metric">
+      <div class="metric-icon">📅</div>
+      <h4 id="examCount">0</h4>
+      <p>Upcoming exams</p>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">⚠️</div>
+      <h4 id="weakSubjectCount">0</h4>
+      <p>Subjects at risk</p>
+    </div>
+  </div>
+
+  <div class="section-head"><h3>My Subjects</h3></div>
+  <div class="card table-card" id="subjectsTable"></div>
 
 </section>
+
+
+<!-- TASKS -->
+<section class="page" id="tasks">
+
+  <div class="section-head">
+    <div>
+      <h3>Smart Tasks</h3>
+      <p>Every task can connect to a subject, deadline and focus session.</p>
+    </div>
+    <button class="primary-btn" onclick="openModal('taskModal')">+ New Task</button>
+  </div>
+
+  <div class="grid grid-4">
+    <div class="card metric"><div class="metric-icon">✓</div><h4 id="taskTotal">0</h4><p>Total tasks</p></div>
+    <div class="card metric"><div class="metric-icon">✓</div><h4 id="taskCompleted">0</h4><p>Completed</p></div>
+    <div class="card metric"><div class="metric-icon">!</div><h4 id="taskOverdue">0</h4><p>Overdue</p></div>
+    <div class="card metric"><div class="metric-icon">⏱</div><h4 id="taskHours">0h</h4><p>Estimated workload</p></div>
+  </div>
+
+  <div class="section-head">
+    <div>
+      <h3>Workload</h3>
+      <p>Planned academic workload by day.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="bar-chart" id="taskWorkloadChart"></div>
+  </div>
+
+  <div class="section-head">
+    <div><h3>Task List</h3></div>
+    <div class="actions">
+      <button class="secondary-btn" onclick="setTaskFilter('all')">All</button>
+      <button class="secondary-btn" onclick="setTaskFilter('today')">Today</button>
+      <button class="secondary-btn" onclick="setTaskFilter('upcoming')">Upcoming</button>
+      <button class="secondary-btn" onclick="setTaskFilter('overdue')">Overdue</button>
+    </div>
+  </div>
+  <div class="list" id="taskList"></div>
+
+</section>
+
 
 <!-- PLANNER -->
 <section class="page" id="planner">
 
-    <div class="page-header">
-        <div>
-            <div class="eyebrow" style="color:var(--primary)">ORGANIZE</div>
-            <h1>Planner</h1>
-            <p>Turn everything you need to do into a clear plan.</p>
-        </div>
-
-        <button class="primary" onclick="openModal('taskModal')">
-            + Add task
-        </button>
+  <div class="section-head">
+    <div>
+      <h3>Intelligent Planner</h3>
+      <p>See whether your workload actually fits your available time.</p>
     </div>
+    <button class="primary-btn" onclick="openModal('taskModal')">+ Schedule Work</button>
+  </div>
 
-    <div class="card">
-
-        <div class="card-head">
-
-            <div>
-                <h3>Your tasks</h3>
-                <span id="taskSummary">0 tasks</span>
-            </div>
-
-            <select id="taskFilter" style="padding:9px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text)">
-                <option value="all">All</option>
-                <option value="today">Today</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="completed">Completed</option>
-            </select>
-
-        </div>
-
-        <div id="allTasks"></div>
-
+  <div class="grid grid-3">
+    <div class="card metric">
+      <div class="metric-icon">📚</div>
+      <h4 id="plannedHours">0h</h4>
+      <p>Required workload</p>
     </div>
+    <div class="card metric">
+      <div class="metric-icon">⏱</div>
+      <h4 id="availableHours">7h</h4>
+      <p>Suggested study capacity</p>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">⚖️</div>
+      <h4 id="workloadStatus">Balanced</h4>
+      <p>Workload status</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <div class="section-head" style="margin:0 0 10px">
+      <div><h3>7-Day Workload Map</h3><p>Based on task deadlines and estimated duration.</p></div>
+    </div>
+    <div class="bar-chart" id="plannerChart"></div>
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <h3 style="font-size:15px">Planning Intelligence</h3>
+    <p id="planningInsight" style="color:var(--muted);font-size:13px;line-height:1.7;margin-top:9px"></p>
+  </div>
 
 </section>
+
 
 <!-- FOCUS -->
 <section class="page" id="focus">
 
-    <div class="page-header">
+  <div class="section-head">
+    <div>
+      <h3>Focus Studio</h3>
+      <p>Turn planned work into measurable study time.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+
+    <div class="card timer">
+      <div class="timer-mode">
+        <button class="active" data-min="25">25 min</button>
+        <button data-min="50">50 min</button>
+        <button data-min="90">90 min</button>
+      </div>
+
+      <div>
+        <select id="focusSubject">
+          <option value="">Select subject</option>
+        </select>
+      </div>
+
+      <div style="margin-top:10px">
+        <select id="focusTask">
+          <option value="">Select task (optional)</option>
+        </select>
+      </div>
+
+      <div class="timer-display" id="timerDisplay">25:00</div>
+
+      <div class="timer-controls">
+        <button class="primary-btn" id="timerStart">Start Focus</button>
+        <button class="secondary-btn" id="timerReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head" style="margin:0">
+        <div><h3>Focus Statistics</h3><p>Your study consistency</p></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:15px">
         <div>
-            <div class="eyebrow" style="color:var(--primary)">DEEP WORK</div>
-            <h1>Focus</h1>
-            <p>One session. One task. No distractions.</p>
+          <strong id="focusToday">0m</strong>
+          <p style="color:var(--muted);font-size:11px">Today</p>
         </div>
+        <div>
+          <strong id="focusWeek">0h</strong>
+          <p style="color:var(--muted);font-size:11px">This week</p>
+        </div>
+        <div>
+          <strong id="focusSessions">0</strong>
+          <p style="color:var(--muted);font-size:11px">Sessions</p>
+        </div>
+        <div>
+          <strong id="focusConsistency">0%</strong>
+          <p style="color:var(--muted);font-size:11px">Consistency</p>
+        </div>
+      </div>
+
+      <div class="section-head"><h3>Recent Sessions</h3></div>
+      <div id="recentSessions"></div>
     </div>
 
-    <div class="card focus-card">
-
-        <div class="mode-tabs">
-            <button class="active" data-min="25">Focus</button>
-            <button data-min="5">Short break</button>
-            <button data-min="15">Long break</button>
-        </div>
-
-        <div class="timer" id="timer">25:00</div>
-
-        <p style="color:var(--muted);margin-bottom:22px" id="timerStatus">
-            Ready to focus?
-        </p>
-
-        <div class="focus-controls">
-            <button class="primary" id="timerStart">▶ Start</button>
-            <button class="secondary" id="timerReset">Reset</button>
-        </div>
-
-        <div style="margin-top:35px;border-top:1px solid var(--border);padding-top:25px">
-
-            <div class="card-head">
-                <h3>Today's focus</h3>
-                <span id="focusTodayText">0m focused</span>
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="focusBar" style="width:0%"></div>
-            </div>
-
-            <p style="font-size:11px;color:var(--muted);margin-top:9px">
-                Daily target: 2 hours
-            </p>
-
-        </div>
-
-    </div>
+  </div>
 
 </section>
+
 
 <!-- NOTES -->
 <section class="page" id="notes">
 
-    <div class="page-header">
-        <div>
-            <div class="eyebrow" style="color:var(--primary)">KNOWLEDGE</div>
-            <h1>My Notes</h1>
-            <p>Your personal knowledge library.</p>
-        </div>
-
-        <button class="primary" onclick="openModal('noteModal')">
-            + New note
-        </button>
+  <div class="section-head">
+    <div>
+      <h3>Knowledge Vault</h3>
+      <p>Keep your academic knowledge organized.</p>
     </div>
+    <button class="primary-btn" onclick="openModal('noteModal')">+ New Note</button>
+  </div>
 
-    <div class="card">
+  <div class="search-wrap" style="max-width:100%;margin-bottom:15px">
+    <span class="search-icon">⌕</span>
+    <input id="noteSearch" placeholder="Search notes...">
+  </div>
 
-        <div style="margin-bottom:18px">
-            <input id="noteSearch"
-                   placeholder="🔎 Search notes..."
-                   style="width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);color:var(--text);outline:none">
-        </div>
-
-        <div class="grid notes-grid" id="notesGrid"></div>
-
-    </div>
+  <div class="grid grid-3" id="notesGrid"></div>
 
 </section>
+
 
 <!-- MONEY -->
 <section class="page" id="money">
 
-    <div class="page-header">
-        <div>
-            <div class="eyebrow" style="color:var(--primary)">PERSONAL FINANCE</div>
-            <h1>Money</h1>
-            <p>Understand where your money goes.</p>
-        </div>
+  <div class="section-head">
+    <div>
+      <h3>Student Finance</h3>
+      <p>Understand where your money is going.</p>
+    </div>
+    <button class="primary-btn" onclick="openModal('transactionModal')">+ Transaction</button>
+  </div>
 
-        <button class="primary" onclick="openModal('moneyModal')">
-            + Add transaction
-        </button>
+  <div class="grid grid-4">
+    <div class="card metric"><div class="metric-icon">₨</div><h4 class="money-number" id="moneyIncome">₨0</h4><p>This month income</p></div>
+    <div class="card metric"><div class="metric-icon">↓</div><h4 class="money-number" id="moneyExpense">₨0</h4><p>This month spending</p></div>
+    <div class="card metric"><div class="metric-icon">↑</div><h4 class="money-number" id="moneyBalance">₨0</h4><p>Net balance</p></div>
+    <div class="card metric"><div class="metric-icon">%</div><h4 class="money-number" id="budgetUsed">0%</h4><p>Budget used</p></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:15px">
+    <div class="card">
+      <div class="section-head" style="margin:0"><div><h3>Spending Breakdown</h3><p>This month</p></div></div>
+      <div id="spendingBreakdown"></div>
     </div>
 
-    <div class="grid money-grid">
-
-        <div class="card">
-            <div class="stat-label">AVAILABLE BALANCE</div>
-            <div class="money-value" id="moneyBalance">Rs. 0</div>
-            <div style="color:var(--muted);font-size:11px">Income minus expenses</div>
-        </div>
-
-        <div class="card">
-            <div class="stat-label">TOTAL INCOME</div>
-            <div class="money-value income" id="moneyIncome">Rs. 0</div>
-            <div style="color:var(--muted);font-size:11px">This month</div>
-        </div>
-
-        <div class="card">
-            <div class="stat-label">TOTAL EXPENSES</div>
-            <div class="money-value expense" id="moneyExpense">Rs. 0</div>
-            <div style="color:var(--muted);font-size:11px">This month</div>
-        </div>
-
+    <div class="card">
+      <div class="section-head" style="margin:0"><div><h3>Recent Transactions</h3></div></div>
+      <div id="transactionsList"></div>
     </div>
-
-    <div class="card" style="margin-top:20px">
-
-        <div class="card-head">
-            <div>
-                <h3>Recent transactions</h3>
-                <span>Your latest money activity.</span>
-            </div>
-        </div>
-
-        <div id="transactions"></div>
-
-    </div>
+  </div>
 
 </section>
+
 
 <!-- GOALS -->
 <section class="page" id="goals">
 
-    <div class="page-header">
-        <div>
-            <div class="eyebrow" style="color:var(--primary)">YOUR FUTURE</div>
-            <h1>Goals</h1>
-            <p>Small progress every day creates big results.</p>
-        </div>
-
-        <button class="primary" onclick="openModal('goalModal')">
-            + New goal
-        </button>
+  <div class="section-head">
+    <div>
+      <h3>Goals & Milestones</h3>
+      <p>Turn ambitions into measurable progress.</p>
     </div>
+    <button class="primary-btn" onclick="openModal('goalModal')">+ New Goal</button>
+  </div>
 
-    <div class="grid section-grid">
-
-        <div class="card">
-            <div class="card-head">
-                <div>
-                    <h3>My goals</h3>
-                    <span>Keep your future visible.</span>
-                </div>
-            </div>
-
-            <div id="goalsList"></div>
-        </div>
-
-        <div class="card">
-
-            <div class="card-head">
-                <div>
-                    <h3>Mindset</h3>
-                    <span>Today's reminder.</span>
-                </div>
-            </div>
-
-            <div style="font-size:22px;font-weight:800;line-height:1.4">
-                “You don't need to be perfect.
-                You just need to keep moving.”
-            </div>
-
-            <p style="color:var(--muted);font-size:12px;margin-top:14px">
-                StudentOS
-            </p>
-
-        </div>
-
-    </div>
+  <div class="grid grid-3" id="goalsGrid"></div>
 
 </section>
+
+
+<!-- HABITS -->
+<section class="page" id="habits">
+
+  <div class="section-head">
+    <div>
+      <h3>Habit Engine</h3>
+      <p>Consistency compounds.</p>
+    </div>
+    <button class="primary-btn" onclick="openModal('habitModal')">+ New Habit</button>
+  </div>
+
+  <div class="grid grid-3" id="habitsGrid"></div>
+
+</section>
+
+
+<!-- CAREER -->
+<section class="page" id="career">
+
+  <div class="section-head">
+    <div>
+      <h3>Career Command Center</h3>
+      <p>Build the skills and experience behind your long-term target.</p>
+    </div>
+    <button class="primary-btn" onclick="openModal('careerModal')">+ Add Skill</button>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="card">
+      <h3 style="font-size:16px">Career Target</h3>
+      <p id="careerTargetText" style="color:var(--muted);font-size:13px;margin-top:8px">Not set</p>
+      <button class="secondary-btn" style="margin-top:15px" onclick="openModal('profileModal')">Update Profile</button>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">💼</div>
+      <h4 id="careerSkills">0</h4>
+      <p>Skills tracked</p>
+    </div>
+    <div class="card metric">
+      <div class="metric-icon">📈</div>
+      <h4 id="careerReadiness">0%</h4>
+      <p>Career readiness</p>
+    </div>
+  </div>
+
+  <div class="section-head"><h3>Skills</h3></div>
+  <div class="card" id="skillsList"></div>
+
+</section>
+
 
 <!-- PROFILE -->
 <section class="page" id="profile">
 
-    <div class="page-header">
-        <div>
-            <div class="eyebrow" style="color:var(--primary)">ACCOUNT</div>
-            <h1>Profile</h1>
-            <p>Customize your StudentOS experience.</p>
-        </div>
+  <div class="section-head">
+    <div>
+      <h3>Profile & Settings</h3>
+      <p>Customize StudentOS around your student life.</p>
+    </div>
+  </div>
 
-        <button class="primary" onclick="openModal('profileModal')">
-            Edit profile
-        </button>
+  <div class="card profile-card">
+    <div class="big-avatar" id="profileAvatar">S</div>
+    <div>
+      <h2 id="profileName">Student</h2>
+      <p id="profileDetails" style="color:var(--muted);margin-top:5px"></p>
+    </div>
+  </div>
+
+  <div class="section-head"><h3>Preferences</h3></div>
+
+  <div class="card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Weekly study capacity (hours)</label>
+        <input id="profileStudyCapacity" type="number" min="1" value="7">
+      </div>
+      <div class="form-group">
+        <label>Weekly budget (Rs.)</label>
+        <input id="profileBudget" type="number" min="0" value="10000">
+      </div>
+      <div class="form-group">
+        <label>Target GPA</label>
+        <input id="profileTargetGPA" type="number" min="0" max="4" step=".01" value="3.5">
+      </div>
+      <div class="form-group">
+        <label>Career target</label>
+        <input id="profileCareer" placeholder="e.g. Finance Manager / CFO">
+      </div>
     </div>
 
-    <div class="card">
+    <button class="primary-btn" style="margin-top:17px" onclick="saveProfileSettings()">Save Settings</button>
+  </div>
 
-        <div class="profile-head">
-
-            <div class="profile-avatar" id="profileAvatar">S</div>
-
-            <div class="profile-info">
-                <h2 id="profileName">Student</h2>
-                <p id="profileUniversity">University student</p>
-                <p id="profileDegree">Undergraduate</p>
-            </div>
-
-        </div>
-
-        <div class="grid stats" style="margin-top:30px">
-
-            <div class="card">
-                <div class="stat-label">TASKS COMPLETED</div>
-                <div class="stat-value" id="profileTasks">0</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-label">NOTES CREATED</div>
-                <div class="stat-value" id="profileNotes">0</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-label">GOALS</div>
-                <div class="stat-value" id="profileGoals">0</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-label">FOCUS TIME</div>
-                <div class="stat-value" id="profileFocus">0m</div>
-            </div>
-
-        </div>
-
+  <div class="section-head"><h3>Data</h3></div>
+  <div class="card">
+    <div class="actions">
+      <button class="secondary-btn" onclick="exportData()">Export StudentOS Data</button>
+      <button class="secondary-btn" onclick="document.getElementById('importFile').click()">Import Data</button>
+      <button class="danger-btn" onclick="resetData()">Reset Everything</button>
     </div>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+  </div>
 
 </section>
 
+</div>
 </main>
 </div>
 
+
 <!-- MOBILE NAV -->
 <nav class="mobile-nav">
-
-    <button class="active" data-page="dashboard">
-        <span>⌂</span>
-        Home
-    </button>
-
-    <button data-page="academics">
-        <span>🎓</span>
-        Study
-    </button>
-
-    <button data-page="planner">
-        <span>✓</span>
-        Plan
-    </button>
-
-    <button data-page="focus">
-        <span>⏱</span>
-        Focus
-    </button>
-
-    <button data-page="profile">
-        <span>👤</span>
-        Profile
-    </button>
-
+  <button class="active" data-page="dashboard"><span>⌂</span>Home</button>
+  <button data-page="academics"><span>🎓</span>Study</button>
+  <button data-page="tasks"><span>✓</span>Tasks</button>
+  <button data-page="focus"><span>◷</span>Focus</button>
+  <button data-page="money"><span>₨</span>Money</button>
+  <button data-page="goals"><span>◎</span>Goals</button>
 </nav>
 
-<!-- MODAL: TASK -->
-<div class="overlay" id="taskModal">
 
-<div class="modal">
-
-    <div class="modal-head">
-        <h2>Add task</h2>
-        <button onclick="closeModal('taskModal')">×</button>
+<!-- QUICK MODAL -->
+<div class="modal" id="quickModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Quick Add</h3><button class="close" onclick="closeModal('quickModal')">×</button></div>
+    <div class="grid grid-2">
+      <button class="secondary-btn" onclick="closeModal('quickModal');openModal('taskModal')">✓ New Task</button>
+      <button class="secondary-btn" onclick="closeModal('quickModal');openModal('subjectModal')">🎓 Subject</button>
+      <button class="secondary-btn" onclick="closeModal('quickModal');openModal('noteModal')">✎ Note</button>
+      <button class="secondary-btn" onclick="closeModal('quickModal');openModal('transactionModal')">₨ Transaction</button>
+      <button class="secondary-btn" onclick="closeModal('quickModal');openModal('goalModal')">◎ Goal</button>
+      <button class="secondary-btn" onclick="closeModal('quickModal');openModal('habitModal')">🔥 Habit</button>
     </div>
-
-    <form id="taskForm">
-
-        <div class="form-group">
-            <label>Task name</label>
-            <input id="taskName" required placeholder="e.g. Complete HRM report">
-        </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Date</label>
-                <input id="taskDate" type="date">
-            </div>
-
-            <div class="form-group">
-                <label>Priority</label>
-                <select id="taskPriority">
-                    <option>High</option>
-                    <option selected>Medium</option>
-                    <option>Low</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <label>Category</label>
-            <select id="taskCategory">
-                <option>University</option>
-                <option>CA</option>
-                <option>Personal</option>
-                <option>Work</option>
-            </select>
-        </div>
-
-        <div class="modal-actions">
-            <button type="button" class="secondary" onclick="closeModal('taskModal')">Cancel</button>
-            <button class="primary">Add task</button>
-        </div>
-
-    </form>
-
-</div>
+  </div>
 </div>
 
-<!-- MODAL NOTE -->
-<div class="overlay" id="noteModal">
 
-<div class="modal">
-
-    <div class="modal-head">
-        <h2>New note</h2>
-        <button onclick="closeModal('noteModal')">×</button>
-    </div>
-
-    <form id="noteForm">
-
-        <div class="form-group">
-            <label>Note title</label>
-            <input id="noteTitle" required placeholder="e.g. Green HRM summary">
-        </div>
-
-        <div class="form-group">
-            <label>Subject</label>
-            <input id="noteSubject" placeholder="e.g. HRM">
-        </div>
-
-        <div class="form-group">
-            <label>Content</label>
-            <textarea id="noteContent" required placeholder="Write your note..."></textarea>
-        </div>
-
-        <div class="modal-actions">
-            <button type="button" class="secondary" onclick="closeModal('noteModal')">Cancel</button>
-            <button class="primary">Save note</button>
-        </div>
-
-    </form>
-
-</div>
-</div>
-
-<!-- MODAL MONEY -->
-<div class="overlay" id="moneyModal">
-
-<div class="modal">
-
-    <div class="modal-head">
-        <h2>Add transaction</h2>
-        <button onclick="closeModal('moneyModal')">×</button>
-    </div>
-
-    <form id="moneyForm">
-
-        <div class="form-group">
-            <label>Description</label>
-            <input id="moneyDescription" required placeholder="e.g. Lunch">
-        </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Amount (Rs.)</label>
-                <input id="moneyAmount" type="number" min="0" required placeholder="500">
-            </div>
-
-            <div class="form-group">
-                <label>Type</label>
-                <select id="moneyType">
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <label>Category</label>
-            <select id="moneyCategory">
-                <option>Food</option>
-                <option>Transport</option>
-                <option>Education</option>
-                <option>Entertainment</option>
-                <option>Salary</option>
-                <option>Other</option>
-            </select>
-        </div>
-
-        <div class="modal-actions">
-            <button type="button" class="secondary" onclick="closeModal('moneyModal')">Cancel</button>
-            <button class="primary">Save transaction</button>
-        </div>
-
-    </form>
-
-</div>
-</div>
-
-<!-- MODAL GOAL -->
-<div class="overlay" id="goalModal">
-
-<div class="modal">
-
-    <div class="modal-head">
-        <h2>New goal</h2>
-        <button onclick="closeModal('goalModal')">×</button>
-    </div>
-
-    <form id="goalForm">
-
-        <div class="form-group">
-            <label>Goal</label>
-            <input id="goalName" required placeholder="e.g. Pass CA Audit">
-        </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Category</label>
-                <select id="goalCategory">
-                    <option>Academic</option>
-                    <option>Career</option>
-                    <option>Finance</option>
-                    <option>Personal</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Target date</label>
-                <input id="goalDate" type="date">
-            </div>
-
-        </div>
-
-        <div class="modal-actions">
-            <button type="button" class="secondary" onclick="closeModal('goalModal')">Cancel</button>
-            <button class="primary">Create goal</button>
-        </div>
-
-    </form>
-
-</div>
-</div>
-
-<!-- MODAL SUBJECT -->
-<div class="overlay" id="subjectModal">
-
-<div class="modal">
-
-    <div class="modal-head">
-        <h2>Add subject</h2>
-        <button onclick="closeModal('subjectModal')">×</button>
-    </div>
-
+<!-- SUBJECT MODAL -->
+<div class="modal" id="subjectModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Add Subject</h3><button class="close" onclick="closeModal('subjectModal')">×</button></div>
     <form id="subjectForm">
-
-        <div class="form-group">
-            <label>Subject name</label>
-            <input id="subjectName" required placeholder="e.g. HR Analytics">
+      <div class="form-grid">
+        <div class="form-group full"><label>Subject name</label><input id="subjectName" required placeholder="e.g. Financial Reporting"></div>
+        <div class="form-group"><label>Code</label><input id="subjectCode" placeholder="FRG"></div>
+        <div class="form-group"><label>Credits</label><input id="subjectCredits" type="number" min="1" value="3"></div>
+        <div class="form-group"><label>Grade</label>
+          <select id="subjectGrade">
+            <option value="">Not graded</option>
+            <option>A+</option><option>A</option><option>A-</option>
+            <option>B+</option><option>B</option><option>B-</option>
+            <option>C+</option><option>C</option><option>C-</option>
+            <option>D</option><option>F</option>
+          </select>
         </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Credits</label>
-                <input id="subjectCredits" type="number" min="1" value="3">
-            </div>
-
-            <div class="form-group">
-                <label>Grade</label>
-                <select id="subjectGrade">
-                    <option value="">Not graded</option>
-                    <option value="4">A / A+</option>
-                    <option value="3">B</option>
-                    <option value="2">C</option>
-                    <option value="1">D</option>
-                    <option value="0">F</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div class="modal-actions">
-            <button type="button" class="secondary" onclick="closeModal('subjectModal')">Cancel</button>
-            <button class="primary">Add subject</button>
-        </div>
-
+        <div class="form-group"><label>Current progress %</label><input id="subjectProgress" type="number" min="0" max="100" value="0"></div>
+        <div class="form-group"><label>Exam date</label><input id="subjectExam" type="date"></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('subjectModal')">Cancel</button><button class="primary-btn">Add Subject</button></div>
     </form>
+  </div>
+</div>
 
+
+<!-- TASK MODAL -->
+<div class="modal" id="taskModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Create Task</h3><button class="close" onclick="closeModal('taskModal')">×</button></div>
+    <form id="taskForm">
+      <div class="form-grid">
+        <div class="form-group full"><label>Task</label><input id="taskTitleInput" required placeholder="e.g. Complete literature review"></div>
+        <div class="form-group"><label>Subject</label><select id="taskSubject"></select></div>
+        <div class="form-group"><label>Priority</label><select id="taskPriority"><option>Low</option><option selected>Medium</option><option>High</option></select></div>
+        <div class="form-group"><label>Deadline</label><input id="taskDue" type="date" required></div>
+        <div class="form-group"><label>Estimated minutes</label><input id="taskMinutes" type="number" min="5" value="60"></div>
+        <div class="form-group"><label>Category</label><select id="taskCategory"><option>Assignment</option><option>Study</option><option>Revision</option><option>Personal</option><option>Career</option></select></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('taskModal')">Cancel</button><button class="primary-btn">Create Task</button></div>
+    </form>
+  </div>
 </div>
+
+
+<!-- FOCUS MODAL -->
+<div class="modal" id="focusModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Start Focus Session</h3><button class="close" onclick="closeModal('focusModal')">×</button></div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.6">Choose a subject and StudentOS will connect the focus session to your academic analytics.</p>
+    <div style="margin-top:16px">
+      <select id="quickFocusSubject"></select>
+    </div>
+    <div class="modal-actions"><button class="secondary-btn" onclick="closeModal('focusModal')">Cancel</button><button class="primary-btn" onclick="startQuickFocus()">Start</button></div>
+  </div>
 </div>
+
+
+<!-- NOTE MODAL -->
+<div class="modal" id="noteModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>New Note</h3><button class="close" onclick="closeModal('noteModal')">×</button></div>
+    <form id="noteForm">
+      <div class="form-grid">
+        <div class="form-group full"><label>Title</label><input id="noteTitle" required></div>
+        <div class="form-group"><label>Subject</label><select id="noteSubject"></select></div>
+        <div class="form-group"><label>Tags</label><input id="noteTags" placeholder="exam, revision"></div>
+        <div class="form-group full"><label>Content</label><textarea id="noteContent" required></textarea></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('noteModal')">Cancel</button><button class="primary-btn">Save Note</button></div>
+    </form>
+  </div>
+</div>
+
+
+<!-- TRANSACTION MODAL -->
+<div class="modal" id="transactionModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Add Transaction</h3><button class="close" onclick="closeModal('transactionModal')">×</button></div>
+    <form id="transactionForm">
+      <div class="form-grid">
+        <div class="form-group"><label>Type</label><select id="transactionType"><option value="expense">Expense</option><option value="income">Income</option></select></div>
+        <div class="form-group"><label>Amount (Rs.)</label><input id="transactionAmount" type="number" min="0" required></div>
+        <div class="form-group"><label>Category</label><select id="transactionCategory"><option>Food</option><option>Transport</option><option>Education</option><option>Shopping</option><option>Bills</option><option>Entertainment</option><option>Salary</option><option>Other</option></select></div>
+        <div class="form-group"><label>Date</label><input id="transactionDate" type="date" required></div>
+        <div class="form-group full"><label>Description</label><input id="transactionDescription"></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('transactionModal')">Cancel</button><button class="primary-btn">Save</button></div>
+    </form>
+  </div>
+</div>
+
+
+<!-- GOAL MODAL -->
+<div class="modal" id="goalModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Create Goal</h3><button class="close" onclick="closeModal('goalModal')">×</button></div>
+    <form id="goalForm">
+      <div class="form-grid">
+        <div class="form-group full"><label>Goal</label><input id="goalTitle" required placeholder="e.g. Pass CA Corporate Level"></div>
+        <div class="form-group"><label>Category</label><select id="goalCategory"><option>Academic</option><option>Career</option><option>Financial</option><option>Personal</option><option>Skill</option></select></div>
+        <div class="form-group"><label>Target date</label><input id="goalDate" type="date" required></div>
+        <div class="form-group full"><label>Current progress %</label><input id="goalProgress" type="number" min="0" max="100" value="0"></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('goalModal')">Cancel</button><button class="primary-btn">Create Goal</button></div>
+    </form>
+  </div>
+</div>
+
+
+<!-- HABIT MODAL -->
+<div class="modal" id="habitModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Create Habit</h3><button class="close" onclick="closeModal('habitModal')">×</button></div>
+    <form id="habitForm">
+      <div class="form-grid">
+        <div class="form-group full"><label>Habit</label><input id="habitTitle" required placeholder="e.g. Study 1 hour"></div>
+        <div class="form-group"><label>Target days / week</label><input id="habitTarget" type="number" min="1" max="7" value="5"></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('habitModal')">Cancel</button><button class="primary-btn">Create Habit</button></div>
+    </form>
+  </div>
+</div>
+
+
+<!-- CAREER MODAL -->
+<div class="modal" id="careerModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Add Career Skill</h3><button class="close" onclick="closeModal('careerModal')">×</button></div>
+    <form id="careerForm">
+      <div class="form-grid">
+        <div class="form-group full"><label>Skill</label><input id="skillName" required placeholder="e.g. Power BI"></div>
+        <div class="form-group"><label>Current level %</label><input id="skillLevel" type="number" min="0" max="100" value="20"></div>
+        <div class="form-group"><label>Target level %</label><input id="skillTarget" type="number" min="1" max="100" value="80"></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('careerModal')">Cancel</button><button class="primary-btn">Add Skill</button></div>
+    </form>
+  </div>
+</div>
+
 
 <!-- PROFILE MODAL -->
-<div class="overlay" id="profileModal">
-
-<div class="modal">
-
-    <div class="modal-head">
-        <h2>Edit profile</h2>
-        <button onclick="closeModal('profileModal')">×</button>
-    </div>
-
+<div class="modal" id="profileModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Student Profile</h3><button class="close" onclick="closeModal('profileModal')">×</button></div>
     <form id="profileForm">
-
-        <div class="form-group">
-            <label>Name</label>
-            <input id="profileInputName">
-        </div>
-
-        <div class="form-group">
-            <label>University</label>
-            <input id="profileInputUniversity">
-        </div>
-
-        <div class="form-group">
-            <label>Degree / program</label>
-            <input id="profileInputDegree">
-        </div>
-
-        <div class="modal-actions">
-            <button type="button" class="secondary" onclick="closeModal('profileModal')">Cancel</button>
-            <button class="primary">Save profile</button>
-        </div>
-
+      <div class="form-grid">
+        <div class="form-group"><label>Name</label><input id="profileNameInput"></div>
+        <div class="form-group"><label>University</label><input id="profileUniversityInput"></div>
+        <div class="form-group"><label>Degree</label><input id="profileDegreeInput"></div>
+        <div class="form-group"><label>Year</label><input id="profileYearInput"></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" onclick="closeModal('profileModal')">Cancel</button><button class="primary-btn">Save Profile</button></div>
     </form>
-
-</div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+/* ==========================================================
+   STUDENTOS V3
+   Local-first student productivity system
+   ========================================================== */
 
-/* =========================================================
-   STUDENTOS
-   Local-first student productivity application
-   ========================================================= */
-
-const STORAGE_KEY = "studentOS_v2";
+const STORAGE_KEY = "studentOS_v3";
 
 const defaultData = {
-    user:{
-        name:"Student",
-        university:"University student",
-        degree:"Undergraduate"
-    },
-
-    tasks:[],
-
-    notes:[],
-
-    subjects:[],
-
-    transactions:[],
-
-    goals:[],
-
-    focusMinutes:0,
-
-    theme:"light"
+  profile:{
+    name:"",
+    university:"",
+    degree:"",
+    year:"",
+    targetGPA:3.5,
+    weeklyBudget:10000,
+    studyCapacity:7,
+    career:""
+  },
+  subjects:[],
+  tasks:[],
+  sessions:[],
+  notes:[],
+  transactions:[],
+  goals:[],
+  habits:[],
+  skills:[],
+  theme:"light"
 };
 
 let data = loadData();
 
+function clone(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
+
 function loadData(){
-
-    try{
-
-        const saved = localStorage.getItem(STORAGE_KEY);
-
-        if(saved){
-            return {
-                ...defaultData,
-                ...JSON.parse(saved)
-            };
-        }
-
-    }catch(error){
-        console.error(error);
-    }
-
-    return structuredClone(defaultData);
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY);
+    if(!saved) return clone(defaultData);
+    const parsed=JSON.parse(saved);
+    return {
+      ...clone(defaultData),
+      ...parsed,
+      profile:{...clone(defaultData.profile),...(parsed.profile||{})}
+    };
+  }catch(e){
+    return clone(defaultData);
+  }
 }
 
-function saveData(){
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(data)
-    );
-
-    renderAll();
+function save(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
 }
 
-/* ---------- HELPERS ---------- */
-
-function $(id){
-    return document.getElementById(id);
+function uid(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 }
 
-function money(value){
-    return "Rs. " + Number(value || 0).toLocaleString("en-LK");
+function localDate(date=new Date()){
+  const y=date.getFullYear();
+  const m=String(date.getMonth()+1).padStart(2,"0");
+  const d=String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
 }
 
-function escapeHTML(value){
-
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+function parseDate(s){
+  if(!s) return null;
+  const [y,m,d]=s.split("-").map(Number);
+  return new Date(y,m-1,d);
 }
 
 function today(){
-
-    const d = new Date();
-
-    return d.toISOString().split("T")[0];
-
+  return localDate();
 }
 
-function formatDate(date){
+function addDays(dateString,days){
+  const d=parseDate(dateString)||new Date();
+  d.setDate(d.getDate()+days);
+  return localDate(d);
+}
 
-    if(!date) return "No date";
+function daysBetween(a,b){
+  const A=parseDate(a),B=parseDate(b);
+  if(!A||!B)return 0;
+  return Math.round((B-A)/86400000);
+}
 
-    const d = new Date(date + "T00:00:00");
+function isThisWeek(date){
+  const d=parseDate(date);
+  if(!d)return false;
+  const now=new Date();
+  const day=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-(day===0?6:day-1));
+  monday.setHours(0,0,0,0);
+  const sunday=new Date(monday);
+  sunday.setDate(monday.getDate()+6);
+  sunday.setHours(23,59,59,999);
+  return d>=monday&&d<=sunday;
+}
 
-    return d.toLocaleDateString("en-LK",{
-        day:"numeric",
-        month:"short",
-        year:"numeric"
+function isThisMonth(date){
+  const d=parseDate(date);
+  const n=new Date();
+  return d && d.getMonth()===n.getMonth() && d.getFullYear()===n.getFullYear();
+}
+
+function formatMoney(n){
+  return "₨"+Math.round(n||0).toLocaleString("en-LK");
+}
+
+function escapeHTML(value){
+  return String(value??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function subjectName(id){
+  return data.subjects.find(s=>s.id===id)?.name||"General";
+}
+
+function gradePoint(g){
+  return {
+    "A+":4,"A":4,"A-":3.7,
+    "B+":3.3,"B":3,"B-":2.7,
+    "C+":2.3,"C":2,"C-":1.7,
+    "D":1,"F":0
+  }[g];
+}
+
+function calculateGPA(){
+  const graded=data.subjects.filter(s=>gradePoint(s.grade)!==undefined);
+  if(!graded.length)return null;
+
+  let points=0,credits=0;
+  graded.forEach(s=>{
+    const c=Number(s.credits)||1;
+    points+=gradePoint(s.grade)*c;
+    credits+=c;
+  });
+  return credits?points/credits:null;
+}
+
+function weekSessions(){
+  return data.sessions.filter(s=>isThisWeek(s.date));
+}
+
+function weekFocusMinutes(){
+  return weekSessions().reduce((a,b)=>a+Number(b.duration||0),0);
+}
+
+function todayFocusMinutes(){
+  return data.sessions
+    .filter(s=>s.date===today())
+    .reduce((a,b)=>a+Number(b.duration||0),0);
+}
+
+function taskStats(){
+  const total=data.tasks.length;
+  const completed=data.tasks.filter(t=>t.status==="completed").length;
+  const overdue=data.tasks.filter(t=>t.status!=="completed" && t.due<today()).length;
+  const upcoming=data.tasks.filter(t=>t.status!=="completed" && t.due>=today() && t.due<=addDays(today(),7)).length;
+  const minutes=data.tasks.filter(t=>t.status!=="completed").reduce((a,b)=>a+Number(b.minutes||0),0);
+
+  return {
+    total,
+    completed,
+    overdue,
+    upcoming,
+    minutes,
+    rate:total?Math.round(completed/total*100):0
+  };
+}
+
+function goalProgress(){
+  if(!data.goals.length)return 0;
+  return Math.round(data.goals.reduce((a,g)=>a+Number(g.progress||0),0)/data.goals.length);
+}
+
+function consistency(){
+  const unique=new Set(weekSessions().map(s=>s.date));
+  return Math.round(unique.size/7*100);
+}
+
+function academicScore(){
+  if(!data.subjects.length)return null;
+
+  const progress=data.subjects.reduce((a,s)=>a+Number(s.progress||0),0)/data.subjects.length;
+
+  let gradeScore=70;
+  const gpa=calculateGPA();
+  if(gpa!==null)gradeScore=Math.min(100,(gpa/4)*100);
+
+  const examRisk=data.subjects.filter(s=>{
+    return s.exam && daysBetween(today(),s.exam)<=14 && Number(s.progress||0)<60;
+  }).length;
+
+  return Math.max(0,Math.min(100,Math.round(progress*.55+gradeScore*.45-examRisk*8)));
+}
+
+function productivityScore(){
+  const stats=taskStats();
+  const completion=stats.rate;
+  const focus=Math.min(100,weekFocusMinutes()/300*100);
+  const overduePenalty=Math.min(30,stats.overdue*7);
+  return Math.max(0,Math.min(100,Math.round(completion*.55+focus*.45-overduePenalty)));
+}
+
+function financeScore(){
+  const expenses=data.transactions
+    .filter(t=>t.type==="expense"&&isThisMonth(t.date))
+    .reduce((a,b)=>a+Number(b.amount||0),0);
+
+  const weekly=data.profile.weeklyBudget||0;
+  if(!weekly)return 70;
+
+  const expected=weekly*4.33;
+  if(expenses<=expected*.6)return 100;
+  if(expenses<=expected*.85)return 85;
+  if(expenses<=expected)return 70;
+  if(expenses<=expected*1.2)return 50;
+  return 30;
+}
+
+function habitScore(){
+  if(!data.habits.length)return 70;
+
+  let total=0;
+  data.habits.forEach(h=>{
+    const days=(h.logs||[]).filter(d=>isThisWeek(d)).length;
+    total+=Math.min(1,days/(Number(h.target)||1));
+  });
+  return Math.round(total/data.habits.length*100);
+}
+
+function overallScore(){
+  const scores=[];
+  const academic=academicScore();
+  if(academic!==null)scores.push([academic,.30]);
+  scores.push([productivityScore(),.30]);
+  scores.push([Math.max(30,consistency()),.15]);
+  scores.push([goalProgress()||60,.15]);
+  scores.push([financeScore(),.10]);
+
+  let weighted=0,totalWeight=0;
+  scores.forEach(([score,w])=>{
+    weighted+=score*w;
+    totalWeight+=w;
+  });
+  return Math.round(weighted/totalWeight);
+}
+
+function statusFor(score){
+  if(score>=85)return ["Excellent","You're operating with strong consistency and control."];
+  if(score>=70)return ["On Track","Most areas are moving in the right direction."];
+  if(score>=50)return ["Needs Attention","A few weak areas could become problems if ignored."];
+  return ["At Risk","Several important areas need immediate attention."];
+}
+
+
+/* ===================== INSIGHT ENGINE ===================== */
+
+function getRisks(){
+  const risks=[];
+  const ts=taskStats();
+
+  if(ts.overdue>0){
+    risks.push({
+      title:`${ts.overdue} overdue task${ts.overdue>1?"s":""}`,
+      detail:"Overdue work is increasing your productivity risk.",
+      page:"tasks"
     });
+  }
 
-}
-
-function initials(name){
-
-    return (name || "Student")
-        .split(" ")
-        .map(x => x[0])
-        .join("")
-        .slice(0,2)
-        .toUpperCase();
-
-}
-
-function showToast(message){
-
-    const toast = $("toast");
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(()=>{
-        toast.classList.remove("show");
-    },2500);
-
-}
-
-/* ---------- NAVIGATION ---------- */
-
-function goTo(page){
-
-    document.querySelectorAll(".page").forEach(p=>{
-        p.classList.remove("active");
-    });
-
-    const target = $(page);
-
-    if(target){
-        target.classList.add("active");
+  data.subjects.forEach(s=>{
+    if(s.exam){
+      const days=daysBetween(today(),s.exam);
+      if(days>=0&&days<=14&&Number(s.progress||0)<60){
+        risks.push({
+          title:`${s.name} exam in ${days} day${days===1?"":"s"}`,
+          detail:`Preparation is only ${s.progress||0}%.`,
+          page:"academics"
+        });
+      }
     }
+  });
 
-    document.querySelectorAll(".nav-btn,.mobile-nav button").forEach(btn=>{
-        btn.classList.toggle(
-            "active",
-            btn.dataset.page === page
-        );
+  const focus=weekFocusMinutes();
+  if(data.tasks.length && focus<60){
+    risks.push({
+      title:"Low study activity",
+      detail:"Less than one hour of focus time has been recorded this week.",
+      page:"focus"
     });
+  }
 
-    $("sidebar").classList.remove("open");
+  const expenses=data.transactions
+    .filter(t=>t.type==="expense"&&isThisMonth(t.date))
+    .reduce((a,b)=>a+Number(b.amount||0),0);
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
+  if(data.profile.weeklyBudget && expenses>data.profile.weeklyBudget*4.33){
+    risks.push({
+      title:"Monthly spending is above budget",
+      detail:`You've spent ${formatMoney(expenses)} this month.`,
+      page:"money"
     });
+  }
 
+  data.goals.forEach(g=>{
+    const days=daysBetween(today(),g.date);
+    const progress=Number(g.progress||0);
+
+    if(days>=0&&days<=14&&progress<70){
+      risks.push({
+        title:`Goal deadline approaching: ${g.title}`,
+        detail:`Only ${progress}% completed with ${days} days remaining.`,
+        page:"goals"
+      });
+    }
+  });
+
+  return risks.slice(0,5);
 }
 
-document.querySelectorAll(".nav-btn,.mobile-nav button")
-.forEach(button=>{
+function getNextActions(){
+  const actions=[];
+  const ts=taskStats();
 
-    button.addEventListener("click",()=>{
-        goTo(button.dataset.page);
+  const overdue=data.tasks
+    .filter(t=>t.status!=="completed"&&t.due<today())
+    .sort((a,b)=>a.due.localeCompare(b.due));
+
+  if(overdue.length){
+    actions.push({
+      title:`Clear "${overdue[0].title}"`,
+      reason:"This task is overdue.",
+      page:"tasks"
     });
+  }
 
+  const urgent=data.tasks
+    .filter(t=>t.status!=="completed"&&t.due>=today()&&t.due<=addDays(today(),2))
+    .sort((a,b)=>a.due.localeCompare(b.due));
+
+  if(urgent.length){
+    actions.push({
+      title:`Work on "${urgent[0].title}"`,
+      reason:"It is due within the next two days.",
+      page:"tasks"
+    });
+  }
+
+  const riskySubject=data.subjects
+    .filter(s=>s.exam&&daysBetween(today(),s.exam)>=0)
+    .sort((a,b)=>Number(a.progress||0)-Number(b.progress||0))[0];
+
+  if(riskySubject && Number(riskySubject.progress||0)<70){
+    actions.push({
+      title:`Study ${riskySubject.name}`,
+      reason:`Current preparation is ${riskySubject.progress||0}%.`,
+      page:"focus"
+    });
+  }
+
+  if(weekFocusMinutes()<120){
+    actions.push({
+      title:"Complete a 50-minute focus session",
+      reason:"Your weekly study time is currently low.",
+      page:"focus"
+    });
+  }
+
+  if(goalProgress()<50 && data.goals.length){
+    actions.push({
+      title:"Move one goal milestone forward",
+      reason:"Your average goal progress is below 50%.",
+      page:"goals"
+    });
+  }
+
+  return actions.slice(0,4);
+}
+
+function buildInsight(){
+  const ts=taskStats();
+  const risks=getRisks();
+  const focus=weekFocusMinutes();
+  const gpa=calculateGPA();
+
+  if(!data.subjects.length && !data.tasks.length){
+    return "StudentOS is ready, but it needs your real data first. Add your subjects, deadlines and goals so the system can identify priorities and risks.";
+  }
+
+  if(risks.length){
+    const r=risks[0];
+    return `${r.title} is currently your biggest attention point. ${r.detail} Your current weekly focus time is ${Math.floor(focus/60)}h ${focus%60}m${gpa!==null?` and your GPA is ${gpa.toFixed(2)}`:""}.`;
+  }
+
+  if(ts.rate>=80 && focus>=180){
+    return "You're in a strong operating rhythm. Your task completion and study consistency are healthy. The best move now is to protect this routine instead of adding unnecessary workload.";
+  }
+
+  if(ts.rate<50 && data.tasks.length){
+    return "Your main bottleneck appears to be execution rather than planning. You have unfinished work, so prioritize one high-impact task before adding anything new.";
+  }
+
+  if(focus<120){
+    return "Your workload may look manageable, but your recorded focused study time is low. Converting planned work into protected focus sessions should be your next priority.";
+  }
+
+  return "Your overall situation is reasonably balanced. Continue converting your plans into focused work while monitoring deadlines and subject readiness.";
+}
+
+
+/* ===================== NAVIGATION ===================== */
+
+const pageTitles={
+  dashboard:"Dashboard",
+  analytics:"Analytics",
+  academics:"Academics",
+  tasks:"Tasks",
+  planner:"Planner",
+  focus:"Focus Studio",
+  notes:"Knowledge Vault",
+  money:"Student Finance",
+  goals:"Goals",
+  habits:"Habit Engine",
+  career:"Career",
+  profile:"Profile & Settings"
+};
+
+function navigate(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const target=document.getElementById(page);
+  if(target)target.classList.add("active");
+
+  document.querySelectorAll("[data-page]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.page===page);
+  });
+
+  document.getElementById("pageTitle").textContent=pageTitles[page]||"StudentOS";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll("[data-page]").forEach(btn=>{
+  btn.addEventListener("click",()=>navigate(btn.dataset.page));
 });
 
-/* ---------- MODALS ---------- */
+
+/* ===================== MODALS ===================== */
 
 function openModal(id){
-
-    $(id).classList.add("open");
-
+  populateSelects();
+  document.getElementById(id)?.classList.add("open");
 }
 
 function closeModal(id){
-
-    $(id).classList.remove("open");
-
+  document.getElementById(id)?.classList.remove("open");
 }
 
-document.querySelectorAll(".overlay")
-.forEach(overlay=>{
-
-    overlay.addEventListener("click",event=>{
-
-        if(event.target === overlay){
-            overlay.classList.remove("open");
-        }
-
-    });
-
+document.querySelectorAll(".modal").forEach(m=>{
+  m.addEventListener("click",e=>{
+    if(e.target===m)m.classList.remove("open");
+  });
 });
 
-/* ---------- PROFILE ---------- */
 
-function renderProfile(){
+/* ===================== SUBJECTS ===================== */
 
-    const name = data.user.name || "Student";
+document.getElementById("subjectForm").addEventListener("submit",e=>{
+  e.preventDefault();
 
-    $("sideName").textContent = name;
-    $("sideAvatar").textContent = initials(name);
+  data.subjects.push({
+    id:uid(),
+    name:document.getElementById("subjectName").value.trim(),
+    code:document.getElementById("subjectCode").value.trim(),
+    credits:Number(document.getElementById("subjectCredits").value)||1,
+    grade:document.getElementById("subjectGrade").value,
+    progress:Number(document.getElementById("subjectProgress").value)||0,
+    exam:document.getElementById("subjectExam").value
+  });
 
-    $("profileName").textContent = name;
-    $("profileUniversity").textContent =
-        data.user.university || "University student";
+  save();
+  e.target.reset();
+  closeModal("subjectModal");
+  renderAll();
+  toast("Subject added");
+});
 
-    $("profileDegree").textContent =
-        data.user.degree || "Undergraduate";
 
-    $("profileAvatar").textContent =
-        initials(name);
+/* ===================== TASKS ===================== */
 
-    $("profileInputName").value = name;
+let currentTaskFilter="all";
 
-    $("profileInputUniversity").value =
-        data.user.university || "";
-
-    $("profileInputDegree").value =
-        data.user.degree || "";
-
-    const completed =
-        data.tasks.filter(t=>t.done).length;
-
-    $("profileTasks").textContent = completed;
-    $("profileNotes").textContent = data.notes.length;
-    $("profileGoals").textContent = data.goals.length;
-    $("profileFocus").textContent =
-        data.focusMinutes + "m";
-
+function setTaskFilter(filter){
+  currentTaskFilter=filter;
+  renderTasks();
 }
 
-/* ---------- TASKS ---------- */
+document.getElementById("taskForm").addEventListener("submit",e=>{
+  e.preventDefault();
 
-function renderTasks(){
+  data.tasks.push({
+    id:uid(),
+    title:document.getElementById("taskTitleInput").value.trim(),
+    subjectId:document.getElementById("taskSubject").value,
+    priority:document.getElementById("taskPriority").value,
+    due:document.getElementById("taskDue").value,
+    minutes:Number(document.getElementById("taskMinutes").value)||60,
+    category:document.getElementById("taskCategory").value,
+    status:"pending",
+    createdAt:today(),
+    completedAt:""
+  });
 
-    const filter = $("taskFilter").value;
-
-    let tasks = [...data.tasks];
-
-    if(filter === "today"){
-        tasks = tasks.filter(t=>t.date === today());
-    }
-
-    if(filter === "upcoming"){
-        tasks = tasks.filter(t=>t.date && t.date > today() && !t.done);
-    }
-
-    if(filter === "completed"){
-        tasks = tasks.filter(t=>t.done);
-    }
-
-    $("taskSummary").textContent =
-        `${tasks.length} task${tasks.length === 1 ? "" : "s"}`;
-
-    if(!tasks.length){
-
-        $("allTasks").innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">✓</div>
-                Nothing here yet.
-            </div>
-        `;
-
-    }else{
-
-        $("allTasks").innerHTML =
-            tasks.map(taskHTML).join("");
-
-    }
-
-    const priorityTasks =
-        data.tasks
-        .filter(t=>!t.done)
-        .sort((a,b)=>{
-
-            const order = {
-                High:1,
-                Medium:2,
-                Low:3
-            };
-
-            return order[a.priority] - order[b.priority];
-
-        })
-        .slice(0,4);
-
-    if(!priorityTasks.length){
-
-        $("dashboardTasks").innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">🎉</div>
-                You're all caught up!
-            </div>
-        `;
-
-    }else{
-
-        $("dashboardTasks").innerHTML =
-            priorityTasks.map(taskHTML).join("");
-
-    }
-
-}
-
-function taskHTML(task){
-
-    return `
-        <div class="task ${task.done ? "done" : ""}">
-
-            <button
-                class="check"
-                onclick="toggleTask('${task.id}')">
-                ${task.done ? "✓" : ""}
-            </button>
-
-            <div class="task-body">
-
-                <div class="task-name">
-                    ${escapeHTML(task.name)}
-                </div>
-
-                <div class="task-meta">
-                    ${escapeHTML(task.category)}
-                    ${task.date ? " • " + formatDate(task.date) : ""}
-                </div>
-
-            </div>
-
-            <span class="priority ${task.priority.toLowerCase()}">
-                ${task.priority}
-            </span>
-
-            <button
-                onclick="deleteTask('${task.id}')"
-                style="background:none;color:var(--muted)">
-                ×
-            </button>
-
-        </div>
-    `;
-
-}
+  save();
+  e.target.reset();
+  document.getElementById("taskDue").value=today();
+  closeModal("taskModal");
+  renderAll();
+  toast("Task created");
+});
 
 function toggleTask(id){
+  const task=data.tasks.find(t=>t.id===id);
+  if(!task)return;
 
-    const task = data.tasks.find(t=>t.id === id);
+  if(task.status==="completed"){
+    task.status="pending";
+    task.completedAt="";
+  }else{
+    task.status="completed";
+    task.completedAt=today();
+  }
 
-    if(task){
-
-        task.done = !task.done;
-
-        showToast(
-            task.done
-            ? "Task completed 🎉"
-            : "Task reopened"
-        );
-
-        saveData();
-
-    }
-
+  save();
+  renderAll();
+  toast(task.status==="completed"?"Task completed ✓":"Task reopened");
 }
 
 function deleteTask(id){
-
-    data.tasks =
-        data.tasks.filter(t=>t.id !== id);
-
-    showToast("Task deleted");
-
-    saveData();
-
+  if(!confirm("Delete this task?"))return;
+  data.tasks=data.tasks.filter(t=>t.id!==id);
+  save();renderAll();
 }
 
-$("taskFilter").addEventListener("change",renderTasks);
-
-$("taskForm").addEventListener("submit",event=>{
-
-    event.preventDefault();
-
-    data.tasks.push({
-
-        id:crypto.randomUUID(),
-
-        name:$("taskName").value.trim(),
-
-        date:$("taskDate").value || today(),
-
-        priority:$("taskPriority").value,
-
-        category:$("taskCategory").value,
-
-        done:false
-
-    });
-
-    event.target.reset();
-
-    closeModal("taskModal");
-
-    showToast("Task added ✓");
-
-    saveData();
-
-});
-
-/* ---------- NOTES ---------- */
-
-function renderNotes(){
-
-    const query =
-        $("noteSearch").value.toLowerCase();
-
-    const notes =
-        data.notes.filter(note=>
-            `${note.title} ${note.subject} ${note.content}`
-            .toLowerCase()
-            .includes(query)
-        );
-
-    if(!notes.length){
-
-        $("notesGrid").innerHTML = `
-            <div class="empty" style="grid-column:1/-1">
-                <div class="empty-icon">📝</div>
-                No notes found.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    $("notesGrid").innerHTML =
-        notes.map(note=>`
-
-            <div class="card note">
-
-                <span class="note-tag">
-                    ${escapeHTML(note.subject || "General")}
-                </span>
-
-                <h3>${escapeHTML(note.title)}</h3>
-
-                <p>
-                    ${escapeHTML(
-                        note.content.slice(0,130)
-                    )}
-                    ${note.content.length > 130 ? "..." : ""}
-                </p>
-
-                <button
-                    onclick="deleteNote('${note.id}')"
-                    style="margin-top:16px;background:none;color:var(--danger);font-size:11px">
-                    Delete
-                </button>
-
-            </div>
-
-        `).join("");
-
-}
-
-function deleteNote(id){
-
-    data.notes =
-        data.notes.filter(n=>n.id !== id);
-
-    showToast("Note deleted");
-
-    saveData();
-
-}
-
-$("noteSearch").addEventListener(
-    "input",
-    renderNotes
-);
-
-$("noteForm").addEventListener("submit",event=>{
-
-    event.preventDefault();
-
-    data.notes.unshift({
-
-        id:crypto.randomUUID(),
-
-        title:$("noteTitle").value.trim(),
-
-        subject:$("noteSubject").value.trim(),
-
-        content:$("noteContent").value.trim(),
-
-        created:new Date().toISOString()
-
-    });
-
-    event.target.reset();
-
-    closeModal("noteModal");
-
-    showToast("Note saved 📝");
-
-    saveData();
-
-});
-
-/* ---------- SUBJECTS / GPA ---------- */
-
-function renderSubjects(){
-
-    if(!data.subjects.length){
-
-        $("subjects").innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">🎓</div>
-                Add your first subject to start tracking GPA.
-            </div>
-        `;
-
-        $("gpaValue").textContent = "—";
-        $("dashGPA").textContent = "—";
-
-        return;
-
-    }
-
-    $("subjects").innerHTML =
-        data.subjects.map((subject,index)=>`
-
-        <div class="subject">
-
-            <div>
-                <strong>
-                    ${escapeHTML(subject.name)}
-                </strong>
-
-                <div style="color:var(--muted);font-size:11px">
-                    ${subject.credits} credits
-                </div>
-            </div>
-
-            <div>
-                ${subject.grade === null
-                    ? "Pending"
-                    : "Graded"}
-            </div>
-
-            <div class="grade">
-                ${
-                    subject.grade === null
-                    ? "—"
-                    : subject.grade
-                }
-
-                <button
-                    onclick="deleteSubject(${index})"
-                    style="background:none;color:var(--danger);font-size:11px;margin-left:7px">
-                    ×
-                </button>
-            </div>
-
+function renderTasks(){
+  const ts=taskStats();
+
+  document.getElementById("taskTotal").textContent=ts.total;
+  document.getElementById("taskCompleted").textContent=ts.completed;
+  document.getElementById("taskOverdue").textContent=ts.overdue;
+  document.getElementById("taskHours").textContent=(ts.minutes/60).toFixed(1)+"h";
+
+  let tasks=[...data.tasks];
+
+  if(currentTaskFilter==="today")
+    tasks=tasks.filter(t=>t.due===today());
+  if(currentTaskFilter==="upcoming")
+    tasks=tasks.filter(t=>t.status!=="completed"&&t.due>=today()&&t.due<=addDays(today(),7));
+  if(currentTaskFilter==="overdue")
+    tasks=tasks.filter(t=>t.status!=="completed"&&t.due<today());
+
+  tasks.sort((a,b)=>{
+    if(a.status!==b.status)return a.status==="completed"?1:-1;
+    return a.due.localeCompare(b.due);
+  });
+
+  const el=document.getElementById("taskList");
+
+  if(!tasks.length){
+    el.innerHTML=emptyState("✓","No tasks here","Create a task and StudentOS will start tracking your workload.");
+    renderTaskChart();
+    return;
+  }
+
+  el.innerHTML=tasks.map(t=>{
+    const overdue=t.status!=="completed"&&t.due<today();
+    return `
+      <div class="task ${overdue?"overdue":""}">
+        <button class="check ${t.status==="completed"?"done":""}" onclick="toggleTask('${t.id}')">
+          ${t.status==="completed"?"✓":""}
+        </button>
+        <div class="task-main">
+          <strong style="${t.status==="completed"?"text-decoration:line-through;opacity:.55":""}">
+            ${escapeHTML(t.title)}
+          </strong>
+          <small>${escapeHTML(subjectName(t.subjectId))} • ${escapeHTML(t.category)} • ${t.minutes} min</small>
         </div>
-
-        `).join("");
-
-    const graded =
-        data.subjects.filter(s=>s.grade !== null);
-
-    if(graded.length){
-
-        let totalPoints = 0;
-        let totalCredits = 0;
-
-        graded.forEach(s=>{
-
-            totalPoints +=
-                Number(s.grade) * Number(s.credits);
-
-            totalCredits +=
-                Number(s.credits);
-
-        });
-
-        const gpa =
-            totalCredits
-            ? (totalPoints / totalCredits).toFixed(2)
-            : "—";
-
-        $("gpaValue").textContent = gpa;
-        $("dashGPA").textContent = gpa;
-
-    }else{
-
-        $("gpaValue").textContent = "—";
-        $("dashGPA").textContent = "—";
-
-    }
-
-    const progress =
-        data.subjects.length
-        ? Math.round(
-            graded.length /
-            data.subjects.length *
-            100
-        )
-        : 0;
-
-    $("semesterProgressText").textContent =
-        progress + "%";
-
-    $("semesterBar").style.width =
-        progress + "%";
-
-}
-
-function deleteSubject(index){
-
-    data.subjects.splice(index,1);
-
-    showToast("Subject removed");
-
-    saveData();
-
-}
-
-$("subjectForm").addEventListener("submit",event=>{
-
-    event.preventDefault();
-
-    const gradeValue =
-        $("subjectGrade").value;
-
-    data.subjects.push({
-
-        name:$("subjectName").value.trim(),
-
-        credits:Number(
-            $("subjectCredits").value
-        ) || 1,
-
-        grade:
-            gradeValue === ""
-            ? null
-            : Number(gradeValue)
-
-    });
-
-    event.target.reset();
-
-    closeModal("subjectModal");
-
-    showToast("Subject added 🎓");
-
-    saveData();
-
-});
-
-/* ---------- MONEY ---------- */
-
-function getMoney(){
-
-    let income = 0;
-    let expense = 0;
-
-    data.transactions.forEach(t=>{
-
-        if(t.type === "income"){
-            income += Number(t.amount);
-        }else{
-            expense += Number(t.amount);
-        }
-
-    });
-
-    return {
-        income,
-        expense,
-        balance:income-expense
-    };
-
-}
-
-function renderMoney(){
-
-    const m = getMoney();
-
-    $("moneyIncome").textContent =
-        money(m.income);
-
-    $("moneyExpense").textContent =
-        money(m.expense);
-
-    $("moneyBalance").textContent =
-        money(m.balance);
-
-    $("dashBalance").textContent =
-        money(m.balance);
-
-    if(!data.transactions.length){
-
-        $("transactions").innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">💳</div>
-                No transactions yet.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    $("transactions").innerHTML =
-        data.transactions.slice(0,10)
-        .map((t,index)=>`
-
-        <div class="task">
-
-            <div class="stat-icon">
-                ${t.type === "income" ? "↗" : "↘"}
-            </div>
-
-            <div class="task-body">
-
-                <div class="task-name">
-                    ${escapeHTML(t.description)}
-                </div>
-
-                <div class="task-meta">
-                    ${escapeHTML(t.category)}
-                </div>
-
-            </div>
-
-            <strong class="${t.type === "income" ? "income" : "expense"}">
-                ${t.type === "income" ? "+" : "-"}
-                ${money(t.amount)}
-            </strong>
-
-            <button
-                onclick="deleteTransaction(${index})"
-                style="background:none;color:var(--muted)">
-                ×
-            </button>
-
+        <div class="task-meta">
+          <span class="tag">${overdue?"Overdue":t.due===today()?"Today":formatShortDate(t.due)}</span>
+          <span class="tag">${escapeHTML(t.priority)}</span>
+          <button class="icon-btn" style="width:32px;height:32px" onclick="deleteTask('${t.id}')">×</button>
         </div>
+      </div>
+    `;
+  }).join("");
 
-        `).join("");
-
+  renderTaskChart();
 }
 
-function deleteTransaction(index){
-
-    data.transactions.splice(index,1);
-
-    showToast("Transaction deleted");
-
-    saveData();
-
+function renderTaskChart(){
+  renderSevenDayChart("taskWorkloadChart",true);
 }
 
-$("moneyForm").addEventListener("submit",event=>{
 
-    event.preventDefault();
+/* ===================== PLANNER ===================== */
 
-    data.transactions.unshift({
+function renderPlanner(){
+  const minutes=data.tasks
+    .filter(t=>t.status!=="completed")
+    .reduce((a,b)=>a+Number(b.minutes||0),0);
 
-        description:$("moneyDescription").value.trim(),
+  const available=Number(data.profile.studyCapacity)||7;
+  const required=minutes/60;
 
-        amount:Number($("moneyAmount").value),
+  document.getElementById("plannedHours").textContent=required.toFixed(1)+"h";
+  document.getElementById("availableHours").textContent=available+"h";
 
-        type:$("moneyType").value,
+  let status="Balanced";
+  if(required>available*1.2)status="Overloaded";
+  else if(required>available)status="Tight";
 
-        category:$("moneyCategory").value,
+  document.getElementById("workloadStatus").textContent=status;
 
-        date:new Date().toISOString()
+  const insight=document.getElementById("planningInsight");
 
-    });
+  if(!data.tasks.length){
+    insight.textContent="No active tasks yet. Once you add deadlines and estimated durations, StudentOS will compare your workload against your available study capacity.";
+  }else if(required>available){
+    insight.textContent=`You currently have ${required.toFixed(1)} hours of unfinished work against approximately ${available} hours of weekly study capacity. Your workload exceeds capacity by ${(required-available).toFixed(1)} hours. Prioritize high-impact deadlines or increase available study blocks.`;
+  }else{
+    insight.textContent=`Your estimated unfinished workload is ${required.toFixed(1)} hours, leaving approximately ${(available-required).toFixed(1)} hours of capacity. This gives you some flexibility for revision, unexpected work or personal goals.`;
+  }
 
-    event.target.reset();
+  renderSevenDayChart("plannerChart",true);
+}
 
-    closeModal("moneyModal");
 
-    showToast("Transaction saved 💳");
+/* ===================== FOCUS ===================== */
 
-    saveData();
+let timerSeconds=25*60;
+let timerRunning=false;
+let timerInterval=null;
+let selectedFocusMinutes=25;
 
-});
-
-/* ---------- GOALS ---------- */
-
-function renderGoals(){
-
-    if(!data.goals.length){
-
-        $("goalsList").innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">🎯</div>
-                Create your first goal.
-            </div>
-        `;
-
-        $("dashboardGoals").innerHTML = `
-            <div class="empty">
-                No goals yet.
-            </div>
-        `;
-
-        return;
-
+document.querySelectorAll(".timer-mode button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".timer-mode button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedFocusMinutes=Number(btn.dataset.min);
+    if(!timerRunning){
+      timerSeconds=selectedFocusMinutes*60;
+      updateTimer();
     }
-
-    $("goalsList").innerHTML =
-        data.goals.map((goal,index)=>{
-
-            const progress =
-                goal.progress || 0;
-
-            return `
-
-            <div class="goal">
-
-                <div class="goal-top">
-
-                    <span>
-                        ${escapeHTML(goal.name)}
-                    </span>
-
-                    <span>
-                        ${progress}%
-                    </span>
-
-                </div>
-
-                <div class="progress">
-
-                    <div
-                        class="progress-bar"
-                        style="width:${progress}%">
-                    </div>
-
-                </div>
-
-                <div style="display:flex;justify-content:space-between;margin-top:7px">
-
-                    <span style="font-size:10px;color:var(--muted)">
-                        ${escapeHTML(goal.category)}
-                    </span>
-
-                    <button
-                        onclick="increaseGoal(${index})"
-                        style="background:none;color:var(--primary);font-size:10px;font-weight:800">
-                        +10%
-                    </button>
-
-                </div>
-
-            </div>
-
-            `;
-
-        }).join("");
-
-    $("dashboardGoals").innerHTML =
-        data.goals.slice(0,3)
-        .map(goal=>`
-
-        <div class="goal">
-
-            <div class="goal-top">
-                <span>${escapeHTML(goal.name)}</span>
-                <span>${goal.progress || 0}%</span>
-            </div>
-
-            <div class="progress">
-                <div
-                    class="progress-bar"
-                    style="width:${goal.progress || 0}%">
-                </div>
-            </div>
-
-        </div>
-
-        `).join("");
-
-}
-
-function increaseGoal(index){
-
-    data.goals[index].progress =
-        Math.min(
-            100,
-            (data.goals[index].progress || 0) + 10
-        );
-
-    showToast("Goal progress updated 🎯");
-
-    saveData();
-
-}
-
-$("goalForm").addEventListener("submit",event=>{
-
-    event.preventDefault();
-
-    data.goals.push({
-
-        name:$("goalName").value.trim(),
-
-        category:$("goalCategory").value,
-
-        date:$("goalDate").value,
-
-        progress:0
-
-    });
-
-    event.target.reset();
-
-    closeModal("goalModal");
-
-    showToast("New goal created 🎯");
-
-    saveData();
-
+  });
 });
 
-/* ---------- FOCUS TIMER ---------- */
+document.getElementById("timerStart").addEventListener("click",()=>{
+  if(timerRunning){
+    pauseTimer();
+  }else{
+    startTimer();
+  }
+});
 
-let timerSeconds = 25 * 60;
-let timerInterval = null;
-let timerRunning = false;
+document.getElementById("timerReset").addEventListener("click",()=>{
+  pauseTimer();
+  timerSeconds=selectedFocusMinutes*60;
+  updateTimer();
+});
 
-function updateTimer(){
+function startTimer(){
+  const subject=document.getElementById("focusSubject").value;
+  if(!subject){
+    toast("Select a subject first");
+    return;
+  }
 
-    const minutes =
-        Math.floor(timerSeconds / 60)
-        .toString()
-        .padStart(2,"0");
+  timerRunning=true;
+  document.getElementById("timerStart").textContent="Pause";
 
-    const seconds =
-        (timerSeconds % 60)
-        .toString()
-        .padStart(2,"0");
-
-    $("timer").textContent =
-        `${minutes}:${seconds}`;
-
-}
-
-function setTimer(minutes){
-
-    clearInterval(timerInterval);
-
-    timerRunning = false;
-
-    timerSeconds = minutes * 60;
-
-    $("timerStart").textContent = "▶ Start";
-
-    $("timerStatus").textContent =
-        "Ready to focus?";
-
+  timerInterval=setInterval(()=>{
+    timerSeconds--;
     updateTimer();
 
+    if(timerSeconds<=0){
+      pauseTimer();
+      completeFocusSession(selectedFocusMinutes);
+    }
+  },1000);
 }
 
-document.querySelectorAll(".mode-tabs button")
-.forEach(button=>{
+function pauseTimer(){
+  timerRunning=false;
+  clearInterval(timerInterval);
+  document.getElementById("timerStart").textContent="Start Focus";
+}
 
-    button.addEventListener("click",()=>{
+function updateTimer(){
+  const min=Math.floor(timerSeconds/60);
+  const sec=timerSeconds%60;
+  document.getElementById("timerDisplay").textContent=
+    String(min).padStart(2,"0")+":"+String(sec).padStart(2,"0");
+}
 
-        document
-        .querySelectorAll(".mode-tabs button")
-        .forEach(b=>b.classList.remove("active"));
+function completeFocusSession(minutes){
+  const subject=document.getElementById("focusSubject").value;
+  const task=document.getElementById("focusTask").value;
 
-        button.classList.add("active");
+  data.sessions.push({
+    id:uid(),
+    subjectId:subject,
+    taskId:task,
+    date:today(),
+    duration:minutes,
+    type:"focus"
+  });
 
-        setTimer(
-            Number(button.dataset.min)
-        );
+  const s=data.subjects.find(x=>x.id===subject);
 
-    });
+  if(s){
+    s.progress=Math.min(100,Number(s.progress||0)+Math.max(1,Math.round(minutes/30)));
+  }
 
-});
+  save();
+  timerSeconds=selectedFocusMinutes*60;
+  updateTimer();
+  renderAll();
+  toast(`Focus session completed — ${minutes} minutes ✓`);
+}
 
-$("timerStart").addEventListener("click",()=>{
+function startQuickFocus(){
+  const subject=document.getElementById("quickFocusSubject").value;
+  if(!subject){
+    toast("Select a subject");
+    return;
+  }
 
-    if(timerRunning){
-
-        clearInterval(timerInterval);
-
-        timerRunning = false;
-
-        $("timerStart").textContent = "▶ Resume";
-
-        $("timerStatus").textContent =
-            "Paused";
-
-        return;
-
-    }
-
-    timerRunning = true;
-
-    $("timerStart").textContent =
-        "Ⅱ Pause";
-
-    $("timerStatus").textContent =
-        "Focus mode is active.";
-
-    timerInterval =
-        setInterval(()=>{
-
-            if(timerSeconds <= 0){
-
-                clearInterval(timerInterval);
-
-                timerRunning = false;
-
-                data.focusMinutes += 25;
-
-                $("timerStart").textContent =
-                    "▶ Start";
-
-                $("timerStatus").textContent =
-                    "Session complete! 🎉";
-
-                showToast(
-                    "Focus session completed! +25 minutes"
-                );
-
-                saveData();
-
-                setTimer(25);
-
-                return;
-
-            }
-
-            timerSeconds--;
-
-            updateTimer();
-
-        },1000);
-
-});
-
-$("timerReset").addEventListener(
-    "click",
-    ()=>setTimer(25)
-);
-
-/* ---------- DASHBOARD FOCUS ---------- */
+  closeModal("focusModal");
+  navigate("focus");
+  document.getElementById("focusSubject").value=subject;
+  toast("Focus studio ready");
+}
 
 function renderFocus(){
+  const week=weekFocusMinutes();
+  const todayM=todayFocusMinutes();
+  const sessions=weekSessions().length;
 
-    $("dashFocus").textContent =
-        data.focusMinutes + "m";
+  document.getElementById("focusToday").textContent=todayM+"m";
+  document.getElementById("focusWeek").textContent=(week/60).toFixed(1)+"h";
+  document.getElementById("focusSessions").textContent=sessions;
+  document.getElementById("focusConsistency").textContent=consistency()+"%";
 
-    $("focusTodayText").textContent =
-        data.focusMinutes + "m focused";
+  const recent=[...data.sessions].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
 
-    const percentage =
-        Math.min(
-            100,
-            data.focusMinutes / 120 * 100
-        );
-
-    $("focusBar").style.width =
-        percentage + "%";
-
+  document.getElementById("recentSessions").innerHTML=recent.length?
+    recent.map(s=>`
+      <div class="deadline">
+        <div class="date-box"><strong>${s.duration}</strong><small>MIN</small></div>
+        <div class="deadline-main">
+          <strong>${escapeHTML(subjectName(s.subjectId))}</strong>
+          <small>${formatShortDate(s.date)}</small>
+        </div>
+      </div>
+    `).join("")
+    :emptyState("◷","No focus sessions","Start your first focused study session.");
 }
 
-/* ---------- PRODUCTIVITY ---------- */
 
-function renderProductivity(){
+/* ===================== NOTES ===================== */
 
-    const total =
-        data.tasks.length;
+document.getElementById("noteForm").addEventListener("submit",e=>{
+  e.preventDefault();
 
-    const completed =
-        data.tasks.filter(t=>t.done).length;
+  data.notes.unshift({
+    id:uid(),
+    title:document.getElementById("noteTitle").value.trim(),
+    subjectId:document.getElementById("noteSubject").value,
+    tags:document.getElementById("noteTags").value.trim(),
+    content:document.getElementById("noteContent").value.trim(),
+    createdAt:today()
+  });
 
-    const taskScore =
-        total
-        ? completed / total * 70
-        : 0;
-
-    const focusScore =
-        Math.min(
-            30,
-            data.focusMinutes / 120 * 30
-        );
-
-    const score =
-        Math.round(taskScore + focusScore);
-
-    $("productivityScore").textContent =
-        score + "%";
-
-    $("productivityBar").style.width =
-        score + "%";
-
-    $("dashTasks").textContent =
-        `${completed}/${total}`;
-
-}
-
-/* ---------- PROFILE ---------- */
-
-$("profileForm").addEventListener("submit",event=>{
-
-    event.preventDefault();
-
-    data.user.name =
-        $("profileInputName").value.trim()
-        || "Student";
-
-    data.user.university =
-        $("profileInputUniversity").value.trim()
-        || "University student";
-
-    data.user.degree =
-        $("profileInputDegree").value.trim()
-        || "Undergraduate";
-
-    closeModal("profileModal");
-
-    showToast("Profile updated ✓");
-
-    saveData();
-
+  save();
+  e.target.reset();
+  closeModal("noteModal");
+  renderAll();
+  toast("Note saved");
 });
 
-/* ---------- THEME ---------- */
+document.getElementById("noteSearch").addEventListener("input",renderNotes);
 
-function applyTheme(){
+function renderNotes(){
+  const q=(document.getElementById("noteSearch").value||"").toLowerCase();
 
-    document.documentElement.dataset.theme =
-        data.theme;
+  const notes=data.notes.filter(n=>
+    `${n.title} ${n.content} ${n.tags} ${subjectName(n.subjectId)}`
+      .toLowerCase().includes(q)
+  );
 
-    $("themeBtn").textContent =
-        data.theme === "dark"
-        ? "☀"
-        : "☾";
+  const el=document.getElementById("notesGrid");
 
+  if(!notes.length){
+    el.innerHTML=`<div class="card" style="grid-column:1/-1">${emptyState("✎","No notes found","Create a note to build your knowledge vault.")}</div>`;
+    return;
+  }
+
+  el.innerHTML=notes.map(n=>`
+    <div class="card">
+      <span class="tag">${escapeHTML(subjectName(n.subjectId))}</span>
+      <h3 style="font-size:15px;margin-top:12px">${escapeHTML(n.title)}</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px">
+        ${escapeHTML(n.content).slice(0,150)}${n.content.length>150?"...":""}
+      </p>
+      <small style="display:block;color:var(--muted);margin-top:13px">${escapeHTML(n.tags||"No tags")} • ${formatShortDate(n.createdAt)}</small>
+    </div>
+  `).join("");
 }
 
-$("themeBtn").addEventListener("click",()=>{
 
-    data.theme =
-        data.theme === "dark"
-        ? "light"
-        : "dark";
+/* ===================== MONEY ===================== */
 
-    applyTheme();
+document.getElementById("transactionForm").addEventListener("submit",e=>{
+  e.preventDefault();
 
-    saveData();
+  data.transactions.unshift({
+    id:uid(),
+    type:document.getElementById("transactionType").value,
+    amount:Number(document.getElementById("transactionAmount").value)||0,
+    category:document.getElementById("transactionCategory").value,
+    date:document.getElementById("transactionDate").value,
+    description:document.getElementById("transactionDescription").value.trim()
+  });
 
+  save();
+  e.target.reset();
+  document.getElementById("transactionDate").value=today();
+  closeModal("transactionModal");
+  renderAll();
+  toast("Transaction saved");
 });
 
-/* ---------- SEARCH ---------- */
+function renderMoney(){
+  const income=data.transactions
+    .filter(t=>t.type==="income"&&isThisMonth(t.date))
+    .reduce((a,b)=>a+Number(b.amount||0),0);
 
-$("globalSearch").addEventListener(
-    "keydown",
-    event=>{
+  const expense=data.transactions
+    .filter(t=>t.type==="expense"&&isThisMonth(t.date))
+    .reduce((a,b)=>a+Number(b.amount||0),0);
 
-        if(event.key !== "Enter") return;
+  document.getElementById("moneyIncome").textContent=formatMoney(income);
+  document.getElementById("moneyExpense").textContent=formatMoney(expense);
+  document.getElementById("moneyBalance").textContent=formatMoney(income-expense);
 
-        const q =
-            event.target.value
-            .trim()
-            .toLowerCase();
+  const monthlyBudget=(data.profile.weeklyBudget||0)*4.33;
+  const used=monthlyBudget?Math.round(expense/monthlyBudget*100):0;
+  document.getElementById("budgetUsed").textContent=used+"%";
 
-        if(!q) return;
+  const categories={};
 
-        if(
-            data.tasks.some(t=>
-                t.name.toLowerCase().includes(q)
-            )
-        ){
+  data.transactions
+    .filter(t=>t.type==="expense"&&isThisMonth(t.date))
+    .forEach(t=>{
+      categories[t.category]=(categories[t.category]||0)+Number(t.amount||0);
+    });
 
-            goTo("planner");
+  const breakdown=document.getElementById("spendingBreakdown");
 
-            $("taskFilter").value =
-                "all";
+  if(!Object.keys(categories).length){
+    breakdown.innerHTML=emptyState("₨","No spending data","Add transactions to see where your money goes.");
+  }else{
+    const max=Math.max(...Object.values(categories));
 
-            showToast("Found in Planner");
+    breakdown.innerHTML=Object.entries(categories)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([cat,val])=>`
+        <div class="expense-bar">
+          <div class="expense-label"><span>${escapeHTML(cat)}</span><span>${formatMoney(val)}</span></div>
+          <div class="progress"><span style="width:${Math.max(4,val/max*100)}%"></span></div>
+        </div>
+      `).join("");
+  }
 
-            return;
+  const recent=data.transactions.slice(0,7);
 
-        }
+  document.getElementById("transactionsList").innerHTML=recent.length?
+    recent.map(t=>`
+      <div class="deadline">
+        <div class="date-box"><strong>${t.type==="income"?"↑":"↓"}</strong><small>${t.type}</small></div>
+        <div class="deadline-main">
+          <strong>${escapeHTML(t.description||t.category)}</strong>
+          <small>${formatShortDate(t.date)} • ${escapeHTML(t.category)}</small>
+        </div>
+        <strong style="color:${t.type==="income"?"var(--success)":"var(--danger)"}">
+          ${t.type==="income"?"+":"-"}${formatMoney(t.amount)}
+        </strong>
+      </div>
+    `).join("")
+    :emptyState("₨","No transactions","Start tracking your student finances.");
+}
 
-        if(
-            data.notes.some(n=>
-                `${n.title} ${n.content}`
-                .toLowerCase()
-                .includes(q)
-            )
-        ){
 
-            goTo("notes");
+/* ===================== GOALS ===================== */
 
-            $("noteSearch").value = q;
+document.getElementById("goalForm").addEventListener("submit",e=>{
+  e.preventDefault();
 
-            renderNotes();
+  data.goals.push({
+    id:uid(),
+    title:document.getElementById("goalTitle").value.trim(),
+    category:document.getElementById("goalCategory").value,
+    date:document.getElementById("goalDate").value,
+    progress:Number(document.getElementById("goalProgress").value)||0
+  });
 
-            showToast("Found in Notes");
+  save();
+  e.target.reset();
+  closeModal("goalModal");
+  renderAll();
+  toast("Goal created");
+});
 
-            return;
+function updateGoal(id){
+  const g=data.goals.find(x=>x.id===id);
+  if(!g)return;
 
-        }
+  const value=prompt("Update progress (0-100):",g.progress);
+  if(value===null)return;
 
-        showToast("No results found");
+  g.progress=Math.max(0,Math.min(100,Number(value)||0));
+  save();renderAll();
+}
 
+function renderGoals(){
+  const el=document.getElementById("goalsGrid");
+
+  if(!data.goals.length){
+    el.innerHTML=`<div class="card" style="grid-column:1/-1">${emptyState("◎","No goals yet","Create a goal and break it into consistent action.")}</div>`;
+    return;
+  }
+
+  el.innerHTML=data.goals.map(g=>{
+    const days=daysBetween(today(),g.date);
+    const danger=days>=0&&days<=14&&Number(g.progress)<70;
+
+    return `
+      <div class="card goal-card">
+        <span class="tag">${escapeHTML(g.category)}</span>
+        <h4 style="margin-top:12px">${escapeHTML(g.title)}</h4>
+
+        <div class="goal-meta">
+          <span>Progress</span>
+          <strong>${g.progress}%</strong>
+        </div>
+
+        <div class="progress ${danger?"danger":""}">
+          <span style="width:${g.progress}%"></span>
+        </div>
+
+        <div class="goal-meta">
+          <span>${days<0?"Deadline passed":days===0?"Due today":days+" days remaining"}</span>
+          <span>${formatShortDate(g.date)}</span>
+        </div>
+
+        <button class="secondary-btn" style="margin-top:8px;width:100%" onclick="updateGoal('${g.id}')">
+          Update Progress
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+
+/* ===================== HABITS ===================== */
+
+document.getElementById("habitForm").addEventListener("submit",e=>{
+  e.preventDefault();
+
+  data.habits.push({
+    id:uid(),
+    title:document.getElementById("habitTitle").value.trim(),
+    target:Number(document.getElementById("habitTarget").value)||5,
+    logs:[]
+  });
+
+  save();
+  e.target.reset();
+  closeModal("habitModal");
+  renderAll();
+  toast("Habit created");
+});
+
+function toggleHabit(id,date=today()){
+  const h=data.habits.find(x=>x.id===id);
+  if(!h)return;
+
+  h.logs=h.logs||[];
+
+  if(h.logs.includes(date)){
+    h.logs=h.logs.filter(x=>x!==date);
+  }else{
+    h.logs.push(date);
+  }
+
+  save();renderAll();
+}
+
+function renderHabits(){
+  const el=document.getElementById("habitsGrid");
+
+  if(!data.habits.length){
+    el.innerHTML=`<div class="card" style="grid-column:1/-1">${emptyState("🔥","No habits yet","Create small repeatable behaviours and track your consistency.")}</div>`;
+    return;
+  }
+
+  const monday=getMonday();
+
+  el.innerHTML=data.habits.map(h=>{
+    const days=[];
+    for(let i=0;i<7;i++){
+      const d=new Date(monday);
+      d.setDate(d.getDate()+i);
+      days.push(localDate(d));
     }
-);
 
-/* ---------- MOBILE MENU ---------- */
+    const count=days.filter(d=>(h.logs||[]).includes(d)).length;
 
-$("menuBtn").addEventListener(
-    "click",
-    ()=>{
-        $("sidebar").classList.toggle("open");
+    return `
+      <div class="card">
+        <h3 style="font-size:14px">${escapeHTML(h.title)}</h3>
+        <p style="font-size:11px;color:var(--muted);margin-top:4px">
+          ${count}/${h.target} days this week
+        </p>
+
+        <div class="habit-grid">
+          ${days.map(d=>`
+            <button class="habit-day ${(h.logs||[]).includes(d)?"done":""}"
+              onclick="toggleHabit('${h.id}','${d}')">
+              ${parseDate(d).toLocaleDateString("en-US",{weekday:"short"}).slice(0,1)}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function getMonday(){
+  const n=new Date();
+  const day=n.getDay();
+  n.setDate(n.getDate()-(day===0?6:day-1));
+  n.setHours(0,0,0,0);
+  return n;
+}
+
+
+/* ===================== CAREER ===================== */
+
+document.getElementById("careerForm").addEventListener("submit",e=>{
+  e.preventDefault();
+
+  data.skills.push({
+    id:uid(),
+    name:document.getElementById("skillName").value.trim(),
+    level:Number(document.getElementById("skillLevel").value)||0,
+    target:Number(document.getElementById("skillTarget").value)||80
+  });
+
+  save();
+  e.target.reset();
+  closeModal("careerModal");
+  renderAll();
+  toast("Skill added");
+});
+
+function renderCareer(){
+  document.getElementById("careerTargetText").textContent=data.profile.career||"Not set";
+
+  document.getElementById("careerSkills").textContent=data.skills.length;
+
+  const readiness=data.skills.length?
+    Math.round(data.skills.reduce((a,s)=>a+Math.min(100,s.level/s.target*100),0)/data.skills.length)
+    :0;
+
+  document.getElementById("careerReadiness").textContent=readiness+"%";
+
+  const el=document.getElementById("skillsList");
+
+  if(!data.skills.length){
+    el.innerHTML=emptyState("💼","No skills tracked","Add skills related to your target career.");
+    return;
+  }
+
+  el.innerHTML=data.skills.map(s=>`
+    <div style="padding:13px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px">
+        <strong>${escapeHTML(s.name)}</strong>
+        <span style="color:var(--muted)">${s.level}% / ${s.target}%</span>
+      </div>
+      <div class="progress"><span style="width:${Math.min(100,s.level/s.target*100)}%"></span></div>
+    </div>
+  `).join("");
+}
+
+
+/* ===================== DASHBOARD ===================== */
+
+function renderDashboard(){
+  const name=data.profile.name||"Student";
+  const hour=new Date().getHours();
+
+  const greeting=hour<12?"Good morning":hour<18?"Good afternoon":"Good evening";
+
+  document.getElementById("greeting").textContent=`${greeting}, ${name} 👋`;
+
+  document.getElementById("heroText").textContent=
+    data.tasks.length||data.subjects.length
+    ?"Here's your current student operating picture. Focus on what matters most."
+    :"Set up your student profile and add your first subject, task or goal.";
+
+  const score=overallScore();
+  const [status,desc]=statusFor(score);
+
+  document.getElementById("overallScore").textContent=score;
+  document.getElementById("healthStatus").textContent=status;
+  document.getElementById("healthDescription").textContent=desc;
+  document.getElementById("overallInsight").textContent=buildInsight();
+
+  const degree=data.profile.degree;
+  document.getElementById("dashTasks").textContent=taskStats().rate+"%";
+  document.getElementById("dashFocus").textContent=(weekFocusMinutes()/60).toFixed(1)+"h";
+
+  const gpa=calculateGPA();
+  document.getElementById("dashGPA").textContent=gpa===null?"—":gpa.toFixed(2);
+
+  const expense=data.transactions
+    .filter(t=>t.type==="expense"&&isThisMonth(t.date))
+    .reduce((a,b)=>a+Number(b.amount||0),0);
+
+  document.getElementById("dashSpend").textContent=formatMoney(expense);
+
+  document.getElementById("taskTrend").textContent=
+    taskStats().overdue?`${taskStats().overdue} overdue`:
+    taskStats().total?`${taskStats().completed}/${taskStats().total} complete`:
+    "No tasks yet";
+
+  document.getElementById("focusTrend").textContent=
+    weekFocusMinutes()>=180?"Strong focus week":
+    weekFocusMinutes()?"Build more focus time":"Start a session";
+
+  document.getElementById("gpaTrend").textContent=
+    gpa===null?"Add grades":
+    gpa>=3.5?"Strong academic position":
+    "Room to improve";
+
+  document.getElementById("moneyTrend").textContent=
+    expense===0?"No spending recorded":
+    "Monthly spending";
+
+  const angle=score*3.6;
+  document.getElementById("scoreRing").style.background=
+    `conic-gradient(var(--primary) ${angle}deg,var(--border) ${angle}deg)`;
+
+  renderNextActions();
+  renderUpcoming();
+  renderAcademicHealth();
+  renderSevenDayChart("focusChart",false);
+  renderWeeklyReview();
+}
+
+function renderNextActions(){
+  const actions=getNextActions();
+  const el=document.getElementById("nextActions");
+
+  if(!actions.length){
+    el.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">✦</div>
+        <h4>No urgent action detected</h4>
+        <p>Your system looks relatively clear. Keep building consistent progress.</p>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML=actions.map((a,i)=>`
+    <div class="action-item">
+      <div class="action-num">${i+1}</div>
+      <div>
+        <strong>${escapeHTML(a.title)}</strong>
+        <small>${escapeHTML(a.reason)}</small>
+      </div>
+      <button class="secondary-btn" onclick="navigate('${a.page}')">Open</button>
+    </div>
+  `).join("");
+}
+
+function renderUpcoming(){
+  const tasks=data.tasks
+    .filter(t=>t.status!=="completed")
+    .sort((a,b)=>a.due.localeCompare(b.due))
+    .slice(0,5);
+
+  const el=document.getElementById("upcomingList");
+
+  if(!tasks.length){
+    el.innerHTML=emptyState("✓","No upcoming deadlines","You're clear for now.");
+    return;
+  }
+
+  el.innerHTML=tasks.map(t=>{
+    const d=parseDate(t.due);
+    return `
+      <div class="deadline">
+        <div class="date-box">
+          <strong>${d.getDate()}</strong>
+          <small>${d.toLocaleDateString("en-US",{month:"short"}).toUpperCase()}</small>
+        </div>
+        <div class="deadline-main">
+          <strong>${escapeHTML(t.title)}</strong>
+          <small>${escapeHTML(subjectName(t.subjectId))} • ${t.minutes} min</small>
+        </div>
+        <span class="priority ${t.priority==="High"?"high":t.priority==="Medium"?"medium":""}"></span>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderAcademicHealth(){
+  const el=document.getElementById("academicHealth");
+
+  if(!data.subjects.length){
+    el.innerHTML=emptyState("🎓","No subjects added","Add your current subjects to start calculating academic health.");
+    return;
+  }
+
+  el.innerHTML=data.subjects.map(s=>{
+    let cls="";
+    if(Number(s.progress)<40)cls="danger";
+    else if(Number(s.progress)<65)cls="warn";
+
+    return `
+      <div class="subject-row">
+        <div class="subject-name">
+          <strong>${escapeHTML(s.name)}</strong>
+          <small>${escapeHTML(s.code||"")} • ${s.credits} credits</small>
+        </div>
+        <div>
+          <span class="grade-pill ${cls}">${escapeHTML(s.grade||"Pending")}</span>
+        </div>
+        <div>
+          <strong>${s.progress}%</strong>
+          <small style="display:block;color:var(--muted);font-size:9px">Progress</small>
+        </div>
+        <div>
+          <div class="progress ${cls}"><span style="width:${s.progress}%"></span></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderWeeklyReview(){
+  const completedThisWeek=data.tasks
+    .filter(t=>t.status==="completed"&&t.completedAt&&isThisWeek(t.completedAt)).length;
+
+  const focus=weekFocusMinutes();
+
+  const notes=data.notes.filter(n=>isThisWeek(n.createdAt)).length;
+
+  const spending=data.transactions
+    .filter(t=>t.type==="expense"&&isThisWeek(t.date))
+    .reduce((a,b)=>a+Number(b.amount||0),0);
+
+  const bestSubject=data.subjects
+    .slice()
+    .sort((a,b)=>Number(b.progress||0)-Number(a.progress||0))[0];
+
+  document.getElementById("weeklyReview").innerHTML=`
+    <div class="grid grid-4">
+      <div><strong>${completedThisWeek}</strong><p style="color:var(--muted);font-size:11px;margin-top:3px">Tasks completed</p></div>
+      <div><strong>${Math.floor(focus/60)}h ${focus%60}m</strong><p style="color:var(--muted);font-size:11px;margin-top:3px">Focused study</p></div>
+      <div><strong>${notes}</strong><p style="color:var(--muted);font-size:11px;margin-top:3px">Notes created</p></div>
+      <div><strong>${formatMoney(spending)}</strong><p style="color:var(--muted);font-size:11px;margin-top:3px">Weekly spending</p></div>
+    </div>
+
+    <div style="margin-top:18px;padding-top:15px;border-top:1px solid var(--border)">
+      <strong>Weekly conclusion</strong>
+      <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px">
+        ${buildWeeklyConclusion(completedThisWeek,focus,bestSubject)}
+      </p>
+    </div>
+  `;
+}
+
+function buildWeeklyConclusion(completed,focus,best){
+  if(!data.tasks.length&&!data.sessions.length)
+    return "Start recording your real activity this week. StudentOS will turn it into a useful review.";
+
+  if(completed>=5&&focus>=180)
+    return "Strong week. You're converting plans into actual work and maintaining meaningful focus time.";
+
+  if(completed<3&&data.tasks.length)
+    return "Execution is currently the main opportunity. Reduce your active workload and finish the highest-priority tasks before adding more.";
+
+  if(focus<120)
+    return "Your biggest opportunity is protected study time. Schedule fewer but more deliberate focus sessions.";
+
+  return best
+    ? `${best.name} currently has your highest recorded progress at ${best.progress}%. Keep that momentum while giving attention to your weaker areas.`
+    :"Your week is developing. Continue recording tasks and focus sessions to improve the quality of your insights.";
+}
+
+
+/* ===================== ACADEMICS PAGE ===================== */
+
+function renderAcademics(){
+  const gpa=calculateGPA();
+
+  document.getElementById("academicGPA").textContent=gpa===null?"—":gpa.toFixed(2);
+  document.getElementById("subjectCount").textContent=data.subjects.length;
+
+  document.getElementById("examCount").textContent=
+    data.subjects.filter(s=>s.exam&&daysBetween(today(),s.exam)>=0).length;
+
+  document.getElementById("weakSubjectCount").textContent=
+    data.subjects.filter(s=>Number(s.progress)<50).length;
+
+  const el=document.getElementById("subjectsTable");
+
+  if(!data.subjects.length){
+    el.innerHTML=emptyState("🎓","No subjects yet","Add your subjects to activate GPA and exam intelligence.");
+    return;
+  }
+
+  el.innerHTML=`
+    <table class="data-table">
+      <thead>
+        <tr><th>Subject</th><th>Credits</th><th>Grade</th><th>Progress</th><th>Exam</th></tr>
+      </thead>
+      <tbody>
+        ${data.subjects.map(s=>`
+          <tr>
+            <td><strong>${escapeHTML(s.name)}</strong><br><small style="color:var(--muted)">${escapeHTML(s.code||"")}</small></td>
+            <td>${s.credits}</td>
+            <td>${escapeHTML(s.grade||"Pending")}</td>
+            <td>${s.progress}%</td>
+            <td>${s.exam?formatShortDate(s.exam):"—"}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>`;
+}
+
+
+/* ===================== ANALYTICS ===================== */
+
+function renderAnalytics(){
+  document.getElementById("analyticsProductivity").textContent=productivityScore();
+  document.getElementById("analyticsAcademic").textContent=academicScore()??"—";
+  document.getElementById("analyticsConsistency").textContent=consistency()+"%";
+  document.getElementById("analyticsGoals").textContent=goalProgress()+"%";
+
+  renderSevenDayChart("analyticsFocusChart",false);
+
+  const risks=getRisks();
+  const el=document.getElementById("risks");
+
+  if(!risks.length){
+    el.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">✓</div>
+        <h4>No major risks detected</h4>
+        <p>StudentOS isn't seeing a major warning in your current data.</p>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML=risks.map(r=>`
+    <div class="risk">
+      <div class="risk-icon">⚠</div>
+      <div>
+        <strong>${escapeHTML(r.title)}</strong>
+        <small>${escapeHTML(r.detail)}</small>
+      </div>
+    </div>
+  `).join("");
+}
+
+
+/* ===================== CHARTS ===================== */
+
+function renderSevenDayChart(elementId,taskMode=false){
+  const el=document.getElementById(elementId);
+  if(!el)return;
+
+  const values=[];
+  const labels=[];
+
+  for(let i=6;i>=0;i--){
+    const d=addDays(today(),-i);
+    labels.push(parseDate(d).toLocaleDateString("en-US",{weekday:"short"}).slice(0,2));
+
+    let value;
+
+    if(taskMode){
+      value=data.tasks
+        .filter(t=>t.due===d&&t.status!=="completed")
+        .reduce((a,b)=>a+Number(b.minutes||0),0);
+    }else{
+      value=data.sessions
+        .filter(s=>s.date===d)
+        .reduce((a,b)=>a+Number(b.duration||0),0);
     }
-);
 
-/* ---------- NOTIFICATION ---------- */
+    values.push(value);
+  }
 
-$("notifyBtn").addEventListener(
-    "click",
-    ()=>{
+  const max=Math.max(...values,60);
 
-        const pending =
-            data.tasks.filter(t=>!t.done).length;
+  el.innerHTML=values.map((v,i)=>`
+    <div class="bar-day">
+      <div class="bar" style="height:${Math.max(3,v/max*130)}px" title="${v} minutes"></div>
+      <span>${labels[i]}</span>
+    </div>
+  `).join("");
+}
 
-        if(pending){
 
-            showToast(
-                `You have ${pending} unfinished task${pending === 1 ? "" : "s"}`
-            );
+/* ===================== SELECTS ===================== */
 
-        }else{
+function populateSelects(){
+  const subjectOptions=
+    `<option value="">${data.subjects.length?"Select subject":"No subjects yet"}</option>`+
+    data.subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.name)}</option>`).join("");
 
-            showToast(
-                "You're all caught up! 🎉"
-            );
+  ["taskSubject","noteSubject","focusSubject","quickFocusSubject"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=subjectOptions;
+  });
 
-        }
+  const taskOptions=
+    `<option value="">Select task (optional)</option>`+
+    data.tasks.filter(t=>t.status!=="completed")
+      .map(t=>`<option value="${t.id}">${escapeHTML(t.title)}</option>`).join("");
 
+  document.getElementById("focusTask").innerHTML=taskOptions;
+}
+
+
+/* ===================== PROFILE ===================== */
+
+document.getElementById("profileForm").addEventListener("submit",e=>{
+  e.preventDefault();
+
+  data.profile.name=document.getElementById("profileNameInput").value.trim();
+  data.profile.university=document.getElementById("profileUniversityInput").value.trim();
+  data.profile.degree=document.getElementById("profileDegreeInput").value.trim();
+  data.profile.year=document.getElementById("profileYearInput").value.trim();
+
+  save();
+  closeModal("profileModal");
+  renderAll();
+  toast("Profile updated");
+});
+
+function saveProfileSettings(){
+  data.profile.studyCapacity=Number(document.getElementById("profileStudyCapacity").value)||7;
+  data.profile.weeklyBudget=Number(document.getElementById("profileBudget").value)||0;
+  data.profile.targetGPA=Number(document.getElementById("profileTargetGPA").value)||3.5;
+  data.profile.career=document.getElementById("profileCareer").value.trim();
+
+  save();
+  renderAll();
+  toast("Settings saved");
+}
+
+function renderProfile(){
+  const p=data.profile;
+
+  document.getElementById("profileName").textContent=p.name||"Student";
+
+  document.getElementById("profileDetails").textContent=
+    [p.degree,p.university,p.year].filter(Boolean).join(" • ")||"Complete your profile";
+
+  const initial=(p.name||"S").charAt(0).toUpperCase();
+
+  document.getElementById("profileAvatar").textContent=initial;
+  document.getElementById("sideAvatar").textContent=initial;
+  document.getElementById("sideName").textContent=p.name||"Student";
+  document.getElementById("sideUniversity").textContent=p.university||"Set up profile";
+
+  document.getElementById("profileStudyCapacity").value=p.studyCapacity||7;
+  document.getElementById("profileBudget").value=p.weeklyBudget||10000;
+  document.getElementById("profileTargetGPA").value=p.targetGPA||3.5;
+  document.getElementById("profileCareer").value=p.career||"";
+
+  document.getElementById("profileNameInput").value=p.name||"";
+  document.getElementById("profileUniversityInput").value=p.university||"";
+  document.getElementById("profileDegreeInput").value=p.degree||"";
+  document.getElementById("profileYearInput").value=p.year||"";
+
+  document.getElementById("careerTargetText").textContent=p.career||"Not set";
+}
+
+
+/* ===================== SEARCH ===================== */
+
+document.getElementById("globalSearch").addEventListener("keydown",e=>{
+  if(e.key!=="Enter")return;
+
+  const q=e.target.value.trim().toLowerCase();
+  if(!q)return;
+
+  const results=[];
+
+  data.tasks.forEach(t=>{
+    if(t.title.toLowerCase().includes(q))results.push(["Task",t.title,"tasks"]);
+  });
+
+  data.subjects.forEach(s=>{
+    if(`${s.name} ${s.code}`.toLowerCase().includes(q))results.push(["Subject",s.name,"academics"]);
+  });
+
+  data.notes.forEach(n=>{
+    if(`${n.title} ${n.content}`.toLowerCase().includes(q))results.push(["Note",n.title,"notes"]);
+  });
+
+  data.goals.forEach(g=>{
+    if(g.title.toLowerCase().includes(q))results.push(["Goal",g.title,"goals"]);
+  });
+
+  if(results.length){
+    navigate(results[0][2]);
+    toast(`${results.length} result${results.length>1?"s":""} found`);
+  }else{
+    toast("No matching results");
+  }
+});
+
+
+/* ===================== EXPORT / IMPORT ===================== */
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="studentos-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Backup exported");
+}
+
+document.getElementById("importFile").addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+    try{
+      const imported=JSON.parse(reader.result);
+
+      if(!imported.profile||!Array.isArray(imported.tasks)){
+        throw new Error("Invalid file");
+      }
+
+      data={
+        ...clone(defaultData),
+        ...imported,
+        profile:{...clone(defaultData.profile),...(imported.profile||{})}
+      };
+
+      save();
+      renderAll();
+      toast("Backup imported");
+    }catch(err){
+      toast("Invalid StudentOS backup");
     }
-);
+  };
 
-/* ---------- RENDER ALL ---------- */
+  reader.readAsText(file);
+});
+
+function resetData(){
+  if(!confirm("This will delete all StudentOS data from this browser. Continue?"))return;
+
+  data=clone(defaultData);
+  save();
+  renderAll();
+  toast("StudentOS reset");
+}
+
+
+/* ===================== UTILITIES ===================== */
+
+function formatShortDate(date){
+  if(!date)return"—";
+  return parseDate(date).toLocaleDateString("en-US",{day:"numeric",month:"short"});
+}
+
+function emptyState(icon,title,text){
+  return `
+    <div class="empty">
+      <div class="empty-icon">${icon}</div>
+      <h4>${escapeHTML(title)}</h4>
+      <p>${escapeHTML(text)}</p>
+    </div>`;
+}
+
+function toast(message){
+  const el=document.getElementById("toast");
+  el.textContent=message;
+  el.classList.add("show");
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>el.classList.remove("show"),2500);
+}
+
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  data.theme=data.theme==="dark"?"light":"dark";
+  document.documentElement.setAttribute("data-theme",data.theme==="dark"?"dark":"");
+  document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀":"☾";
+  save();
+});
+
+
+/* ===================== RENDER ALL ===================== */
 
 function renderAll(){
+  populateSelects();
+  renderDashboard();
+  renderAnalytics();
+  renderAcademics();
+  renderTasks();
+  renderPlanner();
+  renderFocus();
+  renderNotes();
+  renderMoney();
+  renderGoals();
+  renderHabits();
+  renderCareer();
+  renderProfile();
 
-    renderProfile();
-    renderTasks();
-    renderNotes();
-    renderSubjects();
-    renderMoney();
-    renderGoals();
-    renderFocus();
-    renderProductivity();
-
-    applyTheme();
-
+  document.getElementById("todayText").textContent=
+    new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
 }
 
-/* ---------- DATE / GREETING ---------- */
+document.getElementById("taskDue").value=today();
+document.getElementById("transactionDate").value=today();
 
-function renderGreeting(){
-
-    const hour =
-        new Date().getHours();
-
-    let greeting = "Good evening";
-
-    if(hour < 12){
-        greeting = "Good morning";
-    }else if(hour < 18){
-        greeting = "Good afternoon";
-    }
-
-    $("greeting").textContent =
-        `${greeting}, ${data.user.name} 👋`;
-
-    $("todayText").textContent =
-        new Date().toLocaleDateString(
-            "en-LK",
-            {
-                weekday:"long",
-                month:"long",
-                day:"numeric",
-                year:"numeric"
-            }
-        ) +
-        " • Let's make today productive without making it overwhelming.";
-
+if(data.theme==="dark"){
+  document.documentElement.setAttribute("data-theme","dark");
+  document.getElementById("themeBtn").textContent="☀";
 }
-
-/* ---------- INIT ---------- */
-
-renderGreeting();
 
 renderAll();
+updateTimer();
 
 </script>
-
 </body>
 </html>
