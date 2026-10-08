@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6c5ce7">
+
+  <title>StudentOS — Your Student Life, Organized</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     APP
+===================================================== -->
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-icon">S</div>
+
+      <div>
+        <div class="brand-name">StudentOS</div>
+        <div class="brand-sub">Student productivity</div>
+      </div>
+    </div>
+
+
+    <div class="profile-mini">
+
+      <div class="avatar" id="sidebarAvatar">U</div>
+
+      <div>
+        <strong id="sidebarName">Student</strong>
+        <span>Undergraduate</span>
+      </div>
+
+    </div>
+
+
+    <nav class="navigation">
+
+      <div class="nav-label">WORKSPACE</div>
+
+      <button class="nav-item active" data-page="dashboard">
+        <span>⌂</span>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="nav-item" data-page="academics">
+        <span>🎓</span>
+        <span>Academics</span>
+      </button>
+
+      <button class="nav-item" data-page="planner">
+        <span>📅</span>
+        <span>Planner</span>
+      </button>
+
+      <button class="nav-item" data-page="focus">
+        <span>⏱</span>
+        <span>Focus</span>
+      </button>
+
+      <button class="nav-item" data-page="notes">
+        <span>📝</span>
+        <span>Notes</span>
+      </button>
+
+
+      <div class="nav-label">PERSONAL</div>
+
+      <button class="nav-item" data-page="money">
+        <span>💰</span>
+        <span>Money</span>
+      </button>
+
+      <button class="nav-item" data-page="goals">
+        <span>🎯</span>
+        <span>Goals</span>
+      </button>
+
+
+      <div class="nav-label">ACCOUNT</div>
+
+      <button class="nav-item" data-page="profile">
+        <span>👤</span>
+        <span>Profile</span>
+      </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <button class="theme-button" id="themeToggle">
+        <span>🌙</span>
+        <span>Dark mode</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+      <div class="mobile-brand">
+        <div class="brand-icon">S</div>
+        <strong>StudentOS</strong>
+      </div>
+
+      <div class="top-search">
+
+        <span>⌕</span>
+
+        <input
+          type="text"
+          id="globalSearch"
+          placeholder="Search StudentOS..."
+          autocomplete="off">
+
+        <kbd>⌘ K</kbd>
+
+      </div>
+
+
+      <div class="top-actions">
+
+        <button class="icon-button" id="notificationButton">
+          🔔
+          <i></i>
+        </button>
+
+        <button class="top-avatar" data-page="profile">
+          U
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+      <!-- ============================================
+           DASHBOARD
+      ============================================= -->
+
+      <section class="page active-page" id="page-dashboard">
+
+        <div class="welcome">
+
+          <div>
+
+            <div class="eyebrow">
+              <span class="status-dot"></span>
+              YOUR PERSONAL STUDENT OS
+            </div>
+
+            <h1>
+              Good morning,
+              <span id="welcomeName">Student</span> 👋
+            </h1>
+
+            <p>
+              Let's make today productive without making it overwhelming.
+            </p>
+
+          </div>
+
+          <div class="date-card">
+
+            <strong id="currentDay">Monday</strong>
+            <span id="currentDate">October 2026</span>
+
+          </div>
+
+        </div>
+
+
+        <!-- NEXT ACTION -->
+
+        <div class="next-action">
+
+          <div class="next-left">
+
+            <div class="next-badge">
+              ✨ NEXT BEST ACTION
+            </div>
+
+            <h2 id="nextActionTitle">
+              Start your first study session
+            </h2>
+
+            <p id="nextActionDescription">
+              Complete one important task before checking everything else.
+            </p>
+
+            <button class="btn primary" id="nextActionButton">
+              Start Focus Session →
+            </button>
+
+          </div>
+
+          <div class="next-visual">
+
+            <div class="orb orb-one"></div>
+            <div class="orb orb-two"></div>
+
+            <div class="focus-symbol">
+              ⏱
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- QUICK STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-top">
+              <span>📚</span>
+              <small>This semester</small>
+            </div>
+
+            <strong id="academicProgress">0%</strong>
+
+            <div class="progress">
+              <div id="academicBar"></div>
+            </div>
+
+            <p>Academic progress</p>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-top">
+              <span>⏱</span>
+              <small>Today</small>
+            </div>
+
+            <strong id="focusHours">0m</strong>
+
+            <p>Focused study time</p>
+
+            <div class="trend positive">
+              ↗ Keep going
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-top">
+              <span>✓</span>
+              <small>Tasks</small>
+            </div>
+
+            <strong id="taskProgress">0/0</strong>
+
+            <p>Tasks completed</p>
+
+            <div class="trend">
+              Today's workload
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-top">
+              <span>💰</span>
+              <small>This month</small>
+            </div>
+
+            <strong id="moneyBalance">Rs. 0</strong>
+
+            <p>Available balance</p>
+
+            <div class="trend">
+              Track your spending
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- DASHBOARD GRID -->
+
+        <div class="dashboard-grid">
+
+          <!-- TODAY -->
+
+          <div class="panel large-panel">
+
+            <div class="panel-header">
+
+              <div>
+                <h3>Today's priorities</h3>
+                <p>Focus on what actually matters.</p>
+              </div>
+
+              <button class="text-button" data-page="planner">
+                View planner →
+              </button>
+
+            </div>
+
+            <div id="todayTasks" class="task-list"></div>
+
+          </div>
+
+
+          <!-- QUICK ACTIONS -->
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div>
+                <h3>Quick actions</h3>
+                <p>Get things done faster.</p>
+              </div>
+
+            </div>
+
+            <div class="quick-actions">
+
+              <button data-modal="taskModal">
+                <span>➕</span>
+                <div>
+                  <strong>Add task</strong>
+                  <small>Plan your work</small>
+                </div>
+              </button>
+
+              <button data-modal="noteModal">
+                <span>📝</span>
+                <div>
+                  <strong>New note</strong>
+                  <small>Capture an idea</small>
+                </div>
+              </button>
+
+              <button data-page="focus">
+                <span>⏱</span>
+                <div>
+                  <strong>Focus mode</strong>
+                  <small>Start studying</small>
+                </div>
+              </button>
+
+              <button data-modal="expenseModal">
+                <span>💳</span>
+                <div>
+                  <strong>Add expense</strong>
+                  <small>Track money</small>
+                </div>
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- UPCOMING -->
+
+        <div class="panel">
+
+          <div class="panel-header">
+
+            <div>
+              <h3>Upcoming</h3>
+              <p>Don't let deadlines surprise you.</p>
+            </div>
+
+            <button class="text-button" data-page="planner">
+              See all →
+            </button>
+
+          </div>
+
+          <div id="upcomingList" class="upcoming-list"></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           ACADEMICS
+      ============================================= -->
+
+      <section class="page" id="page-academics">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">ACADEMIC CENTER</div>
+            <h1>Academics</h1>
+            <p>Keep your subjects, grades and academic progress together.</p>
+          </div>
+
+          <button class="btn primary" data-modal="subjectModal">
+            + Add subject
+          </button>
+
+        </div>
+
+
+        <div class="academic-overview">
+
+          <div class="academic-score">
+
+            <span>Current GPA</span>
+
+            <strong id="gpaValue">—</strong>
+
+            <small>Add grades to calculate</small>
+
+          </div>
+
+
+          <div class="academic-progress-box">
+
+            <div class="progress-title">
+
+              <div>
+                <strong>Semester progress</strong>
+                <span id="semesterProgressText">0% completed</span>
+              </div>
+
+              <b id="semesterProgress">0%</b>
+
+            </div>
+
+            <div class="progress big">
+              <div id="semesterProgressBar"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="section-title">
+          <h2>My subjects</h2>
+        </div>
+
+        <div id="subjectsGrid" class="subjects-grid"></div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           PLANNER
+      ============================================= -->
+
+      <section class="page" id="page-planner">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">ORGANIZE</div>
+            <h1>Planner</h1>
+            <p>Turn everything you need to do into a clear plan.</p>
+          </div>
+
+          <button class="btn primary" data-modal="taskModal">
+            + Add task
+          </button>
+
+        </div>
+
+
+        <div class="planner-tabs">
+
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="today">Today</button>
+          <button data-filter="upcoming">Upcoming</button>
+          <button data-filter="completed">Completed</button>
+
+        </div>
+
+
+        <div id="plannerTasks" class="planner-tasks"></div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           FOCUS
+      ============================================= -->
+
+      <section class="page" id="page-focus">
+
+        <div class="page-heading center">
+
+          <div>
+            <div class="eyebrow">DEEP WORK</div>
+            <h1>Focus</h1>
+            <p>One session. One task. No distractions.</p>
+          </div>
+
+        </div>
+
+
+        <div class="focus-container">
+
+          <div class="focus-card">
+
+            <div class="focus-mode">
+              <button class="active" data-minutes="25">Focus</button>
+              <button data-minutes="5">Short break</button>
+              <button data-minutes="15">Long break</button>
+            </div>
+
+
+            <div class="timer-ring" id="timerRing">
+
+              <div>
+
+                <span id="timerMinutes">25</span>
+                <small>:</small>
+                <span id="timerSeconds">00</span>
+
+              </div>
+
+            </div>
+
+
+            <div class="focus-label" id="focusLabel">
+              Ready to focus?
+            </div>
+
+
+            <button class="timer-button" id="timerButton">
+              ▶ Start
+            </button>
+
+
+            <button class="reset-button" id="resetTimer">
+              Reset timer
+            </button>
+
+          </div>
+
+
+          <div class="focus-side">
+
+            <div class="panel">
+
+              <div class="panel-header">
+                <div>
+                  <h3>Today's focus</h3>
+                  <p>Your productive time.</p>
+                </div>
+              </div>
+
+              <div class="focus-stat">
+                <strong id="focusTodayLarge">0m</strong>
+                <span>focused today</span>
+              </div>
+
+              <div class="mini-progress">
+                <div id="focusProgressBar"></div>
+              </div>
+
+              <small>Goal: 2 hours</small>
+
+            </div>
+
+
+            <div class="quote-card">
+
+              <span>“</span>
+
+              <p id="dailyQuote">
+                You don't need to be perfect. You just need to start.
+              </p>
+
+              <small>StudentOS</small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           NOTES
+      ============================================= -->
+
+      <section class="page" id="page-notes">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">KNOWLEDGE</div>
+            <h1>My Notes</h1>
+            <p>Your personal knowledge library.</p>
+          </div>
+
+          <button class="btn primary" data-modal="noteModal">
+            + New note
+          </button>
+
+        </div>
+
+
+        <div class="notes-toolbar">
+
+          <div class="search-box">
+
+            🔎
+
+            <input
+              id="noteSearch"
+              placeholder="Search notes...">
+
+          </div>
+
+          <select id="noteFilter">
+
+            <option value="all">All subjects</option>
+            <option value="HRM">HRM</option>
+            <option value="CA">CA</option>
+            <option value="Finance">Finance</option>
+
+          </select>
+
+        </div>
+
+
+        <div id="notesGrid" class="notes-grid"></div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           MONEY
+      ============================================= -->
+
+      <section class="page" id="page-money">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">PERSONAL FINANCE</div>
+            <h1>Money</h1>
+            <p>Understand where your money goes.</p>
+          </div>
+
+          <button class="btn primary" data-modal="expenseModal">
+            + Add expense
+          </button>
+
+        </div>
+
+
+        <div class="money-cards">
+
+          <div class="money-card balance">
+
+            <span>Available balance</span>
+
+            <strong id="balanceLarge">
+              Rs. 0
+            </strong>
+
+            <small>Income minus expenses</small>
+
+          </div>
+
+
+          <div class="money-card">
+
+            <span>Total income</span>
+
+            <strong id="incomeLarge">
+              Rs. 0
+            </strong>
+
+            <small>This month</small>
+
+          </div>
+
+
+          <div class="money-card">
+
+            <span>Total expenses</span>
+
+            <strong id="expensesLarge">
+              Rs. 0
+            </strong>
+
+            <small>This month</small>
+
+          </div>
+
+        </div>
+
+
+        <div class="money-grid">
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div>
+                <h3>Spending</h3>
+                <p>Your expense breakdown.</p>
+              </div>
+
+            </div>
+
+            <div id="expenseCategories"></div>
+
+          </div>
+
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div>
+                <h3>Recent transactions</h3>
+                <p>Your latest money activity.</p>
+              </div>
+
+            </div>
+
+            <div id="transactions"></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           GOALS
+      ============================================= -->
+
+      <section class="page" id="page-goals">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">YOUR FUTURE</div>
+            <h1>Goals</h1>
+            <p>Small progress every day creates big results.</p>
+          </div>
+
+          <button class="btn primary" data-modal="goalModal">
+            + New goal
+          </button>
+
+        </div>
+
+
+        <div class="goal-banner">
+
+          <div>
+
+            <span>YOUR 2026</span>
+
+            <h2>
+              Build the future
+              you're working for.
+            </h2>
+
+            <p>
+              Track your biggest academic, career and personal goals.
+            </p>
+
+          </div>
+
+          <div class="goal-decoration">
+            🎯
+          </div>
+
+        </div>
+
+
+        <div id="goalsGrid" class="goals-grid"></div>
+
+      </section>
+
+
+
+      <!-- ============================================
+           PROFILE
+      ============================================= -->
+
+      <section class="page" id="page-profile">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">ACCOUNT</div>
+            <h1>Profile</h1>
+            <p>Customize your StudentOS experience.</p>
+          </div>
+
+          <button class="btn primary" data-modal="profileModal">
+            Edit profile
+          </button>
+
+        </div>
+
+
+        <div class="profile-card">
+
+          <div class="profile-avatar" id="profileAvatar">
+            U
+          </div>
+
+          <div class="profile-info">
+
+            <h2 id="profileName">
+              Student
+            </h2>
+
+            <p id="profileUniversity">
+              University student
+            </p>
+
+            <p id="profileDegree">
+              Undergraduate
+            </p>
+
+            <div class="profile-tags">
+
+              <span>🎓 Student</span>
+              <span>📚 Learner</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="profile-stats">
+
+          <div>
+            <strong id="profileTasks">0</strong>
+            <span>Tasks completed</span>
+          </div>
+
+          <div>
+            <strong id="profileNotes">0</strong>
+            <span>Notes created</span>
+          </div>
+
+          <div>
+            <strong id="profileGoals">0</strong>
+            <span>Goals</span>
+          </div>
+
+          <div>
+            <strong id="profileFocus">0m</strong>
+            <span>Focus time</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<!-- MOBILE NAV -->
+
+<nav class="mobile-nav">
+
+  <button class="active" data-page="dashboard">
+    <span>⌂</span>
+    Home
+  </button>
+
+  <button data-page="academics">
+    <span>🎓</span>
+    Study
+  </button>
+
+  <button data-page="planner">
+    <span>📅</span>
+    Plan
+  </button>
+
+  <button data-page="focus">
+    <span>⏱</span>
+    Focus
+  </button>
+
+  <button data-page="profile">
+    <span>👤</span>
+    Profile
+  </button>
+
+</nav>
+
+
+
+<!-- ============================================
+     TASK MODAL
+============================================= -->
+
+<div class="modal-overlay" id="taskModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+        <span class="modal-icon">✓</span>
+        <div>
+          <h2>Add task</h2>
+          <p>What needs to get done?</p>
+        </div>
+      </div>
+
+      <button class="close-modal">×</button>
+
+    </div>
+
+
+    <form id="taskForm">
+
+      <label>
+        Task name
+        <input id="taskName" required placeholder="e.g. Complete HRM report">
+      </label>
+
+
+      <div class="form-row">
+
+        <label>
+          Date
+          <input id="taskDate" type="date" required>
+        </label>
+
+        <label>
+          Priority
+
+          <select id="taskPriority">
+
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+
+          </select>
+
+        </label>
+
+      </div>
+
+
+      <label>
+        Category
+
+        <select id="taskCategory">
+
+          <option>University</option>
+          <option>CA</option>
+          <option>Work</option>
+          <option>Personal</option>
+
+        </select>
+
+      </label>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn ghost close-modal">
+          Cancel
+        </button>
+
+        <button class="btn primary">
+          Add task
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- NOTE MODAL -->
+
+<div class="modal-overlay" id="noteModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+        <span class="modal-icon">📝</span>
+        <div>
+          <h2>New note</h2>
+          <p>Capture something worth remembering.</p>
+        </div>
+      </div>
+
+      <button class="close-modal">×</button>
+
+    </div>
+
+
+    <form id="noteForm">
+
+      <label>
+        Note title
+        <input id="noteTitle" required placeholder="e.g. Green HRM summary">
+      </label>
+
+
+      <label>
+        Subject
+
+        <select id="noteSubject">
+
+          <option>HRM</option>
+          <option>CA</option>
+          <option>Finance</option>
+          <option>General</option>
+
+        </select>
+
+      </label>
+
+
+      <label>
+        Content
+
+        <textarea
+          id="noteContent"
+          required
+          placeholder="Write your note here..."></textarea>
+
+      </label>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn ghost close-modal">
+          Cancel
+        </button>
+
+        <button class="btn primary">
+          Save note
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- EXPENSE MODAL -->
+
+<div class="modal-overlay" id="expenseModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+        <span class="modal-icon">💰</span>
+
+        <div>
+          <h2>Add transaction</h2>
+          <p>Keep your money under control.</p>
+        </div>
+
+      </div>
+
+      <button class="close-modal">×</button>
+
+    </div>
+
+
+    <form id="expenseForm">
+
+      <label>
+        Description
+
+        <input
+          id="expenseName"
+          required
+          placeholder="e.g. Lunch">
+
+      </label>
+
+
+      <label>
+        Amount (Rs.)
+
+        <input
+          id="expenseAmount"
+          type="number"
+          min="1"
+          required
+          placeholder="500">
+
+      </label>
+
+
+      <div class="form-row">
+
+        <label>
+
+          Type
+
+          <select id="expenseType">
+
+            <option value="expense">
+              Expense
+            </option>
+
+            <option value="income">
+              Income
+            </option>
+
+          </select>
+
+        </label>
+
+
+        <label>
+
+          Category
+
+          <select id="expenseCategory">
+
+            <option>Food</option>
+            <option>Transport</option>
+            <option>Education</option>
+            <option>Entertainment</option>
+            <option>Other</option>
+
+          </select>
+
+        </label>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn ghost close-modal">
+          Cancel
+        </button>
+
+        <button class="btn primary">
+          Save transaction
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- GOAL MODAL -->
+
+<div class="modal-overlay" id="goalModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <span class="modal-icon">🎯</span>
+
+        <div>
+          <h2>New goal</h2>
+          <p>What are you working towards?</p>
+        </div>
+
+      </div>
+
+      <button class="close-modal">×</button>
+
+    </div>
+
+
+    <form id="goalForm">
+
+      <label>
+        Goal
+
+        <input
+          id="goalName"
+          required
+          placeholder="e.g. Pass CA Audit">
+
+      </label>
+
+
+      <label>
+
+        Category
+
+        <select id="goalCategory">
+
+          <option>Academic</option>
+          <option>Career</option>
+          <option>Financial</option>
+          <option>Personal</option>
+
+        </select>
+
+      </label>
+
+
+      <label>
+
+        Target date
+
+        <input
+          id="goalDate"
+          type="date">
+
+      </label>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn ghost close-modal">
+          Cancel
+        </button>
+
+        <button class="btn primary">
+          Create goal
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- SUBJECT MODAL -->
+
+<div class="modal-overlay" id="subjectModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <span class="modal-icon">🎓</span>
+
+        <div>
+          <h2>Add subject</h2>
+          <p>Add a subject to your semester.</p>
+        </div>
+
+      </div>
+
+      <button class="close-modal">×</button>
+
+    </div>
+
+
+    <form id="subjectForm">
+
+      <label>
+        Subject name
+        <input id="subjectName" required placeholder="e.g. HR Analytics">
+      </label>
+
+
+      <div class="form-row">
+
+        <label>
+          Credits
+          <input id="subjectCredits" type="number" min="1" max="10" value="3">
+        </label>
+
+        <label>
+          Grade
+          <select id="subjectGrade">
+
+            <option value="">Not graded</option>
+            <option value="A+">A+</option>
+            <option value="A">A</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B">B</option>
+            <option value="B-">B-</option>
+            <option value="C+">C+</option>
+            <option value="C">C</option>
+            <option value="C-">C-</option>
+            <option value="D">D</option>
+
+          </select>
+        </label>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn ghost close-modal">
+          Cancel
+        </button>
+
+        <button class="btn primary">
+          Add subject
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- PROFILE MODAL -->
+
+<div class="modal-overlay" id="profileModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <span class="modal-icon">👤</span>
+
+        <div>
+          <h2>Edit profile</h2>
+          <p>Tell StudentOS about yourself.</p>
+        </div>
+
+      </div>
+
+      <button class="close-modal">×</button>
+
+    </div>
+
+
+    <form id="profileForm">
+
+      <label>
+        Name
+        <input id="profileNameInput" required>
+      </label>
+
+      <label>
+        University
+        <input id="profileUniversityInput">
+      </label>
+
+      <label>
+        Degree / program
+        <input id="profileDegreeInput">
+      </label>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn ghost close-modal">
+          Cancel
+        </button>
+
+        <button class="btn primary">
+          Save profile
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast">
+
+  <span>✓</span>
+
+  <div>
+    <strong id="toastTitle">Done</strong>
+    <small id="toastMessage">Your changes have been saved.</small>
+  </div>
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
